@@ -2,7 +2,7 @@ import navList from '@/data/navLinks';
 
 const Navbar = () => { 
   return (
-    <nav>
+    <nav role="navigation">
       <NavLinks navList={navList} />
     </nav>
   );
