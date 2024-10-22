@@ -28,12 +28,7 @@ const BaseServices = () => {
               <div>
                 <center>
                     <motion.div
-                      className="overflow-hidden rounded-tr-[2.5rem] rounded-bl-[2.5rem] shadow-lg"
-                      style={{
-                        width: '275px',
-                        height: '200px',
-                        outline: "1px solid #9ca3af",
-                      }}
+                      className="overflow-hidden rounded-tr-[2.5rem] rounded-bl-[2.5rem] shadow-lg w-[275px] h-[200px] outline outline-1 outline-gray-400"
                       onHoverStart={() => setHoveredIndex(i)}
                       onHoverEnd={() => setHoveredIndex(null)}
                     >
@@ -48,10 +43,7 @@ const BaseServices = () => {
                       />
                     </motion.div>
                     <h1
-                      className="text-[.8rem] mt-[.7399rem] font-semibold text-gray-400 hover:text-gray-300 float-right pr-[5.3rem] md:pr-0"
-                      style={{
-                        letterSpacing: "-0.04rem",
-                      }}
+                      className="text-[.8rem] mt-[.7399rem] font-semibold text-gray-400 hover:text-gray-300 float-right pr-[5.3rem] tracking-tighter md:pr-0"
                     >
                       {s.name}
                     </h1>
@@ -59,11 +51,7 @@ const BaseServices = () => {
               </div>
               <div className="mx-auto w-[275px] mt-[2.25rem] mb-[5.25rem]">
                 <p
-                  className="text-[.75rem] pt-[.52335rem] pr-[.52335rem] pb-[.52335] text-gray-400 text-justify hover:text-gray-300 md:mt-2.5rem"
-                  style={{
-                    borderTop: "1px solid #9ca3af44",
-                    borderRight: "1px solid #9ca3af44",
-                  }}
+                  className="text-[.75rem] pt-[.52335rem] pr-[.52335rem] pb-[.52335] text-gray-400 text-justify hover:text-gray-300 md:mt-2.5rem border-t-[1px] border-r-[1px] border-t-[#9ca3af44] border-r-[#9ca3af44]"
                 >
                   {s.description}
                 </p>
