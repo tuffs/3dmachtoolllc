@@ -25,9 +25,8 @@ const BaseServices = () => {
 
               }}
             >
-              <div className="my-24 md:my-0">
+              <div>
                 <center>
-                  
                     <motion.div
                       className="overflow-hidden rounded-tr-[2.5rem] rounded-bl-[2.5rem] shadow-lg"
                       style={{
@@ -49,25 +48,19 @@ const BaseServices = () => {
                       />
                     </motion.div>
                     <h1
-                      className="mt-[.7399rem] font-semibold text-gray-400 hover:text-gray-300 md:float-right"
+                      className="text-[.8rem] mt-[.7399rem] font-semibold text-gray-400 hover:text-gray-300 float-right pr-[5.3rem] md:pr-0"
                       style={{
                         letterSpacing: "-0.04rem",
-                        fontSize: ".8rem",
                       }}
                     >
                       {s.name}
                     </h1>
                 </center>
               </div>
-              <div className="w-[275px]">
+              <div className="mx-auto w-[275px] mt-[2.25rem] mb-[5.25rem]">
                 <p
-                  className="text-gray-400 text-justify hover:text-gray-300"
+                  className="text-[.75rem] pt-[.52335rem] pr-[.52335rem] pb-[.52335] text-gray-400 text-justify hover:text-gray-300 md:mt-2.5rem"
                   style={{
-                    fontSize: ".75rem",
-                    marginTop: "2.5rem",
-                    paddingTop: ".52335rem",
-                    paddingRight: ".52335rem",
-                    paddingBottom: ".52335rem",
                     borderTop: "1px solid #9ca3af44",
                     borderRight: "1px solid #9ca3af44",
                   }}
