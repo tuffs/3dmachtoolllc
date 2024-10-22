@@ -1,6 +1,6 @@
 import links from '@/data/links';
 
-const Navbar = () => { 
+const Navbar = () => {
   return (
     <nav role="navigation" className="w-full">
       <Links links={links} />
@@ -10,7 +10,7 @@ const Navbar = () => {
 
 const Links = ({ links }) => {
   return (
-    <ul className="w-full inline-block mt-6 ml-3 md:ml-0 md:mt-12 md:flex md:justify-center md:space-x-4">
+    <ul className="block mt-6 ml-3 md:ml-0 md:mt-12 md:flex md:justify-center md:space-x-4">
       {links.map((navItemEl, index) => {
         return (
           <li
