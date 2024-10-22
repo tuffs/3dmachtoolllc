@@ -21,9 +21,6 @@ const BaseServices = () => {
             <a
               href={s.link}
               className="text-gray-400 hover:text-gray-200"
-              style={{
-
-              }}
             >
               <div>
                 <center>
