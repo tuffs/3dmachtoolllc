@@ -49,6 +49,7 @@ const BaseServices = () => {
                             scale: hoveredIndex === i ? zoomFactor : 1 
                           }}
                           transition={{ duration: zoomDuration }}
+                          alt={s.name}
                         />
                       </AnimatePresence>
                     </motion.div>
