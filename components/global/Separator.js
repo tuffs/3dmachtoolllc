@@ -1,7 +1,7 @@
 const Separator = () => {
   return (
     <>
-      <div className="my-32">
+      <div className="mt-32 mb-48">
         <hr
           className="w-[45%] border-[#9ca3af44] mx-auto md:w-[55%]"
         />
