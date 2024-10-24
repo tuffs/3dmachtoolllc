@@ -10,7 +10,7 @@ const BaseServices = () => {
   const [hoveredIndex, setHoveredIndex] = useState(null);
 
   const zoomFactor = 1.75;
-  const zoomDuration = 0.9;
+  const zoomDuration = 1;
 
   const handleHoverStart = useCallback((index) => {
     setHoveredIndex(index);
@@ -29,7 +29,7 @@ const BaseServices = () => {
             className="mx-auto"
           >
             <a
-              href={s.link}
+              href="/services"
               className="text-gray-400 hover:text-gray-200 group block"
               onMouseEnter={() => handleHoverStart(i)}
               onMouseLeave={handleHoverEnd}
