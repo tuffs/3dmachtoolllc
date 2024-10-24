@@ -1,9 +1,9 @@
 const Separator = () => {
   return (
     <>
-      <div className="my-64">
+      <div className="my-32">
         <hr
-          className="w-[45%] border-[#9ca3af44] mx-auto md:w-[55%] mb-96"
+          className="w-[45%] border-[#9ca3af44] mx-auto md:w-[55%]"
         />
       </div>
     </>
