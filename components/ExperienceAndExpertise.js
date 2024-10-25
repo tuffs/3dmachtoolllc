@@ -166,12 +166,18 @@ const ExperienceAndExpertise = () => {
       <motion.div
         variants={imageVariants}
         initial="hidden"
-        animate={paragraphControls}
+        animate={imageControls}
         className="w-[90%] md:w-[45%] mx-auto mt-[-10px]"
       >
         <img
           src="lathe_spinning_and_cutting__optimized.webp"
           alt="Lathe spinning and cutting"
+          className="mt-6 border-[.1rem] mx-auto w-full rounded-lg shadow-lg md:24 md:m-8 md:mx-0 md:border-[.09rem] border-[#9ca3af]"
+        />
+
+        <img
+          src="cnc_lathe_cutting__optimized.webp"
+          alt="CNC Lathe Cutting"
           className="mt-6 border-[.1rem] mx-auto w-full rounded-lg shadow-lg md:24 md:m-8 md:mx-0 md:border-[.09rem] border-[#9ca3af]"
         />
       </motion.div>
