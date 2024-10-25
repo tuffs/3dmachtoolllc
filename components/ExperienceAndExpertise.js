@@ -62,20 +62,34 @@ const paragraphVariants = {
   }
 }
 
+const imageVariants = {
+  hidden: { opacity: 0 },
+  visible: { 
+    opacity: 1,
+    transition: {
+      duration: 5,
+      ease: "linear"
+    }
+  }
+}
+
 const ExperienceAndExpertise = () => {
   const [ref, isInView] = useInView()
   const controls = useAnimation()
   const paragraphControls = useAnimation()
+  const imageControls = useAnimation()
 
   useEffect(() => {
     if (isInView) {
       controls.start("visible")
       paragraphControls.start("visible")
+      imageControls.start("visible")
     } else {
       controls.start("hidden")
       paragraphControls.start("hidden")
+      imageControls.start("hidden")
     }
-  }, [isInView, controls, paragraphControls])
+  }, [isInView, controls, paragraphControls, imageControls])
 
   return (
     <div ref={ref} className="mx-4 sm:mx-8 md:mx-16 lg:mx-32 text-center overflow-hidden">
@@ -142,9 +156,24 @@ const ExperienceAndExpertise = () => {
         animate={paragraphControls}
         className="w-[90%] md:w-[45%] mx-auto mt-[-10px]"
       >
+        
         <p className="text-left md:text-center text-[.9rem] text-gray-400 mt-4 hover:text-white duration-1000">
           Our team has a combined 60+ years of design, machine, and manufacturing experience. We have the expertise to handle any project, big or small, which aligns with the <a href="/capabilities" className="underline hover:text-[#cc4b4b] duration-500">capabilites</a> we have in house. We are dedicated to providing the highest quality and precision in all of our work.
         </p>
+
+        
+      </motion.div>
+      <motion.div
+        variants={imageVariants}
+        initial="hidden"
+        animate={paragraphControls}
+        className="w-[90%] md:w-[45%] mx-auto mt-[-10px]"
+      >
+        <img
+          src="lathe_spinning_and_cutting__optimized.webp"
+          alt="Lathe spinning and cutting"
+          className="mt-6 border-[.1rem] mx-auto w-full rounded-lg shadow-lg md:24 md:m-8 md:mx-0 md:border-[.09rem] border-[#9ca3af]"
+        />
       </motion.div>
     </div>
   )
