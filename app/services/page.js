@@ -5,9 +5,9 @@ export default function ServicesPage() {
     <>
       <div className="my-24" />
       <Hero />
-      <div className="mt-24 text-gray-200 pt-0 p-8">
+      <div className="mt-24 text-gray-400 pt-0 p-8">
         <section className="mb-12">
-          <h1 className="text-4xl font-bold text-center">Services + Capabilities</h1>
+          <h1 className="text-4xl font-bold text-center">Services</h1>
           <h2 className="text-2xl font-semibold mb-4">Machining Tools</h2>
           <ul className="list-disc pl-6 space-y-4">
             <li>
