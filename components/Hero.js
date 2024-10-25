@@ -1,7 +1,6 @@
 'use client';
 
 import { useSpring, animated } from '@react-spring/web';
-import BaseServices from '@/components/BaseServices';
 
 const Hero = () => {
   const springs = useSpring({
@@ -37,8 +36,6 @@ const Hero = () => {
           3D MACHINE + TOOL LLC
         </div>
       </div>
-
-      <BaseServices />
     </>
   );
 }
