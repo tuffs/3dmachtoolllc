@@ -38,7 +38,7 @@ const wordVariants = {
     x: 0,
     opacity: 1,
     transition: {
-      duration: 7,
+      duration: 1.5,
       ease: "easeOut",
     },
   },
@@ -47,21 +47,35 @@ const wordVariants = {
 const hoverVariants = {
   hover: {
     color: '#ffffff', // white
-    transition: { duration: 3 },
+    transition: { duration: 1.5 },
   },
+}
+
+const paragraphVariants = {
+  hidden: { opacity: 0 },
+  visible: { 
+    opacity: 1,
+    transition: {
+      duration: 3,
+      ease: "linear"
+    }
+  }
 }
 
 const ExperienceAndExpertise = () => {
   const [ref, isInView] = useInView()
   const controls = useAnimation()
+  const paragraphControls = useAnimation()
 
   useEffect(() => {
     if (isInView) {
       controls.start("visible")
+      paragraphControls.start("visible")
     } else {
       controls.start("hidden")
+      paragraphControls.start("hidden")
     }
-  }, [isInView, controls])
+  }, [isInView, controls, paragraphControls])
 
   return (
     <div ref={ref} className="mx-4 sm:mx-8 md:mx-16 lg:mx-32 text-center overflow-hidden">
@@ -70,11 +84,11 @@ const ExperienceAndExpertise = () => {
         variants={hoverVariants}
         whileHover="hover"
         transition={{
-          color: { duration: 7 },
+          color: { duration: 1.5 },
         }}
         animate={{
           color: '#9ca3af',
-          transition: { duration: 3 },
+          transition: { duration: 1.5 },
         }}
       >
         <div className="relative inline-flex items-center justify-center">
@@ -96,7 +110,7 @@ const ExperienceAndExpertise = () => {
             visible: { 
               opacity: 1, 
               transition: { 
-                duration: 7,
+                duration: 1.5,
                 ease: "linear"
               } 
             },
@@ -104,7 +118,7 @@ const ExperienceAndExpertise = () => {
           initial="hidden"
           animate={controls}
         >
-          &
+          +
         </motion.span>
         <div className="relative inline-flex items-center justify-center">
           <motion.span
@@ -121,6 +135,17 @@ const ExperienceAndExpertise = () => {
         </div>
         <span className="sr-only">Experience and Expertise</span>
       </motion.h2>
+
+      <motion.div
+        variants={paragraphVariants}
+        initial="hidden"
+        animate={paragraphControls}
+        className="w-[90%] md:w-[45%] mx-auto mt-[-10px]"
+      >
+        <p className="text-left md:text-center text-[.9rem] text-gray-400 mt-4 hover:text-white duration-1000">
+          Our team has a combined 60+ years of design, machine, and manufacturing experience. We have the expertise to handle any project, big or small, which aligns with the <a href="/capabilities" className="underline hover:text-[#cc4b4b] duration-500">capabilites</a> we have in house. We are dedicated to providing the highest quality and precision in all of our work.
+        </p>
+      </motion.div>
     </div>
   )
 }
