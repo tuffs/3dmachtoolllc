@@ -126,7 +126,7 @@ const ExperienceAndExpertise = () => {
         className="w-[90%] md:w-[45%] mx-auto mt-[-10px]"
       >
         <p className="text-left md:text-center text-[.9rem] text-gray-400 mt-4 hover:text-white duration-1000">
-          Our team has a combined 60+ years of design, machine, and manufacturing experience. We have the expertise to handle any project, big or small, which aligns with the <a href="/capabilities" className="underline hover:text-[#cc4b4b] duration-500">capabilites</a> we have in house. We are dedicated to providing the highest quality and precision in all of our work.
+          Our team has a combined 60+ years of design, machine, and manufacturing experience. We have the expertise to handle any project, big or small, which aligns with the <a href="/services" className="underline hover:text-[#cc4b4b] duration-500">capabilites</a> we have in house. We are dedicated to providing the highest quality and precision in all of our work.
         </p>
       </motion.div>
 
