@@ -29,20 +29,6 @@ const useInView = (threshold = 0.1) => {
   return [ref, isInView]
 }
 
-const wordVariants = {
-  hidden: (direction) => ({
-    x: direction === -1 ? '-50vw' : '50vw',
-    opacity: 0,
-  }),
-  visible: {
-    x: 0,
-    opacity: 1,
-    transition: {
-      duration: 1.5,
-      ease: "easeOut",
-    },
-  },
-}
 
 const hoverVariants = {
   hover: {
@@ -77,25 +63,25 @@ const ExperienceAndExpertise = () => {
   const [ref, isInView] = useInView()
   const controls = useAnimation()
   const paragraphControls = useAnimation()
-  const image_controls_1 = useAnimation()
-  const image_controls_2 = useAnimation()
-  const image_controls_3 = useAnimation()
+  const imageControls1 = useAnimation()
+  const imageControls2 = useAnimation()
+  const imageControls3 = useAnimation()
 
   useEffect(() => {
     if (isInView) {
       controls.start("visible")
       paragraphControls.start("visible")
-      image_controls_1.start("visible")
-      setTimeout(() => image_controls_2.start("visible"), 1000) // 1 second delay
-      setTimeout(() => image_controls_3.start("visible"), 2000) // 2 seconds delay
+      imageControls1.start("visible")
+      setTimeout(() => imageControls2.start("visible"), 1000) // 1 second delay
+      setTimeout(() => imageControls3.start("visible"), 2000) // 2 seconds delay
     } else {
       controls.start("hidden")
       paragraphControls.start("hidden")
-      image_controls_1.start("hidden")
-      image_controls_2.start("hidden")
-      image_controls_3.start("hidden")
+      imageControls1.start("hidden")
+      imageControls2.start("hidden")
+      imageControls3.start("hidden")
     }
-  }, [isInView, controls, paragraphControls, image_controls_1, image_controls_2, image_controls_3])
+  }, [isInView, controls, paragraphControls, imageControls1, imageControls2, imageControls3])
 
   return (
     <div ref={ref} className="mx-4 sm:mx-8 md:mx-16 lg:mx-32 text-center overflow-hidden">
@@ -103,28 +89,14 @@ const ExperienceAndExpertise = () => {
         className="text-2xl sm:text-3xl text-gray-400 font-light flex justify-center items-center space-x-2"
         variants={hoverVariants}
         whileHover="hover"
-        transition={{
-          color: { duration: 1.5 },
-        }}
-        animate={{
+        initial={{ opacity: 0 }}
+        animate={{ 
+          opacity: 1,
           color: '#9ca3af',
           transition: { duration: 1.5 },
         }}
       >
-        <div className="relative inline-flex items-center justify-center">
-          <motion.span
-            className="absolute whitespace-nowrap"
-            custom={-1}
-            variants={wordVariants}
-            initial="hidden"
-            animate={controls}
-            aria-hidden="true"
-          >
-            Experience
-          </motion.span>
-          <span className="invisible">Experience</span>
-        </div>
-        <motion.span
+        <motion.div
           variants={{
             hidden: { opacity: 0 },
             visible: { 
@@ -137,22 +109,10 @@ const ExperienceAndExpertise = () => {
           }}
           initial="hidden"
           animate={controls}
+          className="flex items-center space-x-2"
         >
-          +
-        </motion.span>
-        <div className="relative inline-flex items-center justify-center">
-          <motion.span
-            className="absolute whitespace-nowrap"
-            custom={1}
-            variants={wordVariants}
-            initial="hidden"
-            animate={controls}
-            aria-hidden="true"
-          >
-            Expertise
-          </motion.span>
-          <span className="invisible">Expertise</span>
-        </div>
+          Experience + Expertise
+        </motion.div>
         <span className="sr-only">Experience and Expertise</span>
       </motion.h2>
 
@@ -170,7 +130,7 @@ const ExperienceAndExpertise = () => {
       <motion.div
         variants={imageVariants}
         initial="hidden"
-        animate={image_controls_1}
+        animate={imageControls1}
         className="w-[90%] md:w-[45%] mx-auto mt-[-10px]"
       >
         <img
@@ -183,7 +143,7 @@ const ExperienceAndExpertise = () => {
       <motion.div
         variants={imageVariants}
         initial="hidden"
-        animate={image_controls_2}
+        animate={imageControls2}
         className="w-[90%] md:w-[45%] mx-auto mt-[-10px]"
       >
         <img
@@ -196,7 +156,7 @@ const ExperienceAndExpertise = () => {
       <motion.div
         variants={imageVariants}
         initial="hidden"
-        animate={image_controls_3}
+        animate={imageControls3}
         className="w-[90%] md:w-[45%] mx-auto mt-[-10px]"
       >
         <img
