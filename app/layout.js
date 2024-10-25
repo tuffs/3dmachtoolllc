@@ -1,5 +1,6 @@
 import "./globals.css";
 import Navbar from "@/components/global/Navbar";
+import { Analytics } from "@vercel/analytics/react"
 
 export const metadata = {
   title: "3D MACHINE + TOOL LLC",
@@ -8,15 +9,18 @@ export const metadata = {
 
 export default function RootLayout({ children }) {
   return (
-    <html lang="en">
-      <body
-        className={`antialiased`}
-      >
-        <Navbar />
-        <main role="main">
-          {children}
-        </main>
-      </body>
-    </html>
+    <>
+      <Analytics/>
+      <html lang="en">
+        <body
+          className={`antialiased`}
+        >
+          <Navbar />
+          <main role="main">
+            {children}
+          </main>
+        </body>
+      </html>
+    </>
   );
 }
