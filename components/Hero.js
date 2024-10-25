@@ -10,7 +10,13 @@ const Hero = () => {
 
   return (
     <>
-      <div>
+      <div className="p-24"
+        style={{
+          background: "url('/grid_bg__optimized.webp') no-repeat center",
+          backgroundPositionX: 'center',
+          backgroundPositionY: 'center',
+        }}
+      >
         <animated.img
           src={"/logo_mark.png"}
           alt="3D MACHINE AND TOOL LLC"
