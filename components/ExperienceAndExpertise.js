@@ -66,6 +66,7 @@ const ExperienceAndExpertise = () => {
   const imageControls1 = useAnimation()
   const imageControls2 = useAnimation()
   const imageControls3 = useAnimation()
+  const imageControls4 = useAnimation()
 
   useEffect(() => {
     if (isInView) {
@@ -74,14 +75,16 @@ const ExperienceAndExpertise = () => {
       imageControls1.start("visible")
       setTimeout(() => imageControls2.start("visible"), 1000) // 1 second delay
       setTimeout(() => imageControls3.start("visible"), 2000) // 2 seconds delay
+      setTimeout(() => imageControls4.start("visible"), 3000) // 3 seconds delay
     } else {
       controls.start("hidden")
       paragraphControls.start("hidden")
       imageControls1.start("hidden")
       imageControls2.start("hidden")
       imageControls3.start("hidden")
+      imageControls4.start("hidden")
     }
-  }, [isInView, controls, paragraphControls, imageControls1, imageControls2, imageControls3])
+  }, [isInView, controls, paragraphControls, imageControls1, imageControls2, imageControls3, imageControls4])
 
   return (
     <div ref={ref} className="mx-4 sm:mx-8 md:mx-16 lg:mx-32 text-center overflow-hidden">
@@ -162,6 +165,19 @@ const ExperienceAndExpertise = () => {
         <img
           src="perfect_threading__optimized.webp"
           alt="Perfect Threading"
+          className="mt-6 border-[.1rem] mx-auto w-full rounded-lg shadow-lg md:24 md:m-8 md:mx-0 md:border-[.09rem] border-[#9ca3af]"
+        />
+      </motion.div>
+
+      <motion.div
+        variants={imageVariants}
+        initial="hidden"
+        animate={imageControls4}
+        className="w-[90%] md:w-[45%] mx-auto mt-[-10px]"
+      >
+        <img
+          src="finished_parts__optimized.webp"
+          alt="Finished Parts"
           className="mt-6 border-[.1rem] mx-auto w-full rounded-lg shadow-lg md:24 md:m-8 md:mx-0 md:border-[.09rem] border-[#9ca3af]"
         />
       </motion.div>
