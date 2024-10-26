@@ -16,8 +16,8 @@ export default function RequestForQuote() {
           </h2>
           <div className="bg-gray-950 border-2 border-dashed border-gray-400 rounded-lg p-4 text-center">
             <p className="text-sm text-gray-300 mb-2">Drag and drop files here or click to upload</p>
-            <input type="file" className="hidden" id="fileUpload" multiple />
-            <label htmlFor="fileUpload" className="bg-gray-200 hover:bg-gray-300 text-gray-700 font-semibold py-2 px-4 rounded-lg cursor-pointer text-sm">
+            <input type="file" className="hidden" id="uploadedDesignFiles" multiple />
+            <label htmlFor="uploadedDesignFiles" className="bg-gray-200 hover:bg-gray-300 text-gray-700 font-semibold py-2 px-4 rounded-lg cursor-pointer text-sm">
               Select Files
             </label>
           </div>

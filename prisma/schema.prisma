@@ -26,3 +26,20 @@ model Product {
   createdAt         DateTime @default(now())
   updatedAt         DateTime @updatedAt
 }
+
+model Quotation {
+  id                  String   @id @default(cuid())
+  uploadedDesignFiles String[]
+  projectDescription  String
+  quantity            Int
+  leadTimeWeeks       Int
+  material            String
+  unitOfMeasurement   String
+  tolerance           String
+  name                String
+  businessName        String
+  phoneNumber         String
+  emailAddress        String
+  createdAt           DateTime @default(now())
+  updatedAt           DateTime @updatedAt
+}
