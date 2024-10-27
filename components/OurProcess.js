@@ -63,28 +63,40 @@ const OurProcess = () => {
   const [ref, isInView] = useInView()
   const controls = useAnimation()
   const paragraphControls = useAnimation()
-  const imageControls1 = useAnimation()
-  const imageControls2 = useAnimation()
-  const imageControls3 = useAnimation()
-  const imageControls4 = useAnimation()
+  const buttonControls = useAnimation()
+
+  // Define your images here
+  const images = [
+    { src: "lathe_spinning_and_cutting__optimized.webp", alt: "Lathe spinning and cutting" },
+    { src: "cnc_lathe_cutting__optimized.webp", alt: "CNC Lathe Cutting" },
+    { src: "perfect_threading__optimized.webp", alt: "Perfect Threading" },
+    { src: "finished_parts__optimized.webp", alt: "Finished Parts" },
+  ]
+
+  const imageControls = images.map(() => useAnimation())
 
   useEffect(() => {
     if (isInView) {
       controls.start("visible")
       paragraphControls.start("visible")
-      imageControls1.start("visible")
-      setTimeout(() => imageControls2.start("visible"), 1000) // 1 second delay
-      setTimeout(() => imageControls3.start("visible"), 2000) // 2 seconds delay
-      setTimeout(() => imageControls4.start("visible"), 3000) // 3 seconds delay
+
+      images.forEach((_, index) => {
+        setTimeout(() => {
+          imageControls[index].start("visible")
+          
+          // Start button animation when the second to last image starts to fade in
+          if (index === images.length - 2) {
+            buttonControls.start("visible")
+          }
+        }, index * 1000)
+      })
     } else {
       controls.start("hidden")
       paragraphControls.start("hidden")
-      imageControls1.start("hidden")
-      imageControls2.start("hidden")
-      imageControls3.start("hidden")
-      imageControls4.start("hidden")
+      imageControls.forEach(control => control.start("hidden"))
+      buttonControls.start("hidden")
     }
-  }, [isInView, controls, paragraphControls, imageControls1, imageControls2, imageControls3, imageControls4])
+  }, [isInView, controls, paragraphControls, buttonControls, imageControls, images.length])
 
   return (
     <div ref={ref} className="mx-4 sm:mx-8 md:mx-16 lg:mx-32 text-center overflow-hidden">
@@ -126,67 +138,36 @@ const OurProcess = () => {
         className="w-[90%] md:w-[45%] mx-auto mt-[-10px]"
       >
         <p className="text-left mb-12 md:text-center text-[.9rem] text-gray-400 mt-4 hover:text-white duration-1000">
-          We ensure that your original design is honored from datum to completion and is within the specified ISO precision values provided in your design document. If needed, we can assist with creating the precision scale for your system in your project with professional expterise of Mechanical Engineers and Experienced Machinists.
+          We ensure that your original design is honored from datum to completion and is within the specified ISO precision values provided in your design document. If needed, we can assist with creating the precision scale for your system in your project with professional expertise of Mechanical Engineers and Experienced Machinists.
         </p>
       </motion.div>
 
-      <motion.div
-        variants={imageVariants}
-        initial="hidden"
-        animate={imageControls1}
-        className="w-[90%] md:w-[45%] mx-auto mt-[-10px]"
-      >
-        <img
-          src="lathe_spinning_and_cutting__optimized.webp"
-          alt="Lathe spinning and cutting"
-          className="mt-6 border-[.1rem] mx-auto w-full rounded-lg shadow-lg md:24 md:m-8 md:mx-0 md:border-[.09rem] border-[#9ca3af]"
-        />
-      </motion.div>
+      {images.map((image, index) => (
+        <motion.div
+          key={index}
+          variants={imageVariants}
+          initial="hidden"
+          animate={imageControls[index]}
+          className="w-[90%] md:w-[45%] mx-auto mt-[-10px]"
+        >
+          <img
+            src={image.src}
+            alt={image.alt}
+            className="mt-6 border-[.1rem] mx-auto w-full rounded-lg shadow-lg md:24 md:m-8 md:mx-0 md:border-[.09rem] border-[#9ca3af]"
+          />
+        </motion.div>
+      ))}
 
-      <motion.div
+      <motion.div 
+        className="mt-12 px-4 md:px-8 flex justify-center"
         variants={imageVariants}
         initial="hidden"
-        animate={imageControls2}
-        className="w-[90%] md:w-[45%] mx-auto mt-[-10px]"
+        animate={buttonControls}
       >
-        <img
-          src="cnc_lathe_cutting__optimized.webp"
-          alt="CNC Lathe Cutting"
-          className="mt-6 border-[.1rem] mx-auto w-full rounded-lg shadow-lg md:24 md:m-8 md:mx-0 md:border-[.09rem] border-[#9ca3af]"
-        />
-      </motion.div>
-      
-      <motion.div
-        variants={imageVariants}
-        initial="hidden"
-        animate={imageControls3}
-        className="w-[90%] md:w-[45%] mx-auto mt-[-10px]"
-      >
-        <img
-          src="perfect_threading__optimized.webp"
-          alt="Perfect Threading"
-          className="mt-6 border-[.1rem] mx-auto w-full rounded-lg shadow-lg md:24 md:m-8 md:mx-0 md:border-[.09rem] border-[#9ca3af]"
-        />
-      </motion.div>
-
-      <motion.div
-        variants={imageVariants}
-        initial="hidden"
-        animate={imageControls4}
-        className="w-[90%] md:w-[45%] mx-auto mt-[-10px]"
-      >
-        <img
-          src="finished_parts__optimized.webp"
-          alt="Finished Parts"
-          className="mt-6 border-[.1rem] mx-auto w-full rounded-lg shadow-lg md:24 md:m-8 md:mx-0 md:border-[.09rem] border-[#9ca3af]"
-        />
-      </motion.div>
-
-      <div className="mt-12 px-4 md:px-8 flex justify-center">
         <a href="/our-process" className="inline-flex items-center text-gray-400 border-[1px] border-[#9ca3af44] p-4 hover:text-gray-200 hover:border-gray-200 transition-colors duration-700">
-          Learn More Our Process <RxArrowRight className="text-2xl ml-2" />
+          Learn More About Our Process <RxArrowRight className="text-2xl ml-2" />
         </a>
-      </div>
+      </motion.div>
     </div>
   )
 }
