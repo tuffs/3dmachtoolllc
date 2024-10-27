@@ -29,7 +29,6 @@ const useInView = (threshold = 0.1) => {
   return [ref, isInView]
 }
 
-
 const hoverVariants = {
   hover: {
     color: '#ffffff', // white
@@ -48,43 +47,20 @@ const paragraphVariants = {
   }
 }
 
-const imageVariants = {
-  hidden: { opacity: 0 },
-  visible: { 
-    opacity: 1,
-    transition: {
-      duration: 2,
-      ease: "easeInOut"
-    }
-  }
-}
-
 const ExperienceAndExpertise = () => {
   const [ref, isInView] = useInView()
   const controls = useAnimation()
   const paragraphControls = useAnimation()
-  const imageControls1 = useAnimation()
-  const imageControls2 = useAnimation()
-  const imageControls3 = useAnimation()
-  const imageControls4 = useAnimation()
 
   useEffect(() => {
     if (isInView) {
       controls.start("visible")
       paragraphControls.start("visible")
-      imageControls1.start("visible")
-      setTimeout(() => imageControls2.start("visible"), 1000) // 1 second delay
-      setTimeout(() => imageControls3.start("visible"), 2000) // 2 seconds delay
-      setTimeout(() => imageControls4.start("visible"), 3000) // 3 seconds delay
     } else {
       controls.start("hidden")
       paragraphControls.start("hidden")
-      imageControls1.start("hidden")
-      imageControls2.start("hidden")
-      imageControls3.start("hidden")
-      imageControls4.start("hidden")
     }
-  }, [isInView, controls, paragraphControls, imageControls1, imageControls2, imageControls3, imageControls4])
+  }, [isInView, controls, paragraphControls])
 
   return (
     <div ref={ref} className="mx-4 sm:mx-8 md:mx-16 lg:mx-32 text-center overflow-hidden">
@@ -128,58 +104,6 @@ const ExperienceAndExpertise = () => {
         <p className="text-left md:text-center text-[.9rem] text-gray-400 mt-4 hover:text-white duration-1000">
           Our team has a combined 60+ years of design, machine, and manufacturing experience. We have the expertise to handle any project, big or small, which aligns with the <a href="/services" className="underline hover:text-[#cc4b4b] duration-500">capabilites</a> we have in house. We are dedicated to providing the highest quality and precision in all of our work.
         </p>
-      </motion.div>
-
-      <motion.div
-        variants={imageVariants}
-        initial="hidden"
-        animate={imageControls1}
-        className="w-[90%] md:w-[45%] mx-auto mt-[-10px]"
-      >
-        <img
-          src="lathe_spinning_and_cutting__optimized.webp"
-          alt="Lathe spinning and cutting"
-          className="mt-6 border-[.1rem] mx-auto w-full rounded-lg shadow-lg md:24 md:m-8 md:mx-0 md:border-[.09rem] border-[#9ca3af]"
-        />
-      </motion.div>
-
-      <motion.div
-        variants={imageVariants}
-        initial="hidden"
-        animate={imageControls2}
-        className="w-[90%] md:w-[45%] mx-auto mt-[-10px]"
-      >
-        <img
-          src="cnc_lathe_cutting__optimized.webp"
-          alt="CNC Lathe Cutting"
-          className="mt-6 border-[.1rem] mx-auto w-full rounded-lg shadow-lg md:24 md:m-8 md:mx-0 md:border-[.09rem] border-[#9ca3af]"
-        />
-      </motion.div>
-      
-      <motion.div
-        variants={imageVariants}
-        initial="hidden"
-        animate={imageControls3}
-        className="w-[90%] md:w-[45%] mx-auto mt-[-10px]"
-      >
-        <img
-          src="perfect_threading__optimized.webp"
-          alt="Perfect Threading"
-          className="mt-6 border-[.1rem] mx-auto w-full rounded-lg shadow-lg md:24 md:m-8 md:mx-0 md:border-[.09rem] border-[#9ca3af]"
-        />
-      </motion.div>
-
-      <motion.div
-        variants={imageVariants}
-        initial="hidden"
-        animate={imageControls4}
-        className="w-[90%] md:w-[45%] mx-auto mt-[-10px]"
-      >
-        <img
-          src="finished_parts__optimized.webp"
-          alt="Finished Parts"
-          className="mt-6 border-[.1rem] mx-auto w-full rounded-lg shadow-lg md:24 md:m-8 md:mx-0 md:border-[.09rem] border-[#9ca3af]"
-        />
       </motion.div>
     </div>
   )

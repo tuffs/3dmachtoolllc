@@ -1,5 +1,8 @@
 import React from 'react';
-import { FiUploadCloud, FiFileText, FiUser, FiBox, FiClock, FiTool, FiMaximize } from 'react-icons/fi';
+import { FiUploadCloud, FiFileText, FiUser } from 'react-icons/fi';
+import dynamic from 'next/dynamic';
+
+const AnimatedButton = dynamic(() => import('@/components/ui/AnimatedButton'), { ssr: false });
 
 export default function RequestForQuote() {
   return (
@@ -17,9 +20,13 @@ export default function RequestForQuote() {
           <div className="tertiary_bg_color border-2 border-dashed border-gray-400 rounded-lg p-4 text-center">
             <p className="text-sm text-gray-300 mb-2">Drag and drop files here or click to upload</p>
             <input type="file" className="hidden" id="uploadedDesignFiles" multiple />
-            <label htmlFor="uploadedDesignFiles" className="bg-gray-200 hover:bg-gray-300 text-gray-700 font-semibold py-2 px-4 rounded-lg cursor-pointer text-sm">
+            <AnimatedButton
+              as="label"
+              htmlFor="uploadedDesignFiles"
+              className="w-full mt-6 tertiary_bg_color border-[.1rem] border-gray-100 text-gray-200 font-semibold py-2 px-4 rounded-lg text-sm"
+            >
               Select Files
-            </label>
+            </AnimatedButton>
           </div>
           <p className="text-xs text-gray-500 mt-2">Uploaded files will not be shared.</p>
         </div>
@@ -81,9 +88,11 @@ export default function RequestForQuote() {
               <input type="email" id="email" className="w-full p-2 text-sm tertiary_bg_color text-gray-300 border border-gray-300 rounded-lg" placeholder="Enter your email address" />
             </div>
           </div>
-          <button className="w-full mt-6 bg-gray-700 hover:bg-gray-800 text-white font-semibold py-2 px-4 rounded-lg text-sm">
+          <AnimatedButton
+            className="w-full mt-6 tertiary_bg_color border-[.1rem] border-gray-100 text-gray-200 font-semibold py-2 px-4 rounded-lg text-sm"
+          >
             Submit Request for Quote
-          </button>
+          </AnimatedButton>
         </div>
       </div>
     </div>

@@ -2,6 +2,7 @@ import "./globals.css";
 import Navbar from "@/components/global/Navbar";
 import { Analytics } from "@vercel/analytics/react"
 import { SpeedInsights } from "@vercel/speed-insights/next"
+import ScrollToTopButton from "@/components/global/ScrollToTop";
 
 export const metadata = {
   title: "3D MACHINE + TOOL LLC",
@@ -14,13 +15,12 @@ export default function RootLayout({ children }) {
       <Analytics/>
       <SpeedInsights/>
       <html lang="en">
-        <body
-          className={`antialiased`}
-        >
+        <body className="antialiased">
           <Navbar />
           <main role="main">
             {children}
           </main>
+          <ScrollToTopButton />
         </body>
       </html>
     </>
