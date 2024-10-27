@@ -11,7 +11,7 @@ const AnimatedButton = ({ children, className, ...props }) => {
         backgroundColor: '#121212',
         color: '#ffffff',
         borderColor: 'rgb(45,45,45)',
-        transition: { duration: 3 }
+        transition: { duration: .9 }
       }}
       {...props}
     >
