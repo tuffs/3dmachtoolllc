@@ -7,7 +7,6 @@ const AnimatedButton = dynamic(() => import('@/components/ui/AnimatedButton'), {
 export default function RequestForQuote() {
   return (
     <div className="container mx-auto p-4 mb-24">
-      <h1 className="text-3xl font-bold text-gray-200 mb-6">Request for Quote</h1>
       <p className="text-gray-200 mb-6">
         Our team of experts has developed a streamlined process to provide you with a quotation for your projects. Please provide us with the following information and we will get back to you as soon as possible. You may <a href="/contact-us" className="underline hover:text-gray-300">contact us</a> directly if you have any questions.
       </p>

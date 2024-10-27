@@ -7,7 +7,7 @@ export default function ServicesPage() {
       <Hero />
       <div className="mt-24 text-gray-400 pt-0 p-8">
         <section className="mb-12">
-          <h1 className="text-4xl font-bold text-center">Services</h1>
+          <h1 className="text-4xl font-bold text-white text-center">Services</h1>
         </section>
         
         <section className="my-12">
