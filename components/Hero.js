@@ -18,21 +18,25 @@ const Hero = () => {
         }}
       >
         <animated.img
-          src={"/logo_mark.png"}
+          src={"/logo_file.png"}
           alt="3D MACHINE AND TOOL LLC"
           style={{
-            width: 80,
-            height: 120,
-            background: '#cc4b4b',
-            borderRadius: 8,
-            paddingLeft: 4,
-            paddingRight: 4,
+            width: '100%',
+            maxWidth: 350,
+            height: 'auto',
+            background: '#4e4e4e47',
+            border: '1px solid #4e4e4e99',
+            borderRadius: 5,
+            paddingLeft: 8,
+            paddingRight: 8,
+            paddingTop: 4,
+            paddingBottom: 4,
             ...springs,
           }}
           className="mx-auto"
           id="hero__logo_mark"
         />
-        <div
+        {/* <div
           className="w-full text-center mt-[.55669rem] text-gray-400 hover:text-gray-200"
           style={{
             letterSpacing: '-1px',
@@ -40,7 +44,7 @@ const Hero = () => {
           id="hero__title"
         >
           3D MACHINE + TOOL LLC
-        </div>
+        </div> */}
       </div>
     </>
   );
