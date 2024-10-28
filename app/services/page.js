@@ -10,10 +10,7 @@ export default function ServicesPage() {
           <h1 className="text-4xl font-bold text-white text-center">Services</h1>
         </section>
 
-        <section className="mb-12">
-          <h1 className="text-4xl font-bold text-white text-center">Capabilities and Equipment</h1>
-        </section>
-        
+        <h1 className="text-4xl font-bold text-white text-center mb-12">Capabilities and Equipment</h1>
         <section className="my-12">
           <div className="secondary_bg_color p-6 rounded-lg border-[.1rem] border-gray-100 shadow-md w-full lg:w-1/3">
             <h2 className="text-2xl font-bold text-gray-200 mb-4 flex items-center">
@@ -28,21 +25,21 @@ export default function ServicesPage() {
                 </ul>
               </li>
               <li>
-                <strong className="text-gray-200">JET JDP-20EVS Drill Press</strong>
+                <strong className="text-gray-200">JET JDP-20EVS DRILL PRESS</strong>
                 <ul className="text-sm pl-3">
                   <li>2-HP, 20" VFD, 65-2,000 RPM with H-D 12" X-Axis & 8" Y-Axis Fine Adjust Milling Table</li>
                   <li>Precision up to 0.001" Increments & 6" H-D Vice</li>
                 </ul>
               </li>
               <li>
-                <strong className="text-gray-200">VERTEX Super-8 Rotary Indexer</strong>
+                <strong className="text-gray-200">VERTEX SUPER-8 ROTARY INDEXER</strong>
                 <ul className="text-sm pl-3">
                   <li>Horizontal & Vertical Indexer with 8" Chuck, 10" Face Plate</li>
                   <li>2, 3, 4, 6, 8, 12 & 24 Dividing Plates, 90:1 Worm Gear for 10 Secs Accuracy</li>
                 </ul>
               </li>
               <li>
-                <strong className="text-gray-200">Cloudray 30-Watt Q-Pulsed Fiber Laser</strong>
+                <strong className="text-gray-200">CLOUDRAY 30-WATT Q-PULSED FIBER LASER</strong>
                 <ul className="text-sm pl-3">
                   <li>Integral Rotary Head, Frequency 30–60 kHz, Max Speed 2,000mm/sec</li>
                 </ul>
