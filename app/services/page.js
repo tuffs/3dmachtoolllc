@@ -9,36 +9,46 @@ export default function ServicesPage() {
         <section className="mb-12">
           <h1 className="text-4xl font-bold text-white text-center">Services</h1>
         </section>
+
+        <section className="mb-12">
+          <h1 className="text-4xl font-bold text-white text-center">Capabilities and Equipment</h1>
+        </section>
         
         <section className="my-12">
-          <div className="secondary_bg_color p-6 rounded-lg border-[.1rem] border-gray-100 shadow-md">
-            <h2 className="text-xl font-semibold text-gray-300 mb-4 flex items-center">
-              Machining Tools
+          <div className="secondary_bg_color p-6 rounded-lg border-[.1rem] border-gray-100 shadow-md w-full lg:w-1/3">
+            <h2 className="text-2xl font-bold text-gray-200 mb-4 flex items-center">
+              <img src="/machine__icon.png" style={{height: '24px', paddingRight: '10px', paddingTop: '.1rem'}} /> MACHINING TOOLS
             </h2>
-            <ul className="list-disc pl-6 space-y-4">
+            <ul className="space-y-4">
               <li>
-                <strong>HAAS TL-1 CNC:</strong> 10-HP, 3,000 RPM Spindle Lathe with 4-Station Turret & Latest Controls
-                <ul className="list-disc pl-6 mt-2">
+                <strong className="text-gray-200">HAAS TL-1 CNC</strong>
+                <ul className="text-sm pl-3">
+                  <li>10-HP, 3,000 RPM Spindle Lathe with 4-Station Turret & Latest Controls</li>
                   <li>Samchully FTC-190 7" Chuck with 2.3125" Bore</li>
                 </ul>
               </li>
               <li>
-                <strong>JET JDP-20EVS Drill Press:</strong> 2-HP, 20" VFD, 65-2,000 RPM with H-D 12" X-Axis & 8" Y-Axis Fine Adjust Milling Table
-                <ul className="list-disc pl-6 mt-2">
+                <strong className="text-gray-200">JET JDP-20EVS Drill Press</strong>
+                <ul className="text-sm pl-3">
+                  <li>2-HP, 20" VFD, 65-2,000 RPM with H-D 12" X-Axis & 8" Y-Axis Fine Adjust Milling Table</li>
                   <li>Precision up to 0.001" Increments & 6" H-D Vice</li>
                 </ul>
               </li>
               <li>
-                <strong>VERTEX Super-8 Rotary Indexer:</strong> Horizontal & Vertical Indexer with 8" Chuck, 10" Face Plate
-                <ul className="list-disc pl-6 mt-2">
+                <strong className="text-gray-200">VERTEX Super-8 Rotary Indexer</strong>
+                <ul className="text-sm pl-3">
+                  <li>Horizontal & Vertical Indexer with 8" Chuck, 10" Face Plate</li>
                   <li>2, 3, 4, 6, 8, 12 & 24 Dividing Plates, 90:1 Worm Gear for 10 Secs Accuracy</li>
                 </ul>
               </li>
               <li>
-                <strong>Cloudray 30-Watt Q-Pulsed Fiber Laser:</strong> Integral Rotary Head, Frequency 30–60 kHz, Max Speed 2,000mm/sec
+                <strong className="text-gray-200">Cloudray 30-Watt Q-Pulsed Fiber Laser</strong>
+                <ul className="text-sm pl-3">
+                  <li>Integral Rotary Head, Frequency 30–60 kHz, Max Speed 2,000mm/sec</li>
+                </ul>
               </li>
             </ul>
-            <p className="mt-4">
+            <p className="text-sm text-gray-200 mt-4">
               Our shop combines advanced skills and systems to extend the capabilities of these tools, enabling precision machining and manufacturing.
             </p>
           </div>
@@ -52,7 +62,7 @@ export default function ServicesPage() {
             <div className="space-y-4">
               <div>
                 <h4 className="font-semibold">Precision Turning, Profiling & Facing:</h4>
-                <ul className="list-disc pl-6">
+                <ul className="pl-6">
                   <li>Machining high-precision cylindrical parts with tight tolerances (e.g., shafts, bushings, hubs).</li>
                   <li>Handles work pieces up to 6" Dia. x 30" Lg.</li>
                 </ul>
@@ -63,7 +73,7 @@ export default function ServicesPage() {
               </div>
               <div>
                 <h4 className="font-semibold">Advanced Threading:</h4>
-                <ul className="list-disc pl-6">
+                <ul className="pl-6">
                   <li>Complex thread patterns, including non-standard and multi-start threads (SAE Inch & Metric).</li>
                   <li>Rigid Tapping Option for precise in-line tapping.</li>
                 </ul>
@@ -96,7 +106,7 @@ export default function ServicesPage() {
             <div className="space-y-4">
               <div>
                 <h4 className="font-semibold">Precision Drilling:</h4>
-                <ul className="list-disc pl-6">
+                <ul className="pl-6">
                   <li>Electronic variable speeds (65 to 2000 RPM) for materials like plastics, composites, aluminum, and steel.</li>
                   <li>Exclusive use of Precision Collets to reduce tool run-out.</li>
                 </ul>
