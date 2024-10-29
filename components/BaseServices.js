@@ -29,7 +29,7 @@ const BaseServices = () => {
             className="w-full max-w-md mx-auto"
           >
             <a
-              href="/services"
+              href="/capabilities"
               className="text-gray-400 hover:text-gray-200 group block"
               onMouseEnter={() => handleHoverStart(i)}
               onMouseLeave={handleHoverEnd}
