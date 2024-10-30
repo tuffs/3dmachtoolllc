@@ -5,7 +5,7 @@ const ProcessCard = ({ heading, content, imageUrl }) => (
       <img src={imageUrl} alt={heading} className="w-full h-48 object-cover" />
     </div>
     <div className="relative z-10 p-6 flex flex-col h-full">
-      <h3 className="text-3xl font-bold mb-1 text-gray-300 transition-colors duration-300 group-hover:text-gray-100">
+      <h3 className="text-2xl font-bold mb-1 text-gray-300 transition-colors duration-300 group-hover:text-gray-100">
         {heading}
       </h3>
       <p className="text-sm text-gray-300 transition-colors duration-300 group-hover:text-gray-200 flex-grow">
