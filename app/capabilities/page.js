@@ -1,11 +1,11 @@
 import Hero from '@/components/Hero';
 
-const ServiceCard = ({ title, children }) => (
-  <div className="secondary_bg_color p-6 rounded-lg border-[.1rem] border-gray-100 shadow-md h-full">
+const ServiceCard = ({ title, children, className }) => (
+  <div className={`secondary_bg_color p-6 rounded-lg border-[.1rem] border-gray-100 shadow-md h-full ${className}`}>
     <h2 className="text-2xl font-bold text-gray-200 mb-4 flex items-center">
       {title}
     </h2>
-    <hr className="border-slate-500 mb-4" />
+    <hr className="border-gray-200 mb-4" />
     {children}
   </div>
 );
@@ -17,48 +17,50 @@ export default function CapabilitiesAndEquipmentPage() {
       <Hero />
       <div className="mt-24 text-gray-400 pt-0 p-8">
         <h1 className="text-4xl font-bold text-white text-center mb-12">Capabilities and Equipment</h1>
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-          <ServiceCard title="MACHINING TOOLS">
-            <ul className="space-y-4">
-              <li>
-                <strong className="text-gray-200">HAAS TL-1 CNC</strong>
-                <ul className="text-sm pl-3">
-                  <li>10-HP, 3,000 RPM Spindle Lathe with 4-Station Turret & Latest Controls</li>
-                  <li>Samchully FTC-190 7" Chuck with 2.3125" Bore</li>
-                </ul>
-              </li>
-              <li>
-                <strong className="text-gray-200">JET JDP-20EVS DRILL PRESS</strong>
-                <ul className="text-sm pl-3">
-                  <li>2-HP, 20" VFD, 65-2,000 RPM with H-D 12" X-Axis & 8" Y-Axis Fine Adjust Milling Table</li>
-                  <li>Precision up to 0.001" Increments & 6" H-D Vice</li>
-                </ul>
-              </li>
-              <li>
-                <strong className="text-gray-200">VERTEX SUPER-8 ROTARY INDEXER</strong>
-                <ul className="text-sm pl-3">
-                  <li>Horizontal & Vertical Indexer with 8" Chuck, 10" Face Plate</li>
-                  <li>2, 3, 4, 6, 8, 12 & 24 Dividing Plates, 90:1 Worm Gear for 10 Secs Accuracy</li>
-                </ul>
-              </li>
-              <li>
-                <strong className="text-gray-200">CLOUDRAY 30-WATT Q-PULSED FIBER LASER</strong>
-                <ul className="text-sm pl-3">
-                  <li>Integral Rotary Head, Frequency 30–60 kHz, Max Speed 2,000mm/sec</li>
-                </ul>
-              </li>
-            </ul>
-            <p className="text-sm text-gray-200 mt-4">
-              Our shop combines advanced skills and systems to extend the capabilities of these tools, enabling precision machining and manufacturing.
-            </p>
-          </ServiceCard>
+        
+        <ServiceCard title="MACHINING TOOLS" className="mb-8">
+          <ul className="space-y-4">
+            <li>
+              <strong className="text-gray-200">HAAS TL-1 CNC</strong>
+              <ul className="text-sm pl-3">
+                <li>10-HP, 3,000 RPM Spindle Lathe with 4-Station Turret & Latest Controls</li>
+                <li>Samchully FTC-190 7" Chuck with 2.3125" Bore</li>
+              </ul>
+            </li>
+            <li>
+              <strong className="text-gray-200">JET JDP-20EVS DRILL PRESS</strong>
+              <ul className="text-sm pl-3">
+                <li>2-HP, 20" VFD, 65-2,000 RPM with H-D 12" X-Axis & 8" Y-Axis Fine Adjust Milling Table</li>
+                <li>Precision up to 0.001" Increments & 6" H-D Vice</li>
+              </ul>
+            </li>
+            <li>
+              <strong className="text-gray-200">VERTEX SUPER-8 ROTARY INDEXER</strong>
+              <ul className="text-sm pl-3">
+                <li>Horizontal & Vertical Indexer with 8" Chuck, 10" Face Plate</li>
+                <li>2, 3, 4, 6, 8, 12 & 24 Dividing Plates, 90:1 Worm Gear for 10 Secs Accuracy</li>
+              </ul>
+            </li>
+            <li>
+              <strong className="text-gray-200">CLOUDRAY 30-WATT Q-PULSED FIBER LASER</strong>
+              <ul className="text-sm pl-3">
+                <li>Integral Rotary Head, Frequency 30–60 kHz, Max Speed 2,000mm/sec</li>
+              </ul>
+            </li>
+          </ul>
+          <p className="text-sm text-gray-200 mt-4">
+            Our shop combines advanced skills and systems to extend the capabilities of these tools, enabling precision machining and manufacturing.
+          </p>
+        </ServiceCard>
 
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-8">
           <ServiceCard title="HAAS TL-1 Lathe">
             <div className="space-y-4">
               <img
                 src="/haas_tl-1_cnc_lathe.webp"
                 width="100%"
                 height="auto"
+                alt="HAAS TL-1 Lathe"
               />
               <div>
                 <h4 className="text-gray-200 font-semibold">Precision Turning, Profiling & Facing:</h4>
@@ -103,6 +105,7 @@ export default function CapabilitiesAndEquipmentPage() {
                 src="/jet_drill_press.webp"
                 width="100%"
                 height="auto"
+                alt="JET JDP-20EVS-110 Drill Press"
               />
               <div>
                 <h4 className="text-gray-200 font-semibold">Precision Drilling:</h4>
@@ -136,6 +139,7 @@ export default function CapabilitiesAndEquipmentPage() {
                 src="/cloudray_laser_etcher.webp"
                 width="100%"
                 height="auto"
+                alt="Cloudray Laser Etcher"
               />
               <div>
                 <h4 className="text-gray-200 font-semibold">Precision Laser Marking and Etching:</h4>
@@ -152,41 +156,41 @@ export default function CapabilitiesAndEquipmentPage() {
             </div>
             <p className="text-sm mt-4 italic">*Note: We do not cut or etch materials that release toxic fumes.</p>
           </ServiceCard>
-
-          <ServiceCard title="Extended Capabilities">
-            <div className="space-y-4">
-              <div>
-                <h4 className="text-gray-200 font-semibold">Automation and Tool Libraries:</h4>
-                <p className="text-sm">Advanced CNC programming reduces downtime and streamlines multi-part production.</p>
-              </div>
-              <div>
-                <h4 className="text-gray-200 font-semibold">Collaborative Workflows:</h4>
-                <p className="text-sm">CAD/CAM software (SolidWorks, FEA simulation, BobCAD-CAM) optimizes workflow and reduces errors.</p>
-              </div>
-              <div>
-                <h4 className="text-gray-200 font-semibold">Custom Fixturing:</h4>
-                <p className="text-sm">Custom fixtures and jigs enable handling of unconventional parts, enhancing flexibility.</p>
-              </div>
-            </div>
-          </ServiceCard>
-
-          <ServiceCard title="Comprehensive Production Capabilities">
-            <div className="space-y-4">
-              <div>
-                <h4 className="text-gray-200 font-semibold">Prototyping and One-Offs:</h4>
-                <p className="text-sm">Perfect for complex prototypes and custom parts with intricate machining needs.</p>
-              </div>
-              <div>
-                <h4 className="text-gray-200 font-semibold">Small to Medium Production Runs:</h4>
-                <p className="text-sm">Efficiently handles production runs with machining and marking requirements.</p>
-              </div>
-              <div>
-                <h4 className="text-gray-200 font-semibold">Customization and Finishing:</h4>
-                <p className="text-sm">Laser etcher adds finishing touches for industrial and consumer products.</p>
-              </div>
-            </div>
-          </ServiceCard>
         </div>
+
+        <ServiceCard title="Extended Capabilities" className="mb-8">
+          <div className="space-y-4">
+            <div>
+              <h4 className="text-gray-200 font-semibold">Automation and Tool Libraries:</h4>
+              <p className="text-sm">Advanced CNC programming reduces downtime and streamlines multi-part production.</p>
+            </div>
+            <div>
+              <h4 className="text-gray-200 font-semibold">Collaborative Workflows:</h4>
+              <p className="text-sm">CAD/CAM software (SolidWorks, FEA simulation, BobCAD-CAM) optimizes workflow and reduces errors.</p>
+            </div>
+            <div>
+              <h4 className="text-gray-200 font-semibold">Custom Fixturing:</h4>
+              <p className="text-sm">Custom fixtures and jigs enable handling of unconventional parts, enhancing flexibility.</p>
+            </div>
+          </div>
+        </ServiceCard>
+
+        <ServiceCard title="Comprehensive Production Capabilities">
+          <div className="space-y-4">
+            <div>
+              <h4 className="text-gray-200 font-semibold">Prototyping and One-Offs:</h4>
+              <p className="text-sm">Perfect for complex prototypes and custom parts with intricate machining needs.</p>
+            </div>
+            <div>
+              <h4 className="text-gray-200 font-semibold">Small to Medium Production Runs:</h4>
+              <p className="text-sm">Efficiently handles production runs with machining and marking requirements.</p>
+            </div>
+            <div>
+              <h4 className="text-gray-200 font-semibold">Customization and Finishing:</h4>
+              <p className="text-sm">Laser etcher adds finishing touches for industrial and consumer products.</p>
+            </div>
+          </div>
+        </ServiceCard>
       </div>
     </>
   );
