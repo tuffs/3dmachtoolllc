@@ -58,7 +58,7 @@ const AnimatedNavLink = ({ link, text }) => {
         {text}
         <span
           ref={underlineRef}
-          className="absolute bottom-0 left-1/2 w-0 h-[1px] bg-gray-400 transition-colors duration-300 ease-in-out group-hover:bg-gray-200"
+          className="absolute bottom-0 left-1/2 w-0 h-[.045rem] bg-gray-400 transition-colors duration-300 ease-in-out group-hover:bg-gray-200"
         ></span>
       </a>
     </div>
