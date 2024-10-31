@@ -10,9 +10,9 @@ const Modal = ({ isOpen, onClose, heading, content }) => {
   return createPortal(
     <div className="fixed inset-0 bg-black bg-opacity-50 overflow-y-auto h-full w-full flex justify-center items-center" style={{ zIndex: 10000 }} onClick={onClose}>
       <div className="relative p-4 w-full max-w-2xl max-h-full" onClick={e => e.stopPropagation()}>
-        <div className="relative bg-white rounded-lg shadow dark:bg-gray-700">
-          <div className="flex items-center justify-between p-4 md:p-5 border-b rounded-t dark:border-gray-600">
-            <h3 className="text-xl font-semibold text-gray-900 dark:text-white">
+        <div className="relative bg-[#0a0a0a] rounded-lg shadow dark:bg-gray-700">
+          <div className="flex items-center justify-between px-4 md:px-5 my-3 pt-6 rounded-t">
+            <h3 className="text-xl font-semibold text-gray-200 dark:text-white">
               {heading}
             </h3>
             <button 
@@ -26,7 +26,7 @@ const Modal = ({ isOpen, onClose, heading, content }) => {
               <span className="sr-only">Close modal</span>
             </button>
           </div>
-          <div className="p-4 md:p-5 space-y-4">
+          <div className="px-4 md:px-5">
             <p className="text-base leading-relaxed text-gray-500 dark:text-gray-400">
               {content}
             </p>
@@ -34,7 +34,7 @@ const Modal = ({ isOpen, onClose, heading, content }) => {
               Additional details about {heading} can be added here.
             </p>
           </div>
-          <div className="flex items-center p-4 md:p-5 border-t border-gray-200 rounded-b dark:border-gray-600">
+          <div className="flex items-center p-4 md:p-5 rounded-b">
             <button
               onClick={onClose}
               type="button"
