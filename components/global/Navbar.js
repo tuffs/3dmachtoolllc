@@ -1,3 +1,4 @@
+import AnimatedNavLink from '@/components/ui/AnimatedNavLink';
 import links from '@/data/links';
 
 const Navbar = () => {
@@ -15,15 +16,16 @@ const Links = ({ links }) => {
         return (
           <li
             key={index}
-          >
-            <a
+          > 
+            <AnimatedNavLink link={navItemEl.href} text={navItemEl.label} />
+            {/* <a
               href={navItemEl.href}
               className="text-gray-400 hover:text-gray-300"
               style={{
                 fontSize: '11px'
               }}>
                 {navItemEl.label}
-              </a>
+              </a> */}
           </li>
         )
       })}
