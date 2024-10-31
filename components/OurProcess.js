@@ -65,7 +65,7 @@ const OurProcess = () => {
   const paragraphControls = useAnimation()
   const buttonControls = useAnimation()
 
-  // Define your images here
+  // Processes should be brought in from data.
   const images = [
     { src: "lathe_spinning_and_cutting__optimized.webp", alt: "Lathe spinning and cutting" },
     { src: "cnc_lathe_cutting__optimized.webp", alt: "CNC Lathe Cutting" },
@@ -135,10 +135,10 @@ const OurProcess = () => {
         variants={paragraphVariants}
         initial="hidden"
         animate={paragraphControls}
-        className="w-[90%] md:w-[45%] mx-auto mt-[-10px]"
+        className="w-[90%] md:w-[65%] mx-auto mt-[-10px]"
       >
         <p className="text-left mb-12 md:text-center text-[.9rem] text-gray-400 mt-4 hover:text-white duration-1000">
-          We ensure that your original design is honored from datum to completion and is within the specified ISO precision values provided in your design document. If needed, we can assist with creating the precision scale for your system in your project with professional expertise of Mechanical Engineers and Experienced Machinists.
+          To ensure the optimum level of precision we adhere to a strict process for machining and manufacturing projects.
         </p>
       </motion.div>
 
@@ -165,7 +165,7 @@ const OurProcess = () => {
         animate={buttonControls}
       >
         <a href="/our-process" className="inline-flex items-center text-gray-400 border-[1px] border-[#9ca3af44] p-4 hover:text-gray-200 hover:border-gray-200 transition-colors duration-700">
-          Learn More About Our Process <RxArrowRight className="text-2xl ml-2" />
+          Discover Our Complete Process <RxArrowRight className="text-2xl ml-2" />
         </a>
       </motion.div>
     </div>

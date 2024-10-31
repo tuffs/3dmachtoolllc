@@ -3,12 +3,35 @@ The official website will now be developed using NextJS and TailwindCSS for the 
 We will continue to use an ORM to interface with a PostgreSQL database. But, for free with Neon.tech.
 Prisma will then be used as the ORM to interface between our app and SaaS solution for database activity.
 
-# DESIGN PROCESS NOTES AND IMPORTANT COMMITS
-[uncommitted changes neccessary] Going to have to recreate the animation set for the <Hero/> component with AI. Want the logo to drop and isolate on hover with an interesting animation using framer-motion.
+# DESIGN PROCESS, IMPORTANT CHANGES AND ADDITIONS
+- Recreate the animation set for the <Hero/> component.
+  - The logo should hover, isolating slowly "in place" with framer motion.
 
-[main 059b1c0] Lots of changes for styling, animation, and content. Moved the Experience and Expertise component to its own with no imagery (yet) and then created an Our Process component with the images which were previously contained in the Experience and Expertise component. I also matched styling choices across pages, created the additional Our Process link in the links.js datafile and must create some rudimentary pages for a few new links in our navigation links data file. Must add in some padding-right for the navigation links in the Desktop and Tablet display mode, or medium and larger media query breakpoints. Must also begin to style the menu for mobile media query breakpoints.
+- Create an animated fullscreen menu for mobile phones.
+  - Hide the Desktop navigation on size small.
+  - fade in and fade out with close for the fullscreen mobile menu.
+  - link items should be a bit bigger and operate differently (a little) from Desktop views.
+    - Examples:
+      - Framer.com, mobile navigation [https://framer.com]
 
-[main aac4afe] Implemented a Request for Quotation component as RequestForQuote.js or <RequestForQuote/> in the @/components/* folder. This form needs some tweaking and dynamic adjustments for a working, actionable form which customers can fill out. Also, our database will need all of the filenames stored along with the other information and a DigitalOcean space or AWS S3 container should be provisioned to accept the file upload portion of this form for a complete solution. In addition, we need to put a cumulative limit of file uploads set to 1Gb for users. A completion component should be shown after the completion of the form. We will also need to use Zod for input fields to client-side check for issues with harmful or otherwise unneeded and spammy content. We must not allow for the submission of data which will overload us, when an overload of data which is innaccurate is provided, we need to disallow upload of files in excess of 25Mb capped and delete theme automatically if spam is detected. Come up with some guidelines for the data submission portion of the website here.
+- Implement a working Request for Quote form with the database.
+  - Show a screen which shows successful submission and email sent.
+  - Provide an admin email and a customer email response.
+  - The PostgreSQL database will need all of the file names stored
+    - Cloudinary or TwicPic [https://www.twicpics.com/] for file uploads, Cloudinary is currently cheapest alternative.
+  - Once quoted, must remove the files and the quotation from the server.
+    - Need a process to speed this up after the quote is received.
+    - Administrative controls to allow for the deletion of these quotes.
+- Data limitations, design doc package limits
+  - Need to figure out what the biggest project in 3d models dad has in size for individual solutions are and x2 the available upload data per quote.
+
+- Implement a human challenge to prevent bots from submission for:
+  - Request for Quote
+  - Contact Messaging
+
+- A IP blocking service which adds IPs to a block list based on SPAM filtering.
+  - Or, rather, instead of blocking, a cron task for deletion.
+  - Figure this kind of functionality out.
 
 [main 1eb948a] Additional images and changes to the way that the images appear in the ExperienceAndExpertise.js component. Services page also has changes to the styling with regards to the text color but needs far more styling changes implemented.
 
