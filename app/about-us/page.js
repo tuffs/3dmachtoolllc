@@ -33,26 +33,28 @@ export default function AboutUsPage() {
             <p className="mb-2">
               We have had the privilege of serving a diverse range of industries, including:
             </p>
-            <ul className="mb-6 ml-3 list-disc">
-              <li className="mb-2">
-                <b>Automation Processes:</b> The bulk of our background is in the world of automation. We excel in the ability to create products and tooling which eliminate redundancy of operations to streamline your business' time and labor intense tasks.
-              </li>
-              <li className="mb-2">
-                <b>Automotive Production:</b> Our precision-crafted components play a pivotal role in the automotive production process. From engine parts to intricate assemblies, we provide solutions that keep the wheels of the industry turning.
-              </li>
-              <li className="mb-2">
-                <b>Tractor Equipment Production:</b> Agriculture demands robust and reliable equipment. We take pride in contributing to the farming community by designing and manufacturing parts that stand the test of time.
-              </li>
-              <li className="mb-2">
-                <b>Electronics Production, Assembly Lines and Manufacturing Facilities:</b> Over several decades our Mechanical Engineer has designed and built multiple assembly lines for the large-scale production of Televisions (CRT, Plasma, and LCD), Household Microwaves, and Solar Panels for global distribution and sale. <i>Chances are high that you have or presently use household appliances daily which we have had a direct impact in the automated creation process.</i>
-              </li>
-              <li className="mb-2">
-                <b>Vertical Reciprocating Conveyors (VRCs):</b> We remain at the forefront of creating components that keep materials moving efficiently in vertical reciprocating conveyor systems, ensuring smooth and uninterrupted operations.
-              </li>
-              <li className="mb-2">
-                <b>Custom Tooling and Fixture Solutions:</b> We provide custom tooling solutions which are tailor-made to enhance the assembly and automation process for product build output. We understand that efficiency and precision are the cornerstones to high output manufacturing and we design, develop and manufacture the tools and fixtures which make that happen.
-              </li>
-            </ul>
+            <div className="ml-6 md:ml-10">
+              <ul className="mb-6 ml-3 list-disc">
+                <li className="mb-2">
+                  <b>Automation Processes:</b> The bulk of our background is in the world of automation. We excel in the ability to create products and tooling which eliminate redundancy of operations to streamline your business' time and labor intense tasks.
+                </li>
+                <li className="mb-2">
+                  <b>Automotive Production:</b> Our precision-crafted components play a pivotal role in the automotive production process. From engine parts to intricate assemblies, we provide solutions that keep the wheels of the industry turning.
+                </li>
+                <li className="mb-2">
+                  <b>Tractor Equipment Production:</b> Agriculture demands robust and reliable equipment. We take pride in contributing to the farming community by designing and manufacturing parts that stand the test of time.
+                </li>
+                <li className="mb-2">
+                  <b>Electronics Production, Assembly Lines and Manufacturing Facilities:</b> Over several decades our Mechanical Engineer has designed and built multiple assembly lines for the large-scale production of Televisions (CRT, Plasma, and LCD), Household Microwaves, and Solar Panels for global distribution and sale. <i>Chances are high that you have or presently use household appliances daily which we have had a direct impact in the automated creation process.</i>
+                </li>
+                <li className="mb-2">
+                  <b>Vertical Reciprocating Conveyors (VRCs):</b> We remain at the forefront of creating components that keep materials moving efficiently in vertical reciprocating conveyor systems, ensuring smooth and uninterrupted operations.
+                </li>
+                <li className="mb-2">
+                  <b>Custom Tooling and Fixture Solutions:</b> We provide custom tooling solutions which are tailor-made to enhance the assembly and automation process for product build output. We understand that efficiency and precision are the cornerstones to high output manufacturing and we design, develop and manufacture the tools and fixtures which make that happen.
+                </li>
+              </ul>
+            </div>
           </div>
 
           <div className="my-12">
@@ -70,20 +72,22 @@ export default function AboutUsPage() {
             <p>
               At 3D Machine and Tool, our commitment to our customers is unwavering. We believe in fostering long-lasting partnerships built on trust and exceptional service. Our team is dedicated to understanding your unique needs and delivering solutions that exceed your expectations.
             </p>
-            <ul className="mb-6 ml-3 list-disc">
-              <li className="mb-2">
-                <b>Legacy Experience:</b> With over six decades of experience, we have an in-depth understanding of the intricacies of metal fabrication and tooling.
-              </li>
-              <li className="mb-2">
-                <b>Quality and Precision:</b> Our commitment to quality is second to none. Every component we produce undergoes rigorous testing to ensure it meets our high standards.
-              </li>
-              <li className="mb-2">
-                <b>Cutting Edge Innovation:</b> We embrace innovation and stay at the forefront of technology, allowing us to provide cutting-edge solutions to our clients.
-              </li>
-              <li className="mb-2">
-                <b>Customer-Centric Approach:</b> Your satisfaction is our top priority. We work closely with you to tailor our services to your extremely specific requirements. Without our dedication to precision and quality we would not be able to provide the level of service we do.
-              </li>
-            </ul>
+            <div className="ml-6 md:ml-10">
+              <ul className="mb-6 ml-3 list-disc">
+                <li className="mb-2">
+                  <b>Legacy Experience:</b> With over six decades of experience, we have an in-depth understanding of the intricacies of metal fabrication and tooling.
+                </li>
+                <li className="mb-2">
+                  <b>Quality and Precision:</b> Our commitment to quality is second to none. Every component we produce undergoes rigorous testing to ensure it meets our high standards.
+                </li>
+                <li className="mb-2">
+                  <b>Cutting Edge Innovation:</b> We embrace innovation and stay at the forefront of technology, allowing us to provide cutting-edge solutions to our clients.
+                </li>
+                <li className="mb-2">
+                  <b>Customer-Centric Approach:</b> Your satisfaction is our top priority. We work closely with you to tailor our services to your extremely specific requirements. Without our dedication to precision and quality we would not be able to provide the level of service we do.
+                </li>
+              </ul>
+            </div>
           </div>
         </div>
       </div>
