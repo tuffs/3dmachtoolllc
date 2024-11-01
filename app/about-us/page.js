@@ -6,7 +6,7 @@ export default function AboutUsPage() {
     <>
       <div className="my-24" />
       <Hero />
-      <div className="mt-24 mb-24 mx-12 md:mx-32 lg:mx-64 text-gray-200">
+      <div className="mt-24 mb-24 mx-12 md:mx-32 lg:mx-64 text-white">
         <h1 className="text-4xl font-bold text-center">About Us</h1>
         <div className="my-12 text-gray-400">
           <p className="mb-6">
@@ -22,9 +22,9 @@ export default function AboutUsPage() {
           </div>
 
           <div className="my-12">
-            <h3 className="text-2xl font-bold mb-2 text-gray-200">EXCELLENCE AND PRECISION FROM DESIGN TO FABRICATION AND MANUFACTURING</h3>
+            <h3 className="text-2xl font-bold mb-2 text-gray-200">EXCELLENCE AND PRECISION FROM START TO END</h3>
             <p className="mb-6">
-              Our specialized design team boasts decades of experience, making us pioneers in the industry. We take pride in our ability to turn your concepts into reality, using state-of-the-art equipment and our profound knowledge. At the heart of our operation is a Haas lathe, drill press, and laser engraving machinery, enabling us to create custom metal fabricated parts that meet the highest standards of precision and quality.
+              Our specialized design team boasts decades of experience, making us pioneers in the industry. We take pride in our ability to turn your concepts into reality, using state-of-the-art equipment and our profound knowledge. At the heart of our operation is <a href="/capabilities" className="underline">a Haas lathe, drill press, and laser engraving machinery</a>, enabling us to create custom metal fabricated parts that meet the highest standards of precision and quality.
             </p>
           </div>
 

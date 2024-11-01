@@ -72,7 +72,7 @@ const ProcessCard = ({ heading, content, imageUrl }) => {
 
         <button 
           onClick={openModal}
-          className="block text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800 mt-6"
+          className="block text-white bg-gray-800 border-[.09rem] border-gray-800 hover:bg-gray-900 hover:border-[.09rem] hover:border-gray-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center mt-6"
           type="button"
         >
           Learn More <RxArrowRight className="inline-block ml-2" />
