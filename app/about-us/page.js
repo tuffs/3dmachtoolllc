@@ -6,9 +6,9 @@ export default function AboutUsPage() {
     <>
       <div className="my-24" />
       <Hero />
-      <div className="mt-24 mb-24 mx-12 md:mx-32 lg:mx-64 text-gray-300">
+      <div className="mt-24 mb-24 mx-12 md:mx-32 lg:mx-64 text-gray-200">
         <h1 className="text-4xl font-bold text-center">About Us</h1>
-        <div className="my-12">
+        <div className="my-12 text-gray-400">
           <p className="mb-6">
             Thank you for your desire to learn more about 3D Machine and Tool, we are a family-owned business with over 65 years in the fields of precision engineering, custom metal fabrication, inventions, and design. Our journey began with a vision to provide quality, innovation, and customer satisfaction in all our design and fabrication projects.
           </p>
