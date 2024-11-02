@@ -2,7 +2,7 @@
 
 import React, { useRef, useEffect } from 'react';
 
-const AnimatedNavLink = ({ link, text }) => {
+const AnimatedNavLink = ({ link, text, additionalClasses }) => {
   const underlineRef = useRef(null);
   const linkRef = useRef(null);
 
@@ -50,7 +50,7 @@ const AnimatedNavLink = ({ link, text }) => {
       <a
         ref={linkRef}
         href={link}
-        className="relative text-gray-400 hover:text-gray-200 transition-colors duration-300 ease-in-out inline-block"
+        className={`relative text-gray-400 hover:text-gray-200 transition-colors duration-300 ease-in-out inline-block ${additionalClasses}`}
         style={{
           fontSize: '11px'
         }}

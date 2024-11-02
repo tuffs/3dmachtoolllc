@@ -13,10 +13,11 @@ export default function ProductsPage() {
             </h1>
           </section>
 
-          <section>
+          <section className="w-[100%] text-center">
             <AnimatedNavLink
               link="/products/new"
               text="Create New Product"
+              additionalClasses="!text-lg"
             />
           </section>
         </div>
