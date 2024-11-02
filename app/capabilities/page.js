@@ -17,7 +17,7 @@ export default function CapabilitiesAndEquipmentPage() {
       <Hero />
       <div className="mt-24 text-gray-400 pt-0 p-8">
         <h1 className="text-4xl font-bold text-white text-center mb-12">Capabilities and Equipment</h1>
-        
+
         <ServiceCard title="MACHINING TOOLS" className="mb-8">
           <ul className="space-y-4">
             <li>
@@ -166,7 +166,7 @@ export default function CapabilitiesAndEquipmentPage() {
             </div>
             <div>
               <h4 className="text-gray-200 font-semibold">Collaborative Workflows:</h4>
-              <p className="text-sm">CAD/CAM software (SolidWorks, FEA simulation, BobCAD-CAM) optimizes workflow and reduces errors.</p>
+              <p className="text-sm">CAD/CAM software (SolidWorks, FEA simulation, BobCAD-CAM, and other custom coding solutions) optimize our design and machining workflow and reduces errors.</p>
             </div>
             <div>
               <h4 className="text-gray-200 font-semibold">Custom Fixturing:</h4>
