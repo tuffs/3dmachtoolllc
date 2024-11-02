@@ -10,14 +10,14 @@ const Modal = ({ isOpen, onClose, heading, content }) => {
   return createPortal(
     <div className="fixed inset-0 bg-black bg-opacity-50 overflow-y-auto h-full w-full flex justify-center items-center" style={{ zIndex: 10000 }} onClick={onClose}>
       <div className="relative p-4 w-full max-w-2xl max-h-full" onClick={e => e.stopPropagation()}>
-        <div className="relative bg-[#0a0a0a] rounded-lg shadow dark:bg-gray-700">
+        <div className="relative bg-[#0a0a0a] rounded-lg shadow">
           <div className="flex items-center justify-between px-4 md:px-5 my-3 pt-6 rounded-t">
-            <h3 className="text-xl font-semibold text-gray-200 dark:text-white">
+            <h3 className="text-xl font-semibold text-gray-200">
               {heading}
             </h3>
             <button
               type="button"
-              className="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ms-auto inline-flex justify-center items-center dark:hover:bg-gray-600 dark:hover:text-white"
+              className="text-gray-400 bg-transparent hover:bg-gray-900 hover:text-gray-300 rounded-lg text-sm w-8 h-8 ms-auto inline-flex justify-center items-center hover:border-[.09rem] hover:border-gray-500"
               onClick={onClose}
             >
               <svg className="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 14">
@@ -27,7 +27,7 @@ const Modal = ({ isOpen, onClose, heading, content }) => {
             </button>
           </div>
           <div className="px-4 md:px-5">
-            <p className="text-base leading-relaxed text-gray-500 dark:text-gray-400">
+            <p className="text-base leading-relaxed text-gray-500">
               {content}
             </p>
           </div>
@@ -35,7 +35,7 @@ const Modal = ({ isOpen, onClose, heading, content }) => {
             <button
               onClick={onClose}
               type="button"
-              className="text-white bg-gray-800 border-[.09rem] border-gray-800 hover:bg-gray-900 hover:border-[.09rem] hover:border-gray-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center mt-6"
+              className="text-white bg-gray-800 border-[.09rem] border-gray-800 hover:bg-gray-900 hover:border-[.09rem] hover:border-gray-300 font-medium rounded-lg text-xs px-5 py-1.5 text-center mt-6"
             >
               Close
             </button>
