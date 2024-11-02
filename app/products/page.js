@@ -1,4 +1,5 @@
 import Hero from '@/components/Hero';
+import AnimatedNavLink from '@/components/ui/AnimatedNavLink';
 
 export default function ProductsPage() {
   return (
@@ -10,6 +11,13 @@ export default function ProductsPage() {
             <h1 className="text-4xl font-bold text-center">
               Products
             </h1>
+          </section>
+
+          <section>
+            <AnimatedNavLink
+              link="/products/new"
+              text="Create New Product"
+            />
           </section>
         </div>
       </div>
