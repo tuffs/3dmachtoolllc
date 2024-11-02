@@ -14,5 +14,5 @@ describe("Hero", () => {
     const logoMark = screen.getByTestId('hero__logo_mark');
 
     expect(logoMark).toBeInTheDocument();
-  })
+  });
 });

@@ -6,7 +6,7 @@ const Hero = () => {
   const springs = useSpring({
     from: { y: 0 },
     to: { y: 5 },
-  })
+  });
 
   return (
     <>
