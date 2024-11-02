@@ -1,25 +1,40 @@
 'use client';
 
-import { useRef, useEffect } from 'react';
+import { useRef, useEffect, useState } from 'react';
 import Hero from '@/components/Hero';
 
 export default function ContactUsPage() {
-
   const nameRef = useRef(null);
+  const [formData, setFormData] = useState({
+    name: '',
+    email: '',
+    phone: '',
+    message: ''
+  });
 
   useEffect(() => {
-    // Focus the name field on page load
     if (nameRef.current) {
-      const nameField = document.querySelector('#name');
-
       nameRef.current.focus();
-
-      nameField.scrollIntoView({
+      nameRef.current.scrollIntoView({
         behavior: 'smooth',
-        top: 0
+        block: 'start'
       });
     }
   }, []);
+
+  const handleChange = (e) => {
+    const { id, value } = e.target;
+    setFormData(prevData => ({
+      ...prevData,
+      [id]: value
+    }));
+  };
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    console.log('Form Data:', formData);
+    // Here you would typically send the data to your server
+  };
 
   return (
     <>
@@ -39,36 +54,71 @@ export default function ContactUsPage() {
               You can also directly email Devon Kiss at <a href="mailto:devon@3dmandt.com" className="text-gray-200 underline">devon@3dmandt.com</a> or call now <a href="tel:14482566963" className="text-gray-200 underline">448-256-6963</a>.
             </p>
 
-            <form className="mt-8">
+            <form className="mt-8" onSubmit={handleSubmit}>
               <div className="mb-4">
                 <label className="block text-gray-300 text-sm font-medium mb-2" htmlFor="name">
                   Your Name
                 </label>
-                <input className="w-full p-4 text-gray-300 bg-gray-700 rounded" id="name" ref={nameRef} type="text" placeholder="Your Name" />
+                <input
+                  className="w-full p-4 text-gray-300 bg-gray-700 rounded"
+                  id="name"
+                  ref={nameRef}
+                  type="text"
+                  placeholder="Your Name"
+                  value={formData.name}
+                  onChange={handleChange}
+                  required
+                />
               </div>
 
               <div className="mb-4">
                 <label className="block text-gray-300 text-sm font-medium mb-2" htmlFor="phone">
                   Your Phone Number
                 </label>
-                <input className="w-full p-4 text-gray-300 bg-gray-700 rounded" id="phone" type="text" placeholder="Your Phone Number" />
+                <input
+                  className="w-full p-4 text-gray-300 bg-gray-700 rounded"
+                  id="phone"
+                  type="tel"
+                  placeholder="Your Phone Number"
+                  value={formData.phone}
+                  onChange={handleChange}
+                  required
+                />
               </div>
 
               <div className="mb-4">
                 <label className="block text-gray-300 text-sm font-medium mb-2" htmlFor="email">
                   Your Email Address
                 </label>
-                <input className="w-full p-4 text-gray-300 bg-gray-700 rounded" id="email" type="text" placeholder="Your Email Address" />
+                <input
+                  className="w-full p-4 text-gray-300 bg-gray-700 rounded"
+                  id="email"
+                  type="email"
+                  placeholder="Your Email Address"
+                  value={formData.email}
+                  onChange={handleChange}
+                  required
+                />
               </div>
 
               <div className="mb-4">
                 <label className="block text-gray-300 text-sm font-medium mb-2" htmlFor="message">
                   Your Message or Inquiry
                 </label>
-                <textarea className="w-full p-4 text-gray-300 bg-gray-700 rounded min-h-[175px]" id="message" placeholder="Enter your message here, be as specific as possible."></textarea>
+                <textarea
+                  className="w-full p-4 text-gray-300 bg-gray-700 rounded min-h-[175px]"
+                  id="message"
+                  placeholder="Enter your message here, be as specific as possible."
+                  value={formData.message}
+                  onChange={handleChange}
+                  required
+                ></textarea>
               </div>
 
-              <button className="w-full mt-2 md:mt-3 p-4 bg-gray-800 text-white rounded hover:bg-gray-700 transition-colors duration-1000" type="submit">
+              <button
+                className="w-full mt-2 md:mt-3 p-4 bg-gray-800 text-white rounded hover:bg-gray-700 transition-colors duration-1000"
+                type="submit"
+              >
                 Send Your Message
               </button>
             </form>
