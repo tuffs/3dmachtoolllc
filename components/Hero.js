@@ -16,7 +16,8 @@ const Hero = () => {
           backgroundPositionX: 'center',
           backgroundPositionY: 'center',
         }}
-      > 
+        data-testid="hero__container"
+      >
         <a href="/">
           <animated.img
             src={"/logo_file.png"}
