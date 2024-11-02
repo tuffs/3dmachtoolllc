@@ -8,4 +8,11 @@ describe("Hero", () => {
 
     expect(heroContainer).toBeInTheDocument();
   });
+
+  it('renders the Logo Mark in the Hero component', () => {
+    render(<Hero />);
+    const logoMark = screen.getByTestId('hero__logo_mark');
+
+    expect(logoMark).toBeInTheDocument();
+  })
 });

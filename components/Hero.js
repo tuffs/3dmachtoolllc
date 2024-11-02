@@ -38,6 +38,7 @@ const Hero = () => {
             }}
             className="mx-auto"
             id="hero__logo_mark"
+            data-testid="hero__logo_mark"
           />
         </a>
       </div>
