@@ -67,7 +67,7 @@ export default function NewProductPage() {
 
               <div className="mb-4">
                 <label className="block text-gray-300 text-sm font-medium mb-2" htmlFor="image">
-                  Product Images
+                  Product Images <span className="text-xs">(comma seperated)</span>
                 </label>
                 <input className="w-full p-4 text-gray-300 bg-gray-700 rounded" id="image" type="text" placeholder="Product Image" />
               </div>
