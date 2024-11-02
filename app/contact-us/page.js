@@ -1,7 +1,26 @@
+'use client';
+
+import { useRef, useEffect } from 'react';
 import Hero from '@/components/Hero';
-import { RxPlus } from 'react-icons/rx';
 
 export default function ContactUsPage() {
+
+  const nameRef = useRef(null);
+
+  useEffect(() => {
+    // Focus the name field on page load
+    if (nameRef.current) {
+      const nameField = document.querySelector('#name');
+
+      nameRef.current.focus();
+
+      nameField.scrollIntoView({
+        behavior: 'smooth',
+        top: 0
+      });
+    }
+  }, []);
+
   return (
     <>
       <div className="my-24">
@@ -25,7 +44,7 @@ export default function ContactUsPage() {
                 <label className="block text-gray-300 text-sm font-medium mb-2" htmlFor="name">
                   Your Name
                 </label>
-                <input className="w-full p-4 text-gray-300 bg-gray-700 rounded" id="name" type="text" placeholder="Your Name" />
+                <input className="w-full p-4 text-gray-300 bg-gray-700 rounded" id="name" ref={nameRef} type="text" placeholder="Your Name" />
               </div>
 
               <div className="mb-4">
@@ -46,7 +65,7 @@ export default function ContactUsPage() {
                 <label className="block text-gray-300 text-sm font-medium mb-2" htmlFor="message">
                   Your Message or Inquiry
                 </label>
-                <textarea className="w-full p-4 text-gray-300 bg-gray-700 rounded min-h-[175px]" id="message" placeholder="Your message here... provide as many details as possible."></textarea>
+                <textarea className="w-full p-4 text-gray-300 bg-gray-700 rounded min-h-[175px]" id="message" placeholder="Enter your message here, be as specific as possible."></textarea>
               </div>
 
               <button className="w-full mt-2 md:mt-3 p-4 bg-gray-800 text-white rounded hover:bg-gray-700 transition-colors duration-1000" type="submit">
