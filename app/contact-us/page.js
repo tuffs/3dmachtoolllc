@@ -69,8 +69,8 @@ export default function ContactUsPage() {
             </p>
 
             {state.success ? (
-              <div className="mt-8 mx-auto p-12 bg-green-500 text-white rounded-xl w-[400px]">
-                <h1 className="text-5xl font-bold text-center mb-3" style={{ textShadow: "1px 1px rgba(0,0,0,.4)" }}>✅</h1>
+              <div className="mt-8 mx-auto p-12 bg-gray-900 text-white rounded-xl w-[400px]">
+                <h1 className="text-5xl font-bold text-center mb-3" style={{ textShadow: "1px 1px rgba(255,255,255,.25)" }}>✅</h1>
                 <h2 className="text-2xl font-bold text-center" style={{ textShadow: "1px 1px rgba(0,0,0,.4)" }}>Message Sent!</h2>
                 <p className="text-center" style={{ textShadow: "1px 1px rgba(0,0,0,.24)" }}>We'll get back to you as soon as possible.</p>
               </div>
