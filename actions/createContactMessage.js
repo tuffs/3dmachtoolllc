@@ -23,7 +23,7 @@ export async function createContactMessage(prevState, formData) {
     });
 
     // Send email notification
-    const emailSubject = "New Contact Form Submission";
+    const emailSubject = "CONTACT REQUEST FROM 3D MACHINE + TOOL WEBSITE";
     const emailBody = `
       New contact form submission:
       Name: ${name}

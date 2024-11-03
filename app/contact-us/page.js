@@ -63,17 +63,13 @@ export default function ContactUsPage() {
 
               <br /><br />
 
-              You can also directly email Devon Kiss at <a href="mailto:dave@3dmandt.com" className="text-gray-200 underline">dave@3dmandt.com</a> or call now <a href="tel:18509637001" className="text-gray-200 underline">850-963-7001</a>.
-
-              <br /><br />
-
               <small className="text-gray-500 text-sm">
                 Attempts to sell products or services are prohibited, all sales messages will be filtered out by active AI systems.
               </small>
             </p>
 
             {state.success ? (
-              <div className="mt-8 p-6 bg-green-500 text-white rounded">
+              <div className="mt-8 mx-auto p-6 bg-green-500 text-white rounded w-[400px]">
                 <h2 className="text-2xl font-bold mb-4">Thank You!</h2>
                 <p>{state.message}</p>
                 <p className="mt-4">We'll get back to you as soon as possible.</p>
@@ -90,7 +86,7 @@ export default function ContactUsPage() {
                     Your Name
                   </label>
                   <input
-                    className="w-full p-4 text-gray-300 bg-gray-700 rounded"
+                    className="w-full p-4 text-gray-300 bg-gray-700 rounded mb-4"
                     id="name"
                     name="name"
                     ref={nameRef}
@@ -107,7 +103,7 @@ export default function ContactUsPage() {
                     Your Phone Number
                   </label>
                   <input
-                    className="w-full p-4 text-gray-300 bg-gray-700 rounded"
+                    className="w-full p-4 text-gray-300 bg-gray-700 rounded mb-4"
                     id="phone"
                     name="phone"
                     type="tel"
@@ -123,7 +119,7 @@ export default function ContactUsPage() {
                     Your Email Address
                   </label>
                   <input
-                    className="w-full p-4 text-gray-300 bg-gray-700 rounded"
+                    className="w-full p-4 text-gray-300 bg-gray-700 rounded mb-4"
                     id="email"
                     name="email"
                     type="email"
@@ -136,10 +132,10 @@ export default function ContactUsPage() {
 
                 <div className="mb-4">
                   <label className="block text-gray-300 text-sm font-medium mb-2" htmlFor="message">
-                    Your Message or Inquiry
+                    Your Message <small className="text-gray-400 ml-2">Do not enter sales pitches, they will not reach our desk</small>
                   </label>
                   <textarea
-                    className="w-full p-4 text-gray-300 bg-gray-700 rounded min-h-[175px]"
+                    className="w-full p-4 text-gray-300 bg-gray-700 rounded mb-4 min-h-[175px]"
                     id="message"
                     name="message"
                     placeholder="Enter your message here, please be as specific as possible."
@@ -153,7 +149,7 @@ export default function ContactUsPage() {
                   className="w-full mt-2 md:mt-3 p-4 bg-gray-800 text-white rounded hover:bg-gray-700 transition-colors duration-1000"
                   type="submit"
                 >
-                  Send Your Message
+                  Send Message
                 </button>
               </form>
             )}
