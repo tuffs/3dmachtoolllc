@@ -1,7 +1,9 @@
 'use client';
 
 import { useRef, useEffect, useState } from 'react';
+import { useFormState } from 'react-dom';
 import Hero from '@/components/Hero';
+import { createContactMessage } from '@/actions/createContactMessage';
 
 export default function ContactUsPage() {
   const nameRef = useRef(null);
@@ -11,6 +13,9 @@ export default function ContactUsPage() {
     phone: '',
     message: ''
   });
+
+  const initialState = { success: false, message: '' };
+  const [state, formAction] = useFormState(createContactMessage, initialState);
 
   useEffect(() => {
     if (nameRef.current) {
@@ -30,11 +35,16 @@ export default function ContactUsPage() {
     }));
   };
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    console.log('Form Data:', formData);
-    // Here you would typically send the data to your server
-  };
+  useEffect(() => {
+    if (state.success) {
+      setFormData({
+        name: '',
+        email: '',
+        phone: '',
+        message: '',
+      });
+    }
+  }, [state]);
 
   return (
     <>
@@ -54,74 +64,91 @@ export default function ContactUsPage() {
               You can also directly email Devon Kiss at <a href="mailto:devon@3dmandt.com" className="text-gray-200 underline">devon@3dmandt.com</a> or call now <a href="tel:14482566963" className="text-gray-200 underline">448-256-6963</a>.
             </p>
 
-            <form className="mt-8" onSubmit={handleSubmit}>
-              <div className="mb-4">
-                <label className="block text-gray-300 text-sm font-medium mb-2" htmlFor="name">
-                  Your Name
-                </label>
-                <input
-                  className="w-full p-4 text-gray-300 bg-gray-700 rounded"
-                  id="name"
-                  ref={nameRef}
-                  type="text"
-                  placeholder="Your Name"
-                  value={formData.name}
-                  onChange={handleChange}
-                  required
-                />
+            {state.success ? (
+              <div className="mt-8 p-6 bg-green-500 text-white rounded">
+                <h2 className="text-2xl font-bold mb-4">Thank You!</h2>
+                <p>{state.message}</p>
+                <p className="mt-4">We'll get back to you as soon as possible.</p>
               </div>
+            ) : (
+              <form className="mt-8" action={formAction}>
+                {state.message && (
+                  <div className="mb-4 p-4 bg-red-500 text-white rounded">
+                    {state.message}
+                  </div>
+                )}
+                <div className="mb-4">
+                  <label className="block text-gray-300 text-sm font-medium mb-2" htmlFor="name">
+                    Your Name
+                  </label>
+                  <input
+                    className="w-full p-4 text-gray-300 bg-gray-700 rounded"
+                    id="name"
+                    name="name"
+                    ref={nameRef}
+                    type="text"
+                    placeholder="Your Name"
+                    value={formData.name}
+                    onChange={handleChange}
+                    required
+                  />
+                </div>
 
-              <div className="mb-4">
-                <label className="block text-gray-300 text-sm font-medium mb-2" htmlFor="phone">
-                  Your Phone Number
-                </label>
-                <input
-                  className="w-full p-4 text-gray-300 bg-gray-700 rounded"
-                  id="phone"
-                  type="tel"
-                  placeholder="Your Phone Number"
-                  value={formData.phone}
-                  onChange={handleChange}
-                  required
-                />
-              </div>
+                <div className="mb-4">
+                  <label className="block text-gray-300 text-sm font-medium mb-2" htmlFor="phone">
+                    Your Phone Number
+                  </label>
+                  <input
+                    className="w-full p-4 text-gray-300 bg-gray-700 rounded"
+                    id="phone"
+                    name="phone"
+                    type="tel"
+                    placeholder="Your Phone Number"
+                    value={formData.phone}
+                    onChange={handleChange}
+                    required
+                  />
+                </div>
 
-              <div className="mb-4">
-                <label className="block text-gray-300 text-sm font-medium mb-2" htmlFor="email">
-                  Your Email Address
-                </label>
-                <input
-                  className="w-full p-4 text-gray-300 bg-gray-700 rounded"
-                  id="email"
-                  type="email"
-                  placeholder="Your Email Address"
-                  value={formData.email}
-                  onChange={handleChange}
-                  required
-                />
-              </div>
+                <div className="mb-4">
+                  <label className="block text-gray-300 text-sm font-medium mb-2" htmlFor="email">
+                    Your Email Address
+                  </label>
+                  <input
+                    className="w-full p-4 text-gray-300 bg-gray-700 rounded"
+                    id="email"
+                    name="email"
+                    type="email"
+                    placeholder="Your Email Address"
+                    value={formData.email}
+                    onChange={handleChange}
+                    required
+                  />
+                </div>
 
-              <div className="mb-4">
-                <label className="block text-gray-300 text-sm font-medium mb-2" htmlFor="message">
-                  Your Message or Inquiry
-                </label>
-                <textarea
-                  className="w-full p-4 text-gray-300 bg-gray-700 rounded min-h-[175px]"
-                  id="message"
-                  placeholder="Enter your message here, be as specific as possible."
-                  value={formData.message}
-                  onChange={handleChange}
-                  required
-                ></textarea>
-              </div>
+                <div className="mb-4">
+                  <label className="block text-gray-300 text-sm font-medium mb-2" htmlFor="message">
+                    Your Message or Inquiry
+                  </label>
+                  <textarea
+                    className="w-full p-4 text-gray-300 bg-gray-700 rounded min-h-[175px]"
+                    id="message"
+                    name="message"
+                    placeholder="Enter your message here, be as specific as possible."
+                    value={formData.message}
+                    onChange={handleChange}
+                    required
+                  ></textarea>
+                </div>
 
-              <button
-                className="w-full mt-2 md:mt-3 p-4 bg-gray-800 text-white rounded hover:bg-gray-700 transition-colors duration-1000"
-                type="submit"
-              >
-                Send Your Message
-              </button>
-            </form>
+                <button
+                  className="w-full mt-2 md:mt-3 p-4 bg-gray-800 text-white rounded hover:bg-gray-700 transition-colors duration-1000"
+                  type="submit"
+                >
+                  Send Your Message
+                </button>
+              </form>
+            )}
           </section>
         </div>
       </div>

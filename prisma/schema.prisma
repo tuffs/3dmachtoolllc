@@ -14,17 +14,17 @@ datasource db {
 }
 
 model Product {
-  id                Int      @id @default(autoincrement())
-  name              String
-  modelNumber       String
-  description       String?
-  shortDescription  String?
-  slug              String
-  price             Float
-  quantity          Int
-  imageUrls         String[]
-  createdAt         DateTime @default(now())
-  updatedAt         DateTime @updatedAt
+  id               Int      @id @default(autoincrement())
+  name             String
+  modelNumber      String
+  description      String?
+  shortDescription String?
+  slug             String
+  price            Float
+  quantity         Int
+  imageUrls        String[]
+  createdAt        DateTime @default(now())
+  updatedAt        DateTime @updatedAt
 }
 
 model Quotation {
@@ -44,9 +44,18 @@ model Quotation {
   updatedAt           DateTime @updatedAt
 }
 
+model Contact {
+  id        String   @id @default(cuid())
+  name      String
+  email     String
+  phone     String
+  message   String
+  createdAt DateTime @default(now())
+}
+
 model Admin {
-  id            String   @id @default(cuid())
-  email         String   @unique
-  password      String
-  createdAt     DateTime @default(now())
+  id        String   @id @default(cuid())
+  email     String   @unique
+  password  String
+  createdAt DateTime @default(now())
 }
