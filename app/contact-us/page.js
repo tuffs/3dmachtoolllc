@@ -61,7 +61,15 @@ export default function ContactUsPage() {
             <p className="text-gray-300">
               Thank you for choosing to contact us, we value your important feedback and requests for quotation on custom machined parts and tooling. We have an in-house Mechanical Engineer to aide with custom part design. Please write a detailed description of your request and we will make sure to get back in touch with you as soon as possible.
 
-              You can also directly email Devon Kiss at <a href="mailto:devon@3dmandt.com" className="text-gray-200 underline">devon@3dmandt.com</a> or call now <a href="tel:14482566963" className="text-gray-200 underline">448-256-6963</a>.
+              <br /><br />
+
+              You can also directly email Devon Kiss at <a href="mailto:dave@3dmandt.com" className="text-gray-200 underline">dave@3dmandt.com</a> or call now <a href="tel:18509637001" className="text-gray-200 underline">850-963-7001</a>.
+
+              <br /><br />
+
+              <small className="text-gray-500 text-sm">
+                Attempts to sell products or services are prohibited, all sales messages will be filtered out by active AI systems.
+              </small>
             </p>
 
             {state.success ? (
@@ -87,7 +95,7 @@ export default function ContactUsPage() {
                     name="name"
                     ref={nameRef}
                     type="text"
-                    placeholder="Your Name"
+                    placeholder="Name"
                     value={formData.name}
                     onChange={handleChange}
                     required
@@ -103,7 +111,7 @@ export default function ContactUsPage() {
                     id="phone"
                     name="phone"
                     type="tel"
-                    placeholder="Your Phone Number"
+                    placeholder="Phone Number"
                     value={formData.phone}
                     onChange={handleChange}
                     required
@@ -119,7 +127,7 @@ export default function ContactUsPage() {
                     id="email"
                     name="email"
                     type="email"
-                    placeholder="Your Email Address"
+                    placeholder="Email Address"
                     value={formData.email}
                     onChange={handleChange}
                     required
@@ -134,7 +142,7 @@ export default function ContactUsPage() {
                     className="w-full p-4 text-gray-300 bg-gray-700 rounded min-h-[175px]"
                     id="message"
                     name="message"
-                    placeholder="Enter your message here, be as specific as possible."
+                    placeholder="Enter your message here, please be as specific as possible."
                     value={formData.message}
                     onChange={handleChange}
                     required

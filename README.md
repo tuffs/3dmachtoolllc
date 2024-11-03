@@ -12,7 +12,7 @@ Prisma will then be used as the ORM to interface between our app and SaaS soluti
 
 # MOBILE PHONE NAVIGATION
 
-- Create an animated fullscreen menu for mobile phones.
+- Create an animated fullscreen menu for desktop (smaller display, user enforced) and primarily for mobile phones.
 
   - Hide the Desktop navigation on size small.
   - fade in and fade out with close for the fullscreen mobile menu.

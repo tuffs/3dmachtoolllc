@@ -3,9 +3,9 @@
 import { SendEmailCommand } from "@aws-sdk/client-ses";
 import { sesClient } from "../aws-config";
 
-export async function sendEmail(to, subject, body) {
+export async function sendEmail(to, subject, body, from) {
   const params = {
-    Source: "devon@3dmandt.com", // The email address you verified with Amazon SES
+    Source: "devon@3dmandt.com",
     Destination: {
       ToAddresses: [to],
     },
@@ -19,6 +19,9 @@ export async function sendEmail(to, subject, body) {
         },
       },
     },
+    ReplyToAddresses: [
+      from
+    ],
   };
 
   try {

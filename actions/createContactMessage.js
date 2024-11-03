@@ -32,7 +32,7 @@ export async function createContactMessage(prevState, formData) {
       Message: ${message}
     `;
 
-    const emailSent = await sendEmail("devon@3dmandt.com", emailSubject, emailBody);
+    const emailSent = await sendEmail("devon@3dmandt.com", emailSubject, emailBody, email);
 
     revalidatePath('/contact-us');
 
