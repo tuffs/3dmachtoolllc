@@ -5,12 +5,12 @@ import { useFormState } from 'react-dom';
 import Hero from '@/components/Hero';
 import { createContactMessage } from '@/actions/createContactMessage';
 
-const ContactFormIntroMessage = ({ isVisible }) => {
+const ContactFormIntroMessage = ({ isVisible, isHidden }) => {
   return (
     <div
       id="contact_form__intro_message"
       className={`transition-opacity duration-1000 ${isVisible ? 'opacity-100' : 'opacity-0'}`}
-      style={{ display: isVisible ? 'block' : 'none' }}
+      style={{ display: isHidden ? 'none' : 'block' }}
     >
       <p className="text-gray-300">
         Thank you for choosing to contact us, we value your important feedback and requests for quotation on custom machined parts and tooling. We have an in-house Mechanical Engineer to aide with custom part design. Please write a detailed description of your request and we will make sure to get back in touch with you as soon as possible.
@@ -25,11 +25,11 @@ const ContactFormIntroMessage = ({ isVisible }) => {
   );
 }
 
-const SuccessMessage = ({ isVisible }) => {
+const SuccessMessage = ({ isVisible, isHidden }) => {
   return (
     <div
       className={`mt-8 mx-auto p-12 bg-gray-900 text-white rounded-xl w-[90%] md:w-[400px] transition-opacity duration-1000 ${isVisible ? 'opacity-100' : 'opacity-0'}`}
-      style={{ display: isVisible ? 'block' : 'none' }}
+      style={{ display: isHidden ? 'none' : 'block' }}
     >
       <h1 className="text-5xl font-bold text-center mb-3" style={{ textShadow: "1px 1px rgba(255,255,255,.25)" }}>✅</h1>
       <h2 className="text-2xl font-bold text-center" style={{ textShadow: "1px 1px rgba(0,0,0,.4)" }}>Message Sent!</h2>
@@ -50,7 +50,9 @@ export default function ContactUsPage() {
   const initialState = { success: false, message: '' };
   const [state, formAction] = useFormState(createContactMessage, initialState);
   const [showIntro, setShowIntro] = useState(true);
+  const [hideIntro, setHideIntro] = useState(false);
   const [showSuccess, setShowSuccess] = useState(false);
+  const [hideSuccess, setHideSuccess] = useState(true);
 
   useEffect(() => {
     if (nameRef.current) {
@@ -82,7 +84,11 @@ export default function ContactUsPage() {
       // Start the animation sequence
       setShowIntro(false);
       setTimeout(() => {
-        setShowSuccess(true);
+        setHideIntro(true);
+        setHideSuccess(false);
+        setTimeout(() => {
+          setShowSuccess(true);
+        }, 50); // Small delay to ensure the element is rendered before fading in
       }, 1000); // Wait for intro to fade out before showing success
     }
   }, [state]);
@@ -99,8 +105,8 @@ export default function ContactUsPage() {
           </section>
 
           <section className="mx-3 md:mx-32">
-            <ContactFormIntroMessage isVisible={showIntro} />
-            <SuccessMessage isVisible={showSuccess} />
+            <ContactFormIntroMessage isVisible={showIntro} isHidden={hideIntro} />
+            <SuccessMessage isVisible={showSuccess} isHidden={hideSuccess} />
 
             {!state.success && (
               <form className="mt-8" action={formAction}>
