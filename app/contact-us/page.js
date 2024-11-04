@@ -1,8 +1,42 @@
 'use client';
 
 import { useRef, useEffect, useState } from 'react';
+import { useFormState } from 'react-dom';
 import Hero from '@/components/Hero';
 import { createContactMessage } from '@/actions/createContactMessage';
+
+const ContactFormIntroMessage = ({ isVisible }) => {
+  return (
+    <div
+      id="contact_form__intro_message"
+      className={`transition-opacity duration-1000 ${isVisible ? 'opacity-100' : 'opacity-0'}`}
+      style={{ display: isVisible ? 'block' : 'none' }}
+    >
+      <p className="text-gray-300">
+        Thank you for choosing to contact us, we value your important feedback and requests for quotation on custom machined parts and tooling. We have an in-house Mechanical Engineer to aide with custom part design. Please write a detailed description of your request and we will make sure to get back in touch with you as soon as possible.
+
+        <br /><br />
+
+        <small className="text-gray-500 text-sm">
+          Attempts to sell products or services are prohibited, all sales messages will be filtered out by active AI systems.
+        </small>
+      </p>
+    </div>
+  );
+}
+
+const SuccessMessage = ({ isVisible }) => {
+  return (
+    <div
+      className={`mt-8 mx-auto p-12 bg-gray-900 text-white rounded-xl w-[90%] md:w-[400px] transition-opacity duration-1000 ${isVisible ? 'opacity-100' : 'opacity-0'}`}
+      style={{ display: isVisible ? 'block' : 'none' }}
+    >
+      <h1 className="text-5xl font-bold text-center mb-3" style={{ textShadow: "1px 1px rgba(255,255,255,.25)" }}>✅</h1>
+      <h2 className="text-2xl font-bold text-center" style={{ textShadow: "1px 1px rgba(0,0,0,.4)" }}>Message Sent!</h2>
+      <p className="text-center" style={{ textShadow: "1px 1px rgba(0,0,0,.24)" }}>We'll get back to you as soon as possible.</p>
+    </div>
+  );
+}
 
 export default function ContactUsPage() {
   const nameRef = useRef(null);
@@ -12,7 +46,11 @@ export default function ContactUsPage() {
     phone: '',
     message: ''
   });
-  const [submitStatus, setSubmitStatus] = useState({ success: false, message: '' });
+
+  const initialState = { success: false, message: '' };
+  const [state, formAction] = useFormState(createContactMessage, initialState);
+  const [showIntro, setShowIntro] = useState(true);
+  const [showSuccess, setShowSuccess] = useState(false);
 
   useEffect(() => {
     if (nameRef.current) {
@@ -32,22 +70,22 @@ export default function ContactUsPage() {
     }));
   };
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    const response = await createContactMessage(formData);
-
-    if (response.success) {
-      setSubmitStatus({ success: true, message: response.message });
+  useEffect(() => {
+    if (state.success) {
       setFormData({
         name: '',
         email: '',
         phone: '',
         message: '',
       });
-    } else {
-      setSubmitStatus({ success: false, message: response.message });
+
+      // Start the animation sequence
+      setShowIntro(false);
+      setTimeout(() => {
+        setShowSuccess(true);
+      }, 1000); // Wait for intro to fade out before showing success
     }
-  };
+  }, [state]);
 
   return (
     <>
@@ -61,23 +99,14 @@ export default function ContactUsPage() {
           </section>
 
           <section className="mx-3 md:mx-32">
-            <p className="text-gray-300">
-              Thank you for choosing to contact us, we value your important feedback and requests for quotation on custom machined parts and tooling. We have an in-house Mechanical Engineer to aide with custom part design. Please write a detailed description of your request and we will make sure to get back in touch with you as soon as possible.
+            <ContactFormIntroMessage isVisible={showIntro} />
+            <SuccessMessage isVisible={showSuccess} />
 
-              You can also directly email Devon Kiss at <a href="mailto:devon@3dmandt.com" className="text-gray-200 underline">devon@3dmandt.com</a> or call now <a href="tel:14482566963" className="text-gray-200 underline">448-256-6963</a>.
-            </p>
-
-            {submitStatus.success ? (
-              <div className="mt-8 p-6 bg-green-500 text-white rounded">
-                <h2 className="text-2xl font-bold mb-4">Thank You!</h2>
-                <p>{submitStatus.message}</p>
-                <p className="mt-4">We'll get back to you as soon as possible.</p>
-              </div>
-            ) : (
-              <form className="mt-8" onSubmit={handleSubmit}>
-                {submitStatus.message && (
+            {!state.success && (
+              <form className="mt-8" action={formAction}>
+                {state.message && (
                   <div className="mb-4 p-4 bg-red-500 text-white rounded">
-                    {submitStatus.message}
+                    {state.message}
                   </div>
                 )}
                 <div className="mb-4">
@@ -85,11 +114,12 @@ export default function ContactUsPage() {
                     Your Name
                   </label>
                   <input
-                    className="w-full p-4 text-gray-300 bg-gray-700 rounded"
+                    className="w-full p-4 text-gray-300 bg-gray-700 rounded mb-4"
                     id="name"
+                    name="name"
                     ref={nameRef}
                     type="text"
-                    placeholder="Your Name"
+                    placeholder="Name"
                     value={formData.name}
                     onChange={handleChange}
                     required
@@ -101,10 +131,11 @@ export default function ContactUsPage() {
                     Your Phone Number
                   </label>
                   <input
-                    className="w-full p-4 text-gray-300 bg-gray-700 rounded"
+                    className="w-full p-4 text-gray-300 bg-gray-700 rounded mb-4"
                     id="phone"
+                    name="phone"
                     type="tel"
-                    placeholder="Your Phone Number"
+                    placeholder="Phone Number"
                     value={formData.phone}
                     onChange={handleChange}
                     required
@@ -116,10 +147,11 @@ export default function ContactUsPage() {
                     Your Email Address
                   </label>
                   <input
-                    className="w-full p-4 text-gray-300 bg-gray-700 rounded"
+                    className="w-full p-4 text-gray-300 bg-gray-700 rounded mb-4"
                     id="email"
+                    name="email"
                     type="email"
-                    placeholder="Your Email Address"
+                    placeholder="Email Address"
                     value={formData.email}
                     onChange={handleChange}
                     required
@@ -128,12 +160,13 @@ export default function ContactUsPage() {
 
                 <div className="mb-4">
                   <label className="block text-gray-300 text-sm font-medium mb-2" htmlFor="message">
-                    Your Message or Inquiry
+                    Your Message <small className="text-gray-400 ml-2">Do not enter sales pitches, they will not reach our desk</small>
                   </label>
                   <textarea
-                    className="w-full p-4 text-gray-300 bg-gray-700 rounded min-h-[175px]"
+                    className="w-full p-4 text-gray-300 bg-gray-700 rounded mb-4 min-h-[175px]"
                     id="message"
-                    placeholder="Enter your message here, be as specific as possible."
+                    name="message"
+                    placeholder="Enter your message here, please be as specific as possible."
                     value={formData.message}
                     onChange={handleChange}
                     required
@@ -144,7 +177,7 @@ export default function ContactUsPage() {
                   className="w-full mt-2 md:mt-3 p-4 bg-gray-800 text-white rounded hover:bg-gray-700 transition-colors duration-1000"
                   type="submit"
                 >
-                  Send Your Message
+                  Send Message
                 </button>
               </form>
             )}
