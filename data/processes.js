@@ -1,8 +1,8 @@
 const processes = [
   {
     id: 1,
-    heading: 'DESIGN DOCUMENTS',
-    content: 'Project requirements, design documents, CAD, and 3D Model files are provided to us to analyzed to ensure feasibility of client\'s needs.',
+    heading: 'PROJECT ASSESSMENT',
+    content: 'You provide your requirements, design docs, and CAD or 3D model files. We analyze your requirements to understand your precise needs. We then speak with you in the event of questions or discrepancies.',
     imageUrl: '/process/01_design_documents.webp',
     longContent: '',
   },
