@@ -4,12 +4,12 @@ import links from '@/data/links';
 const Navbar = () => {
   return (
     <nav role="navigation" className="w-full">
-      <Links links={links} />
+      <DesktopLinks links={links} />
     </nav>
   );
 }
 
-const Links = ({ links }) => {
+const DesktopLinks = ({ links }) => {
   return (
     <ul className="hidden mt-6 ml-3 md:ml-0 md:mt-12 md:flex md:justify-center md:space-x-4">
       {links.map((navItemEl, index) => {
