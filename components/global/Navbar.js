@@ -11,12 +11,12 @@ const Navbar = () => {
 
 const Links = ({ links }) => {
   return (
-    <ul className="block mt-6 ml-3 md:ml-0 md:mt-12 md:flex md:justify-center md:space-x-4">
+    <ul className="hidden mt-6 ml-3 md:ml-0 md:mt-12 md:flex md:justify-center md:space-x-4">
       {links.map((navItemEl, index) => {
         return (
           <li
             key={index}
-          > 
+          >
             <AnimatedNavLink link={navItemEl.href} text={navItemEl.label} />
           </li>
         )
