@@ -42,20 +42,20 @@ const BaseServices = () => {
                     src={s.imageUrl}
                     className="w-full h-full object-cover"
                     initial={{ scale: 1 }}
-                    animate={{ 
-                      scale: hoveredIndex === i ? zoomFactor : 1 
+                    animate={{
+                      scale: hoveredIndex === i ? zoomFactor : 1
                     }}
                     transition={{ duration: zoomDuration }}
                     alt={s.name}
                   />
                 </motion.div>
                 <h1
-                  className="text-base mt-3 font-bold text-gray-400 group-hover:text-white tracking-tighter transition-colors duration-700"
+                  className="text-lg mt-4 font-bold text-gray-400 group-hover:text-white tracking-wide transition-colors duration-700"
                 >
                   {s.name}
                 </h1>
               </div>
-              <div className="mt-4">
+              <div className="mt-3">
                 <p
                   className="text-sm text-gray-400 text-justify group-hover:text-white border-t-[1px] border-r-[1px] border-t-[#9ca3af44] border-r-[#9ca3af44] group-hover:border-t-white group-hover:border-r-white transition-colors duration-700 pt-2 pr-2"
                 >
