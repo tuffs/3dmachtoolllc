@@ -1,7 +1,18 @@
 import { ImageResponse } from 'next/server';
 
-export async function GET() {
-  const size = { width: 180, height: 180 };
+export const runtime = 'edge';
+
+export function generateImageMetadata() {
+  return [
+    {
+      contentType: 'image/png',
+      size: { width: 180, height: 180 },
+      id: 'apple-icon',
+    },
+  ];
+}
+
+export default function Icon() {
   return new ImageResponse(
     (
       <div
@@ -19,6 +30,6 @@ export async function GET() {
         <img src="/logo_mark.png" alt="Logo" style={{ width: '100%', height: '100%' }} />
       </div>
     ),
-    size
+    { width: 180, height: 180 }
   );
 }

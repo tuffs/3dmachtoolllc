@@ -1,7 +1,24 @@
-import { ImageResponse } from 'next/server'
+import { ImageResponse } from 'next/server';
 
-export async function GET() {
-  const size = { width: 192, height: 192 }
+export const runtime = 'edge';
+
+export function generateImageMetadata() {
+  return [
+    {
+      contentType: 'image/png',
+      size: { width: 32, height: 32 },
+      id: 'favicon',
+    },
+    {
+      contentType: 'image/png',
+      size: { width: 192, height: 192 },
+      id: 'icon',
+    },
+  ];
+}
+
+export default function Icon({ id }) {
+  const size = id === 'favicon' ? 32 : 192;
   return new ImageResponse(
     (
       <div
@@ -19,6 +36,6 @@ export async function GET() {
         <img src="/logo_mark.png" alt="Logo" style={{ width: '100%', height: '100%' }} />
       </div>
     ),
-    size
+    { width: size, height: size }
   );
 }
