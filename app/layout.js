@@ -7,14 +7,14 @@ import ScrollToTopButton from "@/components/global/ScrollToTop";
 export const metadata = {
   title: "3D MACHINE + TOOL LLC",
   description: "Precision design, machining, and tooling services.",
-  manifest: '/manifest.json',
   icons: {
     icon: [
-      { url: '/icon?id=favicon', sizes: '32x32', type: 'image/png' },
-      { url: '/icon?id=icon', sizes: '192x192', type: 'image/png' },
+      { url: '/favicon.ico', sizes: 'any' },
+      { url: '/favicon-192x192.png', sizes: '192x192', type: 'image/png' },
+      { url: '/favicon-512x512.png', sizes: '512x512', type: 'image/png' },
     ],
     apple: [
-      { url: '/apple-icon', sizes: '180x180', type: 'image/png' },
+      { url: '/favicon-180x180.png', sizes: '180x180', type: 'image/png' },
     ],
   },
 };
