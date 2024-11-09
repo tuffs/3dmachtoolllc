@@ -7,13 +7,23 @@ import ScrollToTopButton from "@/components/global/ScrollToTop";
 export const metadata = {
   title: "3D MACHINE + TOOL LLC",
   description: "Precision design, machining, and tooling services.",
+  manifest: '/manifest.json',
+  icons: {
+    icon: [
+      { url: '/favicon.ico' },
+      { url: '/icon.png', type: 'image/png' },
+    ],
+    apple: [
+      { url: '/apple-icon.png', type: 'image/png' },
+    ],
+  },
 };
 
 export default function RootLayout({ children }) {
   return (
     <>
-      <Analytics/>
-      <SpeedInsights/>
+      <Analytics />
+      <SpeedInsights />
       <html lang="en">
         <body className="antialiased">
           <Navbar />

@@ -14,6 +14,7 @@ Prisma will then be used as the ORM to interface between our app and SaaS soluti
 
 - Create an animated fullscreen menu for desktop (smaller display, user enforced) and primarily for mobile phones.
 
+  - Use the <MobileMenu/> component for displaying the mobile menu.
   - Hide the Desktop navigation on size small.
   - fade in and fade out with close for the fullscreen mobile menu.
   - link items should be a bit bigger and operate differently (a little) from Desktop views.
