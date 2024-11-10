@@ -67,6 +67,7 @@ export default function ScrollToTopButton() {
           whileHover={{
             backgroundColor: '#141414',
           }}
+          ariaLabel="Scroll To Top"
         >
           <FaArrowUp className="w-3 h-3" />
         </motion.button>
