@@ -50,16 +50,18 @@ const AnimatedNavLink = ({ link, text, additionalClasses }) => {
       <a
         ref={linkRef}
         href={link}
-        className={`relative text-gray-400 hover:text-gray-200 transition-colors duration-300 ease-in-out inline-block ${additionalClasses}`}
+        className={`relative mx-2 pb-[.275rem] text-gray-400 hover:text-gray-200 transition-colors duration-300 ease-in-out inline-block ${additionalClasses}`}
         style={{
           fontSize: '11px'
         }}
       >
-        {text}
-        <span
-          ref={underlineRef}
-          className="absolute bottom-0 left-1/2 w-0 h-[.045rem] bg-gray-400 transition-colors duration-300 ease-in-out group-hover:bg-gray-200"
-        ></span>
+        <div className="pt-5">
+          {text}
+          <span
+            ref={underlineRef}
+            className="absolute bottom-0 left-1/2 w-0 h-[.045rem] bg-gray-400 transition-colors duration-300 ease-in-out group-hover:bg-gray-200"
+          ></span>
+        </div>
       </a>
     </div>
   );
