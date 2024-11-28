@@ -120,7 +120,7 @@ export default function ContactUsPage() {
                     Your Name
                   </label>
                   <input
-                    className="w-full p-4 text-gray-300 bg-gray-700 rounded mb-4"
+                    className="w-full p-4 text-gray-300 tertiary_bg_color rounded mb-4"
                     id="name"
                     name="name"
                     ref={nameRef}
@@ -137,7 +137,7 @@ export default function ContactUsPage() {
                     Your Phone Number
                   </label>
                   <input
-                    className="w-full p-4 text-gray-300 bg-gray-700 rounded mb-4"
+                    className="w-full p-4 text-gray-300 tertiary_bg_color rounded mb-4"
                     id="phone"
                     name="phone"
                     type="tel"
@@ -153,7 +153,7 @@ export default function ContactUsPage() {
                     Your Email Address
                   </label>
                   <input
-                    className="w-full p-4 text-gray-300 bg-gray-700 rounded mb-4"
+                    className="w-full p-4 text-gray-300 tertiary_bg_color rounded mb-4"
                     id="email"
                     name="email"
                     type="email"
@@ -169,7 +169,7 @@ export default function ContactUsPage() {
                     Your Message <small className="text-gray-400 ml-2">Do not enter sales pitches, they will not reach our desk</small>
                   </label>
                   <textarea
-                    className="w-full p-4 text-gray-300 bg-gray-700 rounded mb-4 min-h-[175px]"
+                    className="w-full p-4 text-gray-300 tertiary_bg_color rounded mb-4 min-h-[175px]"
                     id="message"
                     name="message"
                     placeholder="Enter your message here, please be as specific as possible."
