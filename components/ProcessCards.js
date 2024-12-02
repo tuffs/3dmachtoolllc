@@ -1,10 +1,12 @@
 'use client';
 
 import React, { useState } from 'react';
+import { useRouter } from 'next/navigation';
 import { createPortal } from 'react-dom';
 import { RxArrowRight } from "react-icons/rx";
 
 const Modal = ({ isOpen, onClose, heading, content }) => {
+  const router = useRouter();
   if (!isOpen) return null;
 
   return createPortal(
@@ -17,7 +19,7 @@ const Modal = ({ isOpen, onClose, heading, content }) => {
             </h3>
             <button
               type="button"
-              className="text-gray-400 bg-transparent hover:bg-gray-900 hover:text-gray-300 rounded-lg text-sm w-8 h-8 ms-auto inline-flex justify-center items-center hover:border-[.09rem] hover:border-gray-500"
+              className="text-gray-700 bg-transparent hover:text-gray-300 rounded-lg text-sm w-8 h-8 ms-auto inline-flex justify-center items-center hover:border-[.09rem] hover:border-gray-300"
               onClick={onClose}
             >
               <svg className="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 14">
@@ -33,11 +35,11 @@ const Modal = ({ isOpen, onClose, heading, content }) => {
           </div>
           <div className="flex items-center p-4 md:p-5 rounded-b">
             <button
-              onClick={onClose}
               type="button"
-              className="text-white bg-gray-800 border-[.09rem] border-gray-800 hover:bg-gray-900 hover:border-[.09rem] hover:border-gray-300 font-medium rounded-lg text-xs px-5 py-1.5 text-center mt-6"
+              className="mx-auto text-white bg-gray-800 border-[.09rem] border-gray-800 hover:bg-gray-900 hover:border-[.09rem] hover:border-gray-300 font-medium rounded-lg text-xs px-5 py-2.5 text-center mt-6"
+              onClick={() => router.push('/contact-us')}
             >
-              Close
+              Get more information on our {heading.split(' ').map(word => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase()).join(' ')} Process
             </button>
           </div>
         </div>

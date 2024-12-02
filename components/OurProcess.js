@@ -39,7 +39,7 @@ const hoverVariants = {
 
 const paragraphVariants = {
   hidden: { opacity: 0 },
-  visible: { 
+  visible: {
     opacity: 1,
     transition: {
       duration: 3,
@@ -50,7 +50,7 @@ const paragraphVariants = {
 
 const imageVariants = {
   hidden: { opacity: 0 },
-  visible: { 
+  visible: {
     opacity: 1,
     transition: {
       duration: 2,
@@ -83,7 +83,7 @@ const OurProcess = () => {
       images.forEach((_, index) => {
         setTimeout(() => {
           imageControls[index].start("visible")
-          
+
           // Start button animation when the second to last image starts to fade in
           if (index === images.length - 2) {
             buttonControls.start("visible")
@@ -100,12 +100,12 @@ const OurProcess = () => {
 
   return (
     <div ref={ref} className="mx-4 sm:mx-8 md:mx-16 lg:mx-32 text-center overflow-hidden">
-      <motion.h2 
+      <motion.h2
         className="text-2xl sm:text-3xl text-gray-400 font-light flex justify-center items-center space-x-2"
         variants={hoverVariants}
         whileHover="hover"
         initial={{ opacity: 0 }}
-        animate={{ 
+        animate={{
           opacity: 1,
           color: '#9ca3af',
           transition: { duration: 1.5 },
@@ -114,12 +114,12 @@ const OurProcess = () => {
         <motion.div
           variants={{
             hidden: { opacity: 0 },
-            visible: { 
-              opacity: 1, 
-              transition: { 
+            visible: {
+              opacity: 1,
+              transition: {
                 duration: 1.5,
                 ease: "linear"
-              } 
+              }
             },
           }}
           initial="hidden"
@@ -158,14 +158,14 @@ const OurProcess = () => {
         </motion.div>
       ))}
 
-      <motion.div 
+      <motion.div
         className="mt-12 px-4 md:px-8 flex justify-center"
         variants={imageVariants}
         initial="hidden"
         animate={buttonControls}
       >
         <a href="/our-process" className="inline-flex items-center text-gray-400 border-[1px] border-[#9ca3af44] p-4 hover:text-gray-200 hover:border-gray-200 transition-colors duration-700">
-          Discover Our Complete Process <RxArrowRight className="text-2xl ml-2" />
+          Discover Our Process <RxArrowRight className="text-2xl ml-2" />
         </a>
       </motion.div>
     </div>
