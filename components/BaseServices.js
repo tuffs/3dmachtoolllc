@@ -21,12 +21,13 @@ const BaseServices = () => {
   }, []);
 
   return (
-    <div className="my-32 mb-24">
+    <div className="my-32 mb-24" data-testid="base_services__container">
       <ul className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 px-4 md:px-8">
         {services.map((s, i) => (
           <li
             key={i}
             className="w-full max-w-md mx-auto"
+            data-testid={`base_services__service_${i}`}
           >
             <a
               href="/capabilities"
