@@ -3,23 +3,10 @@
 import React from 'react';
 import { FiUploadCloud, FiFileText, FiUser } from 'react-icons/fi';
 import dynamic from 'next/dynamic';
-import { useRef, useEffect } from 'react';
 
 const AnimatedButton = dynamic(() => import('@/components/ui/AnimatedButton'), { ssr: false });
 
 export default function RequestForQuote() {
-
-  const uploadFileRef = useRef(null);
-
-  useEffect(() => {
-    if (uploadFileRef.current) {
-      uploadFileRef.current.focus();
-      uploadFileRef.current.scrollIntoView({
-        behavior: 'smooth',
-        block: 'start'
-      });
-    }
-  }, []);
 
   return (
     <div className="container mx-auto p-4 mb-24">
@@ -29,9 +16,7 @@ export default function RequestForQuote() {
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         {/* File Upload Card */}
         <div className="secondary_bg_color p-6 rounded-lg border-[.1rem] border-gray-100 shadow-md">
-          <h2 className="text-xl font-semibold text-gray-300 mb-4 flex items-center"
-            ref={uploadFileRef}
-          >
+          <h2 className="text-xl font-semibold text-gray-300 mb-4 flex items-center">
             <FiUploadCloud className="mr-2" /> Upload Design Files
           </h2>
           <div className="tertiary_bg_color border-2 border-dashed border-gray-400 rounded-lg p-4 text-center">
