@@ -4,13 +4,13 @@ The official website will now be developed using NextJS and TailwindCSS for the 
 We will continue to use an ORM to interface with a PostgreSQL database. But, for free with Neon.tech.
 Prisma will then be used as the ORM to interface between our app and SaaS solution for database activity.
 
-# DESIGN PROCESS, IMPORTANT CHANGES AND ADDITIONS
+## DESIGN PROCESS, IMPORTANT CHANGES AND ADDITIONS
 
 - Recreate the animation set for the <Hero/> component.
 
   - The logo should hover, isolating slowly "in place" with framer motion.
 
-# MOBILE PHONE NAVIGATION
+## MOBILE PHONE NAVIGATION
 
 - Create an animated fullscreen menu for desktop (smaller display, user enforced) and primarily for mobile phones.
 
@@ -34,12 +34,16 @@ Prisma will then be used as the ORM to interface between our app and SaaS soluti
 - Data limitations, design doc package limits
   - Need to figure out what the biggest project in 3d models dad has in size for individual solutions are and x2 the available upload data per quote.
 
-## Dealing with SPAM and BOT Activity
 
-- Filter out fake or spamming users from contacting or annoying the admins.
-- I want to try and ensure that genuine people are acccessing my website's content.
-  - Person seeking services or products which are provided.
-  - Upon identification of illegitimate behaviour or access:
-    - Save that persons access information in full.
-    - Refuse service to that computer or set of computers.
-    - Prevent all data submitted from reaching admins.
+
+# COMPLETED ITEMS:
+
+## [x] Dealing with SPAM and BOT Activity
+
+- [x] Filter out fake or spamming users from contacting or annoying the admins.
+- [x] I want to try and ensure that genuine people are acccessing my website's content.
+  - [x] Person seeking services or products which are provided.
+  - [x] Upon identification of illegitimate behaviour or access:
+    - [x] Save that persons access information in full.
+    - [x] Refuse service to that computer or set of computers.
+    - [x] Prevent all data submitted from reaching admins.

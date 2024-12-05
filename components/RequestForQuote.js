@@ -14,24 +14,32 @@ export default function RequestForQuote() {
         Our team of experts has developed a streamlined process to provide you with a quotation for your projects. Please provide us with the following information and we will get back to you as soon as possible. You may <a href="/contact-us" className="underline hover:text-gray-300">contact us</a> directly if you have any questions.
       </p>
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-        {/* File Upload Card */}
+
+        {/* Contact Information Card */}
         <div className="secondary_bg_color p-6 rounded-lg border-[.1rem] border-gray-100 shadow-md">
           <h2 className="text-xl font-semibold text-gray-300 mb-4 flex items-center">
-            <FiUploadCloud className="mr-2" /> Upload Design Files
+            <FiUser className="mr-2" /> Contact Information
           </h2>
-          <div className="tertiary_bg_color border-2 border-dashed border-gray-400 rounded-lg p-4 text-center">
-            <p className="text-sm text-gray-300 mb-2">Drag and drop files here or click to upload</p>
-            <input type="file" className="hidden" id="uploadedDesignFiles" multiple />
-            <AnimatedButton
-              as="label"
-              htmlFor="uploadedDesignFiles"
-              className="w-full mt-6 tertiary_bg_color border-[.1rem] border-gray-100 text-gray-200 font-semibold py-2 px-4 rounded-lg text-sm"
-            >
-              Select Files
-            </AnimatedButton>
+          <div className="space-y-4">
+            <div>
+              <label htmlFor="name" className="block text-sm font-medium text-gray-300 mb-1">Name</label>
+              <input type="text" id="name" className="w-full p-2 text-sm tertiary_bg_color text-gray-300 border border-gray-300 rounded-lg" placeholder="Enter your name" />
+            </div>
+            <div>
+              <label htmlFor="businessName" className="block text-sm font-medium text-gray-300 mb-1">Business Name</label>
+              <input type="text" id="businessName" className="w-full p-2 text-sm tertiary_bg_color text-gray-300 border border-gray-300 rounded-lg" placeholder="Enter your business name" />
+            </div>
+            <div>
+              <label htmlFor="phone" className="block text-sm font-medium text-gray-300 mb-1">Phone Number</label>
+              <input type="tel" id="phone" className="w-full p-2 text-sm tertiary_bg_color text-gray-300 border border-gray-300 rounded-lg" placeholder="Enter your phone number" />
+            </div>
+            <div>
+              <label htmlFor="email" className="block text-sm font-medium text-gray-300 mb-1">Email Address</label>
+              <input type="email" id="email" className="w-full p-2 text-sm tertiary_bg_color text-gray-300 border border-gray-300 rounded-lg" placeholder="Enter your email address" />
+            </div>
           </div>
-          <p className="text-xs text-gray-500 mt-2">Uploaded files will not be shared.</p>
         </div>
+
 
         {/* Project Description Card */}
         <div className="secondary_bg_color p-6 rounded-lg border-[.1rem] border-gray-100 shadow-md">
@@ -67,31 +75,26 @@ export default function RequestForQuote() {
           </div>
         </div>
 
-        {/* Contact Information Card */}
+        {/* File Upload Card */}
         <div className="secondary_bg_color p-6 rounded-lg border-[.1rem] border-gray-100 shadow-md">
           <h2 className="text-xl font-semibold text-gray-300 mb-4 flex items-center">
-            <FiUser className="mr-2" /> Contact Information
+            <FiUploadCloud className="mr-2" /> Upload Design Files
           </h2>
-          <div className="space-y-4">
-            <div>
-              <label htmlFor="name" className="block text-sm font-medium text-gray-300 mb-1">Name</label>
-              <input type="text" id="name" className="w-full p-2 text-sm tertiary_bg_color text-gray-300 border border-gray-300 rounded-lg" placeholder="Enter your name" />
-            </div>
-            <div>
-              <label htmlFor="businessName" className="block text-sm font-medium text-gray-300 mb-1">Business Name</label>
-              <input type="text" id="businessName" className="w-full p-2 text-sm tertiary_bg_color text-gray-300 border border-gray-300 rounded-lg" placeholder="Enter your business name" />
-            </div>
-            <div>
-              <label htmlFor="phone" className="block text-sm font-medium text-gray-300 mb-1">Phone Number</label>
-              <input type="tel" id="phone" className="w-full p-2 text-sm tertiary_bg_color text-gray-300 border border-gray-300 rounded-lg" placeholder="Enter your phone number" />
-            </div>
-            <div>
-              <label htmlFor="email" className="block text-sm font-medium text-gray-300 mb-1">Email Address</label>
-              <input type="email" id="email" className="w-full p-2 text-sm tertiary_bg_color text-gray-300 border border-gray-300 rounded-lg" placeholder="Enter your email address" />
-            </div>
+          <div className="tertiary_bg_color border-2 border-dashed border-gray-400 rounded-lg p-4 text-center">
+            <p className="text-sm text-gray-300 mb-2">Drag and drop files here or click to upload</p>
+            <input type="file" className="hidden" id="uploadedDesignFiles" multiple />
+            <AnimatedButton
+              as="label"
+              htmlFor="uploadedDesignFiles"
+              className="w-full mt-6 tertiary_bg_color border-[.1rem] border-gray-100 text-gray-200 font-semibold py-2 px-4 rounded-lg text-sm"
+            >
+              Select Files
+            </AnimatedButton>
           </div>
+          <p className="text-xs text-gray-500 mt-2">Uploaded files will not be shared.</p>
           <AnimatedButton
             className="w-full mt-6 tertiary_bg_color border-[.1rem] border-gray-100 text-gray-200 font-semibold py-2 px-4 rounded-lg text-sm"
+            disabled={true}
           >
             Submit Request for Quote
           </AnimatedButton>
