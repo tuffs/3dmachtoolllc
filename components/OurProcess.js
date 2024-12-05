@@ -99,7 +99,7 @@ const OurProcess = () => {
   }, [isInView, controls, paragraphControls, buttonControls, imageControls, images.length])
 
   return (
-    <div ref={ref} className="mx-4 sm:mx-8 md:mx-16 lg:mx-32 text-center overflow-hidden">
+    <div ref={ref} className="mx-4 sm:mx-8 md:mx-16 lg:mx-32 text-center overflow-hidden" data-testid="our_process__container">
       <motion.h2
         className="text-2xl sm:text-3xl text-gray-400 font-light flex justify-center items-center space-x-2"
         variants={hoverVariants}
