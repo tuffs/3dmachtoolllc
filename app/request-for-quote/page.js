@@ -1,9 +1,8 @@
 'use client';
 
-import Hero from '@/components/Hero';
-import Separator from '@/components/global/Separator';
-import RequestForQuote from '@/components/RequestForQuote';
 import { useRef, useEffect } from 'react';
+import Hero from '@/components/Hero';
+import RequestForQuote from '@/components/RequestForQuote';
 
 export default function RequestForQuotePage() {
   const rfqHeadingRef = useRef(null);
@@ -34,3 +33,4 @@ export default function RequestForQuotePage() {
     </>
   );
 }
+

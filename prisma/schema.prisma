@@ -39,13 +39,14 @@ model Quotation {
 }
 
 model Contact {
-  id        Int      @id @default(autoincrement())
-  name      String
-  email     String
-  phone     String
-  message   String
-  spamScore Int      @default(0)
-  createdAt DateTime @default(now())
+  id          Int      @id @default(autoincrement())
+  name        String
+  email       String
+  phone       String
+  message     String
+  respondedTo Boolean  @default(false)
+  spamScore   Int      @default(0)
+  createdAt   DateTime @default(now())
 }
 
 model Admin {
