@@ -21,34 +21,54 @@ function prepareFileName(businessName, originalFileName) {
     .slice(0, 96);
 
   const lastDotIndex = originalFileName.lastIndexOf('.');
-  const nameWithoutExtension = sanitizeFileName(originalFileName.slice(0, lastDotIndex));
-  const extension = originalFileName.slice(lastDotIndex);
+  let nameWithoutExtension, extension;
+
+  if (lastDotIndex === -1) {
+    nameWithoutExtension = sanitizeFileName(originalFileName);
+    extension = '';
+  } else {
+    nameWithoutExtension = sanitizeFileName(originalFileName.slice(0, lastDotIndex));
+    extension = originalFileName.slice(lastDotIndex + 1).toLowerCase();
+  }
 
   const combinedName = `${sanitizedBusinessName}__${nameWithoutExtension}`;
+  const maxLengthWithoutExtension = 240 - (extension ? extension.length + 1 : 0);
+  const trimmedCombinedName = combinedName.slice(0, maxLengthWithoutExtension);
 
-  return combinedName.slice(0, 240) + extension;
+  return extension ? `${trimmedCombinedName}.${extension}` : trimmedCombinedName;
 }
 
 export async function createRequestForQuote(formData) {
   try {
-    const uploadedFiles = formData.getAll('uploadedDesignFiles') || [];
+    const uploadedFiles = formData.getAll('uploadedDesignFiles');
 
     // Upload files to Cloudinary
-    const uploadedDesignFiles = Array.from(new Set(await Promise.all(uploadedFiles.map(async (file) => {
+    const uploadedDesignFilesSet = new Set(await Promise.all(uploadedFiles.map(async (file) => {
       const fileName = prepareFileName(formData.get('businessName'), file.name);
       const arrayBuffer = await file.arrayBuffer();
       const buffer = Buffer.from(arrayBuffer);
+
+      const extension = fileName.split('.').pop() || '';
+
       const result = await new Promise((resolve, reject) => {
         cloudinary.uploader.upload_stream(
-          { public_id: fileName, folder: '3DMANDT/QUOTES' },
+          {
+            public_id: fileName.split('.')[0], // Remove extension from public_id
+            folder: '3DMANDT/QUOTES',
+            format: extension // Explicitly set the format
+          },
           (error, result) => {
             if (error) reject(error);
             else resolve(result);
           }
         ).end(buffer);
       });
+
+      // Return the full Cloudinary URL
       return result.secure_url;
-    }))));
+    })));
+
+    const uploadedDesignFiles = Array.from(uploadedDesignFilesSet);
 
     const quotation = await database.quotation.create({
       data: {
@@ -62,7 +82,7 @@ export async function createRequestForQuote(formData) {
         material: formData.get('material'),
         unitOfMeasurement: formData.get('unitOfMeasurement'),
         tolerance: formData.get('tolerance'),
-        uploadedDesignFiles: uploadedDesignFiles,
+        uploadedDesignFiles: uploadedDesignFiles, // This now contains unique full Cloudinary URLs
       },
     });
 
@@ -82,7 +102,7 @@ export async function createRequestForQuote(formData) {
       Tolerance: ${quotation.tolerance}
 
       Uploaded Design Files:
-      ${uploadedDesignFiles.join('\n\n')}
+      ${uploadedDesignFiles.join('\n')}
     `;
 
     // Send email
@@ -103,3 +123,4 @@ export async function createRequestForQuote(formData) {
     return { success: false, error: 'There was an error creating the request for quotation.' };
   }
 }
+
