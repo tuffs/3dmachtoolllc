@@ -14,12 +14,32 @@ export default function NewProductPage() {
           </section>
 
           <section className="mx-3 md:mx-32">
-            <p className="text-gray-300">
-              To add a product to the inventory, fill out the form below with the product details. Your image files will be uploaded to Cloudinary and stored there. It is best to ensure all images have the same aspect ratio, height and width. This will ensure a consistent look and feel to the product listing. Be sure to enter the quantity on hand so that inventory count can be tracked and production can begin when pieces on hand are at refill levels.
+            <p className="text-gray-300 mt-3">
+              The following are IMPORTANT details which will make or break the product's listing. Deviate at your own peril.<br />
+            </p>
+            <ul className="text-gray-300 mt-3 list-disc list-inside ml-4">
+              <li>Fill out the form appropriately with a unique and descriptive Product Name and Model Number</li>
+              <li>Product details should be concise and understandable, yet descriptive for users to read. This will boost our SEO.</li>
+              <li className="mb-3">After these are covered, the most important steps are below.</li>
+              <li className="ml-4 list-none">
+                <strong>ALL IMAGES SHOULD BE</strong>
+              </li>
+              <ol className="list-disc list-inside ml-4">
+                <li>1920 WIDTH x 1080 HEIGHT</li>
+                <li>72 DPI (Dots per Inch)</li>
+                <li>RGB Color Mode</li>
+                <li>File Type: .JPG or .PNG - <i>Zero Exceptions!</i></li>
+              </ol>
+            </ul>
+            <p className="text-gray-300 mt-3">
+              In order to have a consistent, professional look across the website your images must adhere to the above guidelines. Once they are added to the form below and the form is submitted the Product will be saved to the database, a reference to the images will be added to the database as well after they are uploaded to Cloudinary for proper media storage and distribution via Amazon S3 servers with rigorous rulesets.
+            </p>
+            <p className="text-gray-300 mt-3">
+              In addition, be sure to enter the quantity on hand so that inventory count can be tracked and production can begin when pieces on hand are at refill levels.
             </p>
 
             <p className="text-gray-300 mt-3">
-              If you have any trouble inserting new products, please message Devon Kiss at <a href="mailto:devon@3dmandt.com" className="underline text-gray-200">devon@3dmandt.com</a> or call at <a href="tel:14482566963" className="underline text-gray-200">1-448-256-6963</a> for further assistance.
+              If you have any trouble inserting new products, please message Devon Kiss at <a href="mailto:devon@3dmandt.com" className="underline text-gray-200">devon@3dmandt.com</a> for further assistance.
             </p>
 
             <form className="mt-8">
