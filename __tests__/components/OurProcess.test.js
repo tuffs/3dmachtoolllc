@@ -9,11 +9,4 @@ describe("OurProcess", () => {
 
     expect(ourProcess).toBeInTheDocument();
   });
-
-  xit('renders the Logo Mark in the Hero component', () => {
-    // render(<Hero />);
-    // const logoMark = screen.getByTestId('hero__logo_mark');
-
-    // expect(logoMark).toBeInTheDocument();
-  });
 });
