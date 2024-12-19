@@ -7,7 +7,7 @@ export default function NewProductPage() {
       <div className="my-24">
         <Hero />
         <div className="mt-24 text-white pt-0 p-8">
-          <section className="mb-12">
+          <section className="mb-10">
             <h1 className="text-4xl font-bold text-center">
               Create New Product
             </h1>
@@ -43,56 +43,56 @@ export default function NewProductPage() {
             </p>
 
             <form className="mt-8">
-              <div className="mb-4">
+              <div className="mb-10">
                 <label className="block text-gray-300 text-sm font-medium mb-2" htmlFor="name">
                   Product Name
                 </label>
                 <input className="w-full p-4 text-gray-300 bg-gray-700 rounded" id="name" type="text" placeholder="Product Name" />
               </div>
 
-              <div className="mb-4">
+              <div className="mb-10">
                 <label className="block text-gray-300 text-sm font-medium mb-2" htmlFor="modelNumber">
                   Product Model Number
                 </label>
                 <input className="w-full p-4 text-gray-300 bg-gray-700 rounded" id="modelNumber" type="text" placeholder="Model Number" />
               </div>
 
-              <div className="mb-4">
+              <div className="mb-10">
                 <label className="block text-gray-300 text-sm font-medium mb-2" htmlFor="shortDescription">
                   Product Short Description
                 </label>
                 <input className="w-full p-4 text-gray-300 bg-gray-700 rounded" id="shortDescription" type="text" placeholder="Short Description" />
               </div>
 
-              <div className="mb-4">
+              <div className="mb-10">
                 <label className="block text-gray-300 text-sm font-medium mb-2" htmlFor="quantityOnHand">
                   Quantity on Hand
                 </label>
                 <input className="w-full p-4 text-gray-300 bg-gray-700 rounded" id="quantityOnHand" type="number" min="0" placeholder="Quantity on Hand" />
               </div>
 
-              <div className="mb-4">
+              <div className="mb-10">
                 <label className="block text-gray-300 text-sm font-medium mb-2" htmlFor="price">
                   Product Price
                 </label>
                 <input className="w-full p-4 text-gray-300 bg-gray-700 rounded" id="price" type="text" placeholder="Product Price" />
               </div>
 
-              <div className="mb-4">
+              <div className="mb-10">
                 <label className="block text-gray-300 text-sm font-medium mb-2" htmlFor="tags">
                   Product Tags <span className="text-xs">(comma seperated)</span>
                 </label>
                 <input className="w-full p-4 text-gray-300 bg-gray-700 rounded" id="tags" type="text" placeholder="Product Tags" />
               </div>
 
-              <div className="mb-4">
+              <div className="mb-10">
                 <label className="block text-gray-300 text-sm font-medium mb-2" htmlFor="image">
                   Product Images <span className="text-xs">(comma seperated)</span>
                 </label>
                 <input className="w-full p-4 text-gray-300 bg-gray-700 rounded" id="image" type="text" placeholder="Product Image" />
               </div>
 
-              <div className="mb-4">
+              <div className="mb-6">
                 <label className="block text-gray-300 text-sm font-medium mb-2" htmlFor="description">
                   Product Description
                 </label>
