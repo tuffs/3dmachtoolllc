@@ -1,7 +1,11 @@
 import Hero from '@/components/Hero';
 import AnimatedNavLink from '@/components/ui/AnimatedNavLink';
+import { listProducts } from '@/actions/listProducts';
+import ProductCard from '@/components/ProductCard';
 
-export default function ProductsPage() {
+export default async function ProductsPage() {
+  const { success, products, error } = await listProducts();
+
   return (
     <>
       <div className="my-24">
@@ -12,6 +16,16 @@ export default function ProductsPage() {
               Products
             </h1>
           </section>
+
+          {success ? (
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-12">
+              {products.map((product) => (
+                <ProductCard product={product} key={product.id} />
+              ))}
+            </div>
+          ) : (
+            <p className="text-center text-red-500 mb-12">{error || 'Failed to load products.'}</p>
+          )}
 
           <section className="w-[100%] text-center">
             <AnimatedNavLink

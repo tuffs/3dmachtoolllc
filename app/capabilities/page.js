@@ -64,7 +64,7 @@ export default function CapabilitiesAndEquipmentPage() {
               />
               <div>
                 <h4 className="text-gray-200 font-semibold">Precision Turning, Profiling & Facing:</h4>
-                <ul className="text-sm pl-3">
+                <ul className="text-sm">
                   <li>Machining high-precision cylindrical parts with tight tolerances (e.g., shafts, bushings, hubs).</li>
                   <li>Handles work pieces up to 6" Dia. x 30" Lg.</li>
                 </ul>
@@ -75,7 +75,7 @@ export default function CapabilitiesAndEquipmentPage() {
               </div>
               <div>
                 <h4 className="text-gray-200 font-semibold">Advanced Threading:</h4>
-                <ul className="text-sm pl-3">
+                <ul className="text-sm">
                   <li>Complex thread patterns, including non-standard and multi-start threads (SAE Inch & Metric).</li>
                   <li>Rigid Tapping Option for precise in-line tapping.</li>
                 </ul>
@@ -109,7 +109,7 @@ export default function CapabilitiesAndEquipmentPage() {
               />
               <div>
                 <h4 className="text-gray-200 font-semibold">Precision Drilling:</h4>
-                <ul className="text-sm pl-3">
+                <ul className="text-sm">
                   <li>Electronic variable speeds (65 to 2000 RPM) for materials like plastics, composites, aluminum, and steel.</li>
                   <li>Exclusive use of Precision Collets to reduce tool run-out.</li>
                 </ul>
