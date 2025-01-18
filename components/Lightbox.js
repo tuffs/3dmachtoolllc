@@ -23,7 +23,7 @@ export default function Lightbox({ images }) {
           className="fixed inset-0 bg-black bg-opacity-75 flex items-center justify-center z-50"
           onClick={() => setSelectedImage(null)}
         >
-          <div className="max-w-4xl max-h-full p-4">
+          <div className="max-w-[75vw] max-h-full p-4">
             <img
               src={selectedImage}
               alt="Enlarged product image"

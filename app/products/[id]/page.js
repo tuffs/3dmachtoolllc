@@ -38,6 +38,12 @@ export default async function ProductPage({ params }) {
             />
           )}
 
+          {remainingImages.length > 0 && (
+            <div className="mb-6">
+              <Lightbox images={[firstImage, ...remainingImages]} />
+            </div>
+          )}
+
           <p className="text-xl mb-4">{product.description}</p>
 
           <div className="w-full bg-inherit p-4 md:p-8">
@@ -66,34 +72,41 @@ export default async function ProductPage({ params }) {
                       </p>
                     )}
                   </div>
-                  <div className="mb-3">
-                    <p className="mb-2">
-                      <small><small>PRICE</small></small>
-                    </p>
-                    <h3 className="text-xl font-bold p-2 border border-blue-500 rounded w-[100px] text-blue-400 text-center">
-                      ${product.price.toFixed(2)}
-                    </h3>
-                  </div>
-                  <div className="mb-3">
-                    <p className="mt-6 mb-0 pb-0">
-                      <small><small>QTY.</small></small><br />
-                      <input type="number" name="quantity" className="input bg-inherit border border-gray-200 w-10 mb-4" value={1} /><br />
-                    </p>
-
-                    <Link
-                      href="/add-to-cart"
-                      className="bg-blue-500 hover:bg-blue-600 text-white text-xl font-bold py-1 px-2 rounded inline-block"
-                    >
-                      Add To Cart
-                    </Link>
-                  </div>
-                </div>
-                <div className="p-2 rounded-lg shadow-sm">
-                  <div className="">
+                  <div>
                     <p className="mb-4"><small><small>PRODUCT TAGS: {product.tags.join(', ')}</small></small></p>
                   </div>
                 </div>
                 <div className="p-2 rounded-lg shadow-sm">
+                  <div className="mb-3">
+                    <p className="mb-2">
+                      <small><small>UNIT PRICE</small></small>
+                    </p>
+                    <h3 className="font-bold p-2 border border-blue-500 rounded w-[100px] text-blue-400 text-center">
+                      ${product.price.toFixed(2)}
+                    </h3>
+                  </div>
+                  <div className="mb-3">
+                    <p className="mb-2">
+                      <small><small>QTY.</small></small>
+                    </p>
+                  </div>
+                  <div className="mb-3">
+                    <p className="mb-2">
+                      <input type="number" name="quantity" className="input bg-inherit border border-gray-200 w-20 mb-4 p-2" value={1} />
+                    </p>
+                  </div>
+                  <Link
+                    href="/add-to-cart"
+                    className="bg-blue-500 hover:bg-blue-600 text-white text-xl font-bold py-1 px-5 rounded inline-block"
+                  >
+                    Add To Cart
+                  </Link>
+                </div>
+
+                <div className="mb-2 pt-[20px]">
+                  <small><small>YOU WILL BE GIVEN THE OPPORTUNITY TO PROVIDE A RESALE CERTIFICATE PROVIDED BY YOUR STATE GOVERNMENT
+                    OR LOCAL MUNICIPALITY FOR ORDERS WHICH MEET TAX EXEMPTIONS.<br /><br /> ALL CERTIFICATES ARE CHECKED FOR AUTHENTICITY AND KEPT ON FILE FOR
+                    YOUR BUSINESS FOR ONE CALENDAR YEAR.</small></small>
                   <div className="mt-6 w-full text-center">
                     <center>
                       <img
@@ -104,28 +117,23 @@ export default async function ProductPage({ params }) {
                       />
                     </center>
                   </div>
-                  <p className="mb-2 pt-[20px]">
-                    <small><small>THIS PRODUCT SHIPS FROM DESTIN, FL 32541&nbsp;&nbsp;USA. SHIPPING AND HANDLING ARE AN ADDITIONAL $20.00 TO ANYWHERE IN THE CONTIGUOUS UNITED STATES EXCL. HI, PR, AK, INTL SHIPPING AVAILABLE AT YOUR COST.</small></small>
-                  </p>
                 </div>
+
+              </div>
+              <div className="p-2 rounded-lg shadow-sm">
+                <p className="mb-2 pt-[20px]">
+                  <small><small>THIS PRODUCT SHIPS FROM DESTIN, FL 32541&nbsp;&nbsp;USA. SHIPPING AND HANDLING ARE AN ADDITIONAL $20.00 TO ANYWHERE IN THE CONTIGUOUS UNITED STATES EXCL. HI, PR, AK, INTL SHIPPING AVAILABLE AT YOUR COST.<br /><br />
+                    SHIPPING IS PERFORMED BY UPS' SERVICES. CUSTOM, GRADE-A PROTECTIVE PACKAGING IS PROVIDED FREE OF CHARGE TO ENSURE THAT YOUR TOOLS, PARTS, OR ACCESSORIES ARRIVED SAFE AND SOUND, PARTS MAY COME LUBRICATED TO AVOID CORROSIVE ENVIRONS AND CONTAINMENANTS DURING THE SHIPPING PROCESS AS WELL.</small></small>
+                </p>
               </div>
             </div>
           </div>
+        </div>
 
-          {remainingImages.length > 0 && (
-            <div className="mb-6">
-              <h2 className="text-2xl font-semibold mb-2">Additional Images</h2>
-              <Lightbox images={[firstImage, ...remainingImages]} />
-            </div>
-          )}
-
-
-
-          <div className="mt-[75px] text-center">
-            <Link href="/products" className="bg-blue-500 hover:bg-blue-600 text-white text-xs font-bold py-1 px-2 rounded inline-block">
-              Back to All Products
-            </Link>
-          </div>
+        <div className="mt-[75px] text-center">
+          <Link href="/products" className="bg-blue-500 hover:bg-blue-600 text-white text-xs font-bold py-1 px-2 rounded inline-block">
+            Back to All Products
+          </Link>
         </div>
       </div>
     </div>

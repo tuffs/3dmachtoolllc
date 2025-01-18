@@ -61,6 +61,7 @@ model Admin {
 model FloridaSalesTax {
   id        Int      @id @default(autoincrement())
   county    String
+  zipCode   Int
   rate      Float
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
