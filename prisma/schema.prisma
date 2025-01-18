@@ -66,3 +66,38 @@ model FloridaSalesTax {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 }
+
+model Order {
+  id                 Int      @id @default(autoincrement())
+  orderNumber        String
+  subtotal           Float
+  total              Float
+  taxRate            Float
+  taxExemptionStatus Boolean
+  status             String
+  purchasedItems     Json
+  createdAt          DateTime @default(now())
+  updatedAt          DateTime @updatedAt
+  shippingName       String
+  shippingAddressOne String
+  shippingAddressTwo String?
+  shippingCity       String
+  shippingState      String
+  shippingZipCode    String
+  customer           Customer @relation(fields: [id], references: [id])
+}
+
+model Customer {
+  id                Int      @id @default(autoincrement())
+  email             String   @unique
+  password          String
+  name              String
+  billingName       String
+  billingAddressOne String
+  billingAddressTwo String?
+  billingCity       String
+  billingState      String
+  billingZipCode    String
+  orders            Order[]
+  createdAt         DateTime @default(now())
+}
