@@ -1,4 +1,5 @@
 import AnimatedNavLink from '@/components/ui/AnimatedNavLink';
+import AnimatedShoppingCartLink from '../ui/AnimatedShoppingCartLink';
 import links from '@/data/links';
 
 const Navbar = () => {
@@ -21,6 +22,11 @@ const DesktopLinks = ({ links }) => {
           </li>
         )
       })}
+      <li
+        key="zed"
+      >
+        <AnimatedShoppingCartLink />
+      </li>
     </ul>
   );
 }
