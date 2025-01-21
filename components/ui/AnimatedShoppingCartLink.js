@@ -18,7 +18,6 @@ const AnimatedShoppingCartLink = () => {
         }}
       >
         <div className="pt-5">
-
           <FaShoppingCart className="inline-block mr-2 mb-1" />
           <span
             className="absolute bottom-0 left-1/2 w-0 h-[.045rem] bg-gray-400 transition-colors duration-300 ease-in-out group-hover:bg-gray-200"
