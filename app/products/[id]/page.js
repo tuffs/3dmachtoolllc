@@ -1,30 +1,30 @@
-import { notFound } from 'next/navigation';
-import database from '@/prisma/database';
-import Link from 'next/link';
-import Hero from '@/components/Hero';
-import dynamic from 'next/dynamic';
+import { notFound } from "next/navigation"
+import database from "@/prisma/database"
+import Link from "next/link"
+import Hero from "@/components/Hero"
+import dynamic from "next/dynamic"
+import AddToCartButton from "@/components/AddToCartButton"
 
-const Lightbox = dynamic(() => import('@/components/Lightbox'), { ssr: false });
+const Lightbox = dynamic(() => import("@/components/Lightbox"), { ssr: false })
 
 export default async function ProductPage({ params }) {
-  const productId = parseInt(params.id);
+  const productId = Number.parseInt(params.id)
   const product = await database.product.findUnique({
     where: { id: productId },
-  });
+  })
 
   if (!product) {
-    return notFound();
+    return notFound()
   }
 
-  const firstImage = product.imageUrls && product.imageUrls.length > 0 ? product.imageUrls[0] : null;
-  const remainingImages = product.imageUrls ? product.imageUrls.slice(1) : [];
+  const firstImage = product.imageUrls && product.imageUrls.length > 0 ? product.imageUrls[0] : null
+  const remainingImages = product.imageUrls ? product.imageUrls.slice(1) : []
 
   return (
     <div className="min-h-screen bg-inherit text-white mt-24">
       <Hero />
       <div className="mt-24 p-8">
         <div className="max-w-4xl mx-auto">
-
           <div className="mb-4">
             <h1 className="text-4xl font-bold">{product.name}</h1>
             <p className="mb-2 text-gray-400">{product.shortDescription}</p>
@@ -32,7 +32,7 @@ export default async function ProductPage({ params }) {
 
           {firstImage && (
             <img
-              src={firstImage}
+              src={firstImage || "/placeholder.svg"}
               alt={`${product.name} - Main Image`}
               className="w-full h-96 object-cover rounded-lg mb-4"
             />
@@ -52,61 +52,62 @@ export default async function ProductPage({ params }) {
                 <div className="p-2 rounded-lg shadow-sm">
                   <div className="mb-3">
                     <p className="mb-2">
-                      <small><small>MODEL NO.</small></small>
+                      <small>
+                        <small>MODEL NO.</small>
+                      </small>
                     </p>
-                    <p className="p-2 border border-gray-500 rounded w-[100px] text-gray-400 text-center">
+                    <p className="p-2 border border-gray-500 rounded w-[100px] text-gray-400 text-center cursor-default">
                       <small>{product.modelNumber}</small>
                     </p>
                   </div>
                   <div className="mb-3">
                     <p className="mb-2">
-                      <small><small>AVAILABILITY</small></small>
+                      <small>
+                        <small>AVAILABILITY</small>
+                      </small>
                     </p>
                     {product.quantity > 0 ? (
-                      <p className="p-2 border border-green-500 rounded w-[100px] text-green-400 text-center">
+                      <p className="p-2 border border-green-500 rounded w-[100px] text-green-400 text-center cursor-default">
                         <small>IN STOCK</small>
                       </p>
                     ) : (
-                      <p className="p-2 border border-red-500 rounded w-[100px] text-red-400 text-center">
+                      <p className="p-2 border border-red-500 rounded w-[100px] text-red-400 text-center cursor-default">
                         <small>SOLD OUT</small>
                       </p>
                     )}
                   </div>
                   <div>
-                    <p className="mb-4"><small><small>PRODUCT TAGS: {product.tags.join(', ')}</small></small></p>
+                    <p className="mb-4">
+                      <small>
+                        <small>PRODUCT TAGS: {product.tags.join(", ")}</small>
+                      </small>
+                    </p>
                   </div>
                 </div>
                 <div className="p-2 rounded-lg shadow-sm">
                   <div className="mb-3">
                     <p className="mb-2">
-                      <small><small>UNIT PRICE</small></small>
+                      <small>
+                        <small>UNIT PRICE</small>
+                      </small>
                     </p>
-                    <h3 className="font-bold p-2 border border-blue-500 rounded w-[100px] text-blue-400 text-center">
+                    <h3 className="font-bold p-2 border border-blue-500 rounded w-[100px] text-blue-400 text-center cursor-default">
                       ${product.price.toFixed(2)}
                     </h3>
                   </div>
-                  <div className="mb-3">
-                    <p className="mb-2">
-                      <small><small>QTY.</small></small>
-                    </p>
-                  </div>
-                  <div className="mb-3">
-                    <p className="mb-2">
-                      <input type="number" name="quantity" className="input bg-inherit border border-gray-200 w-20 mb-4 p-2" value={1} />
-                    </p>
-                  </div>
-                  <Link
-                    href="/add-to-cart"
-                    className="bg-blue-500 hover:bg-blue-600 text-white text-xl font-bold py-1 px-5 rounded inline-block"
-                  >
-                    Add To Cart
-                  </Link>
+                  <AddToCartButton product={product} />
                 </div>
 
                 <div className="mb-2 pt-[20px]">
-                  <small><small>YOU WILL BE GIVEN THE OPPORTUNITY TO PROVIDE A RESALE CERTIFICATE PROVIDED BY YOUR STATE GOVERNMENT
-                    OR LOCAL MUNICIPALITY FOR ORDERS WHICH MEET TAX EXEMPTIONS.<br /><br /> ALL CERTIFICATES ARE CHECKED FOR AUTHENTICITY AND KEPT ON FILE FOR
-                    YOUR BUSINESS FOR ONE CALENDAR YEAR.</small></small>
+                  <small>
+                    <small>
+                      YOU WILL BE GIVEN THE OPPORTUNITY TO PROVIDE A RESALE CERTIFICATE PROVIDED BY YOUR STATE
+                      GOVERNMENT OR LOCAL MUNICIPALITY FOR ORDERS WHICH MEET TAX EXEMPTIONS.
+                      <br />
+                      <br /> ALL CERTIFICATES ARE CHECKED FOR AUTHENTICITY AND KEPT ON FILE FOR YOUR BUSINESS FOR ONE
+                      CALENDAR YEAR.
+                    </small>
+                  </small>
                   <div className="mt-6 w-full text-center">
                     <center>
                       <img
@@ -118,12 +119,21 @@ export default async function ProductPage({ params }) {
                     </center>
                   </div>
                 </div>
-
               </div>
               <div className="p-2 rounded-lg shadow-sm">
                 <p className="mb-2 pt-[20px]">
-                  <small><small>THIS PRODUCT SHIPS FROM DESTIN, FL 32541&nbsp;&nbsp;USA. SHIPPING AND HANDLING ARE AN ADDITIONAL $20.00 TO ANYWHERE IN THE CONTIGUOUS UNITED STATES EXCL. HI, PR, AK, INTL SHIPPING AVAILABLE AT YOUR COST.<br /><br />
-                    SHIPPING IS PERFORMED BY UPS' SERVICES. CUSTOM, GRADE-A PROTECTIVE PACKAGING IS PROVIDED FREE OF CHARGE TO ENSURE THAT YOUR TOOLS, PARTS, OR ACCESSORIES ARRIVED SAFE AND SOUND, PARTS MAY COME LUBRICATED TO AVOID CORROSIVE ENVIRONS AND CONTAINMENANTS DURING THE SHIPPING PROCESS AS WELL.</small></small>
+                  <small>
+                    <small>
+                      THIS PRODUCT SHIPS FROM DESTIN, FL 32541&nbsp;&nbsp;USA. SHIPPING AND HANDLING ARE AN ADDITIONAL
+                      $20.00 TO ANYWHERE IN THE CONTIGUOUS UNITED STATES EXCL. HI, PR, AK, INTL SHIPPING AVAILABLE AT
+                      YOUR COST.
+                      <br />
+                      <br />
+                      SHIPPING IS PERFORMED BY UPS' SERVICES. CUSTOM, GRADE-A PROTECTIVE PACKAGING IS PROVIDED FREE OF
+                      CHARGE TO ENSURE THAT YOUR TOOLS, PARTS, OR ACCESSORIES ARRIVED SAFE AND SOUND, PARTS MAY COME
+                      LUBRICATED TO AVOID CORROSIVE ENVIRONS AND CONTAINMENANTS DURING THE SHIPPING PROCESS AS WELL.
+                    </small>
+                  </small>
                 </p>
               </div>
             </div>
@@ -131,11 +141,14 @@ export default async function ProductPage({ params }) {
         </div>
 
         <div className="mt-[75px] text-center">
-          <Link href="/products" className="bg-blue-500 hover:bg-blue-600 text-white text-xs font-bold py-1 px-2 rounded inline-block">
+          <Link
+            href="/products"
+            className="bg-blue-500 hover:bg-blue-600 text-white text-xs font-bold py-1 px-2 rounded inline-block"
+          >
             Back to All Products
           </Link>
         </div>
       </div>
     </div>
-  );
+  )
 }

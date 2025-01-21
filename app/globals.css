@@ -20,6 +20,15 @@ body {
   font-family: Arial, Helvetica, sans-serif;
 }
 
+.cursor-pointer {
+  cursor: pointer !important;
+}
+
+.cursor-default,
+.cursor-default * {
+  cursor: default;
+}
+
 .tertiary_bg_color {
   background: rgb(35, 35, 35);
 }
