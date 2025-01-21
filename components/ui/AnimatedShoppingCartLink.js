@@ -6,7 +6,7 @@ import { FaShoppingCart } from 'react-icons/fa';
 const AnimatedShoppingCartLink = () => {
 
   // TODO: Integrate with cart items context
-  const cartCount = 3;
+  const cartCount = 1;
 
   return (
     <div className="m-0">
