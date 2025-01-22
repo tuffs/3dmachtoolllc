@@ -4,7 +4,7 @@ import React, { useState, useEffect } from "react"
 import { FaShoppingCart } from "react-icons/fa"
 import { getCart } from "@/lib/cartUtils"
 
-const AnimatedShoppingCartLink = () => {
+const AnimatedShoppingCartNavLink = () => {
   const [cartCount, setCartCount] = useState(0)
 
   useEffect(() => {
@@ -45,4 +45,4 @@ const AnimatedShoppingCartLink = () => {
   )
 }
 
-export default AnimatedShoppingCartLink
+export default AnimatedShoppingCartNavLink

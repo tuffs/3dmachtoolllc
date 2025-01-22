@@ -38,8 +38,8 @@ export default function ShoppingCartPage() {
 
             <tr className="border border-1 border-gray-500">
               <td className="border border-1 border-gray-500 p-2"><a href={`/products/1`} className="underline cursor-pointer">EXMPL1 - My First Product</a></td>
-              <td className="border border-1 border-gray-500 p-2">1.00</td>
-              <td className="border border-1 border-gray-500 p-2">$399.99</td>
+              <td className="border border-1 border-gray-500 p-2 text-right">1</td>
+              <td className="border border-1 border-gray-500 p-2 text-right">$399.99</td>
             </tr>
           </table>
         </div>
