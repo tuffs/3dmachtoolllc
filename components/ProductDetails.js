@@ -5,6 +5,7 @@ import Link from "next/link"
 import dynamic from "next/dynamic"
 import AddToCartButton from "@/components/AddToCartButton"
 import Hero from "@/components/Hero"
+import ProductImages from '@/components/ProductImages'
 
 const Lightbox = dynamic(() => import("@/components/Lightbox"), { ssr: false })
 
@@ -17,32 +18,20 @@ export default function ProductDetails({ product }) {
     }
   }, [])
 
-  const firstImage = product.imageUrls && product.imageUrls.length > 0 ? product.imageUrls[0] : null
-  const remainingImages = product.imageUrls ? product.imageUrls.slice(1) : []
-
   return (
     <div className="min-h-screen bg-inherit text-white">
       <Hero />
       <div className="mt-24 p-8">
-        <div className="max-w-4xl mx-auto">
+        <div className="w-[85%] mx-auto">
           <div className="mb-4" ref={titleRef} id="product-details">
             <h1 className="text-4xl font-bold">{product.name}</h1>
             <p className="mb-2 text-gray-400">{product.shortDescription}</p>
           </div>
 
-          {firstImage && (
-            <img
-              src={firstImage || "/placeholder.svg"}
-              alt={`${product.name} - Main Image`}
-              className="w-full h-96 object-cover rounded-lg mb-4"
-            />
-          )}
-
-          {remainingImages.length > 0 && (
-            <div className="mb-6">
-              <Lightbox images={[firstImage, ...remainingImages]} />
-            </div>
-          )}
+          <ProductImages
+            images={product.imageUrls}
+            productName={product.name}
+          />
 
           <p className="text-xl mb-4">{product.description}</p>
 
