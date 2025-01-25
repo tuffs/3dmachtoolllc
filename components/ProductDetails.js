@@ -16,16 +16,24 @@ export default function ProductDetails({ product }) {
     if (window.location.hash === "#product-details" && titleRef.current) {
       titleRef.current.scrollIntoView({ behavior: "auto" })
     }
-  }, [])
+  }, []);
 
   return (
     <div className="min-h-screen bg-inherit text-white">
       <Hero />
+
       <div className="mt-24 p-8">
         <div className="w-[85%] mx-auto">
-          <div className="mb-4" ref={titleRef} id="product-details">
-            <h1 className="text-4xl font-bold">{product.name}</h1>
-            <p className="mb-2 text-gray-400">{product.shortDescription}</p>
+          <div className="mb-4" ref={titleRef} id="product-details" data-testid="main_product_details__container">
+
+            <h1 className="text-4xl font-bold" data-testid="product__name">
+              {product.name}
+            </h1>
+
+            <p className="mb-2 text-gray-400" data-testid="product__short_description">
+              {product.shortDescription}
+            </p>
+
           </div>
 
           <ProductImages

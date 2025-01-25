@@ -6,7 +6,7 @@ export default async function ProductPage({ params }) {
   const productId = Number.parseInt(params.id)
   const product = await database.product.findUnique({
     where: { id: productId },
-  })
+  });
 
   if (!product) {
     return notFound()
