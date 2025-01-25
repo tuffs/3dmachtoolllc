@@ -18,4 +18,12 @@ describe("Product Page", () => {
 
     expect(productName).toHaveTextContent(product.name);
   });
+
+  it("renders the product short description accurately", () => {
+    const product = productMock;
+    render(<ProductDetails product={product} />);
+    const productShortDescription = screen.getByTestId('product__short_description');
+
+    expect(productShortDescription).toHaveTextContent(product.shortDescription);
+  });
 });
