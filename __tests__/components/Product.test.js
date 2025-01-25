@@ -10,4 +10,12 @@ describe("Product Page", () => {
 
     expect(prooductDetails).toBeInTheDocument();
   });
+
+  it("renders the product name accurately", () => {
+    const product = productMock;
+    render(<ProductDetails product={product} />);
+    const productName = screen.getByTestId('product__name');
+
+    expect(productName).toHaveTextContent(product.name);
+  });
 });
