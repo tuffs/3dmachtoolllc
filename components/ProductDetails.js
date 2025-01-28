@@ -27,32 +27,22 @@ export default function ProductDetails({ product }) {
           <div
             className="mb-4" ref={titleRef} id="product-details" data-testid="main_product_details__container"
           >
-            <h1
-              className="text-4xl font-bold" data-testid="product__name"
-            >
+            <h1 className="text-4xl font-bold" data-testid="product__name">
               {product.name}
             </h1>
 
-            <p
-              className="mb-2 text-gray-400"
-              data-testid="product__short_description"
-            >
+            <p className="mb-2 text-gray-400" data-testid="product__short_description">
               {product.shortDescription}
             </p>
           </div>
 
-          <div
-            className="flex grid grid-cols-2"
-            data-testid="product__details_array"
-          >
+          <div className="flex grid grid-cols-2" data-testid="product__details_array">
             <div>
               <ProductImages
                 images={product.imageUrls}
                 productName={product.name}
               />
-              <p
-                className="text-xl mb-4" data-testid="product__description"
-              >
+              <p className="text-xl mb-4" data-testid="product__description">
                 {product.description}
               </p>
             </div>
