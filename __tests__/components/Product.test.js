@@ -26,4 +26,20 @@ describe("Product Page", () => {
 
     expect(productShortDescription).toHaveTextContent(product.shortDescription);
   });
+
+  it("renders the product description accurately", () => {
+    const product = productMock;
+    render(<ProductDetails product={product} />);
+    const productDescription = screen.getByTestId('product__description');
+
+    expect(productDescription).toHaveTextContent(product.description);
+  });
+
+  it('renders the product details array', () => {
+    const product = productMock;
+    render(<ProductDetails product={product} />);
+    const productDetailsArray = screen.getByTestId('product__details_array');
+
+    expect(productDetailsArray).toBeInTheDocument();
+  });
 });

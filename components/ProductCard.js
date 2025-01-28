@@ -7,7 +7,7 @@ export default function ProductCard({ product }) {
   return (
     <Link
       href={`/products/${id}#product-details`}
-      className="block bg-inherit border-[.04rem] border-gray-500 p-4 rounded-lg shadow-lg transition-transform hover:scale-105 focus:outline-none focus:ring-3 focus:ring-gray-900"
+      className="block bg-inherit border-[.04rem] border-gray-700 p-4 rounded-lg shadow-lg transition-transform hover:scale-105 focus:outline-none focus:ring-3 focus:ring-gray-900"
     >
       <div>
         {imageUrls && imageUrls.length > 0 && (

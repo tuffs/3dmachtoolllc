@@ -24,111 +24,119 @@ export default function ProductDetails({ product }) {
 
       <div className="mt-24 p-8">
         <div className="w-[85%] mx-auto">
-          <div className="mb-4" ref={titleRef} id="product-details" data-testid="main_product_details__container">
-
-            <h1 className="text-4xl font-bold" data-testid="product__name">
+          <div
+            className="mb-4" ref={titleRef} id="product-details" data-testid="main_product_details__container"
+          >
+            <h1
+              className="text-4xl font-bold" data-testid="product__name"
+            >
               {product.name}
             </h1>
 
-            <p className="mb-2 text-gray-400" data-testid="product__short_description">
+            <p
+              className="mb-2 text-gray-400"
+              data-testid="product__short_description"
+            >
               {product.shortDescription}
             </p>
-
           </div>
 
-          <ProductImages
-            images={product.imageUrls}
-            productName={product.name}
-          />
+          <div
+            className="flex grid grid-cols-2"
+            data-testid="product__details_array"
+          >
+            <div>
+              <ProductImages
+                images={product.imageUrls}
+                productName={product.name}
+              />
+              <p
+                className="text-xl mb-4" data-testid="product__description"
+              >
+                {product.description}
+              </p>
+            </div>
 
-          <p className="text-xl mb-4">{product.description}</p>
-
-          <div className="w-full bg-inherit p-4 md:p-8">
-            <div className="max-w-7xl mx-auto">
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-                <div className="p-2 rounded-lg shadow-sm">
-                  <div className="mb-3">
-                    <p className="mb-2">
-                      <small>
-                        <small>MODEL NO.</small>
-                      </small>
-                    </p>
-                    <p className="p-2 border border-gray-500 rounded w-[100px] text-gray-400 text-center cursor-default">
-                      <small>{product.modelNumber}</small>
-                    </p>
-                  </div>
-                  <div className="mb-3">
-                    <p className="mb-2">
-                      <small>
-                        <small>AVAILABILITY</small>
-                      </small>
-                    </p>
-                    {product.quantity > 0 ? (
-                      <p className="p-2 border border-green-500 rounded w-[100px] text-green-400 text-center cursor-default">
-                        <small>IN STOCK</small>
-                      </p>
-                    ) : (
-                      <p className="p-2 border border-red-500 rounded w-[100px] text-red-400 text-center cursor-default">
-                        <small>SOLD OUT</small>
-                      </p>
-                    )}
-                  </div>
-                  <div>
-                    <p className="mb-4">
-                      <small>
-                        <small>PRODUCT TAGS: {product.tags.join(", ")}</small>
-                      </small>
-                    </p>
-                  </div>
-                </div>
-                <div className="p-2 rounded-lg shadow-sm">
-                  <div className="mb-3">
-                    <p className="mb-2">
-                      <small>
-                        <small>UNIT PRICE</small>
-                      </small>
-                    </p>
-                    <h3 className="font-bold p-2 border border-blue-500 rounded w-[100px] text-blue-400 text-center cursor-default">
-                      ${product.price.toFixed(2)}
-                    </h3>
-                  </div>
-                  <AddToCartButton product={product} />
-                </div>
-
-                <div className="mb-2 pt-[20px]">
-                  <small>
+            <div>
+              <div className="flex grid-cols-2">
+                <div className="mb-3 md:pl-24">
+                  <p className="mb-2">
                     <small>
-                      YOU WILL BE GIVEN THE OPPORTUNITY TO PROVIDE A RESALE CERTIFICATE PROVIDED BY YOUR STATE
-                      GOVERNMENT OR LOCAL MUNICIPALITY FOR ORDERS WHICH MEET TAX EXEMPTIONS.
-                      <br />
-                      <br /> ALL CERTIFICATES ARE CHECKED FOR AUTHENTICITY AND KEPT ON FILE FOR YOUR BUSINESS FOR ONE
-                      CALENDAR YEAR.
+                      <small>MODEL NO.</small>
                     </small>
-                  </small>
-                  <div className="mt-6 w-full text-center">
-                    <center>
-                      <img
-                        src="/PROUDLY_DESIGNED_AND_ASSEMBLED_IN_THE_USA__FLAG.png"
-                        alt="All completed products are proudly designed and assembled in the USA."
-                        aria-label="USA flag with text PROUDLY DESIGNED AND ASSEMBLED IN THE USA"
-                        className="w-[200px] h-auto"
-                      />
-                    </center>
-                  </div>
+                  </p>
+                  <p className="p-2 border border-gray-200 rounded w-[100px] text-center cursor-default">
+                    <small>{product.modelNumber}</small>
+                  </p>
+                  <p className="mt-6 mb-2">
+                    <small>
+                      <small>AVAILABILITY</small>
+                    </small>
+                  </p>
+                  {product.quantity > 0 ? (
+                    <p className="p-2 border border-green-500 rounded w-[100px] text-green-400 text-center cursor-default">
+                      <small>IN STOCK</small>
+                    </p>
+                  ) : (
+                    <p className="p-2 border border-red-500 rounded w-[100px] text-red-400 text-center cursor-default">
+                      <small>SOLD OUT</small>
+                    </p>
+                  )}
+                </div>
+
+                <div className="mb-3 md:pl-6">
+                  <p className="mb-2">
+                    <small>
+                      <small>UNIT PRICE</small>
+                    </small>
+                  </p>
+                  <h3 className="font-bold p-2 border border-blue-500 rounded w-[100px] text-blue-400 text-center cursor-default">
+                    ${product.price.toFixed(2)}
+                  </h3>
+
                 </div>
               </div>
-              <div className="p-2 rounded-lg shadow-sm">
-                <p className="mb-2 pt-[20px]">
+
+              <div className="mb-2 md:pl-24 md:pt-12 pt-6">
+                <AddToCartButton product={product} />
+              </div>
+
+              <div className="mb-2 pt-[50px] md:pl-24">
+                <div className="mt-6 w-full text-center">
+                  <center>
+                    <img
+                      src="/PROUDLY_DESIGNED_AND_ASSEMBLED_IN_THE_USA__FLAG.png"
+                      alt="All completed products are proudly designed and assembled in the USA."
+                      aria-label="USA flag with text PROUDLY DESIGNED AND ASSEMBLED IN THE USA"
+                      className="w-[200px] mb-12 h-auto"
+                    />
+                  </center>
+                </div>
+                <small>
+                  <small>
+                    YOU WILL BE GIVEN THE OPPORTUNITY TO PROVIDE A RESALE CERTIFICATE PROVIDED BY YOUR STATE
+                    GOVERNMENT OR LOCAL MUNICIPALITY FOR ORDERS WHICH MEET TAX EXEMPTIONS.
+                    <br />
+                    <br /> ALL SALES TAX EXEMPTION CERTIFICATES ARE CHECKED FOR AUTHENTICITY AND KEPT ON FILE FOR YOUR BUSINESS FOR ONE
+                    CALENDAR YEAR.
+                    <br />
+                    <br />
+                    CUSTOM, GRADE-A PROTECTIVE PACKAGING IS PROVIDED FREE OF CHARGE TO ENSURE THAT YOUR TOOLS, PARTS, OR ACCESSORIES ARRIVED SAFE AND SOUND.
+                  </small>
+                </small>
+              </div>
+            </div>
+          </div>
+
+          <div className="w-full bg-inherit mt-[100px]">
+            <div className="mx-auto">
+              <div className="rounded-lg shadow-sm">
+                <p className="mb-2">
                   <small>
                     <small>
                       THIS PRODUCT SHIPS FROM DESTIN, FL 32541&nbsp;&nbsp;USA. SHIPPING AND HANDLING ARE AN ADDITIONAL
                       $20.00 TO ANYWHERE IN THE CONTIGUOUS UNITED STATES EXCL. HI, PR, AK, INTL SHIPPING AVAILABLE AT
                       YOUR COST.
-                      <br />
-                      <br />
-                      SHIPPING IS PERFORMED BY UPS' SERVICES. CUSTOM, GRADE-A PROTECTIVE PACKAGING IS PROVIDED FREE OF
-                      CHARGE TO ENSURE THAT YOUR TOOLS, PARTS, OR ACCESSORIES ARRIVED SAFE AND SOUND, PARTS MAY COME
-                      LUBRICATED TO AVOID CORROSIVE ENVIRONS AND CONTAINMENANTS DURING THE SHIPPING PROCESS AS WELL.
                     </small>
                   </small>
                 </p>
