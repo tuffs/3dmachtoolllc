@@ -26,7 +26,7 @@ export default function ProductCard({ product }) {
         <div className="flex justify-between items-center">
           {price !== undefined && (
             <span className="text-lg font-bold text-white">
-              <span className="text-xs font-normal pb-0 mb-0">FOR SALE</span>
+              <span className="text-xs font-normal pb-0 mb-0"><small>FOR SALE</small></span>
               <br />${price.toFixed(2)}
             </span>
           )}

@@ -36,8 +36,10 @@ export default function ProductDetails({ product }) {
             </p>
           </div>
 
-          <div className="flex grid grid-cols-2" data-testid="product__details_array">
-            <div>
+          <div className="md:flex md:grid md:grid-cols-2" data-testid="product__details_array">
+
+
+            <div className="product_details__right_side">
               <ProductImages
                 images={product.imageUrls}
                 productName={product.name}
@@ -47,7 +49,7 @@ export default function ProductDetails({ product }) {
               </p>
             </div>
 
-            <div>
+            <div className="product_details__left_side">
               <div className="flex grid-cols-2">
                 <div className="mb-3 md:pl-24">
                   <p className="mb-2">
@@ -75,12 +77,12 @@ export default function ProductDetails({ product }) {
                 </div>
 
                 <div className="mb-3 md:pl-6">
-                  <p className="mb-2">
+                  <p className="mb-2 pl-6 md:pl-0">
                     <small>
                       <small>UNIT PRICE</small>
                     </small>
                   </p>
-                  <h3 className="font-bold p-2 border border-blue-500 rounded w-[100px] text-blue-400 text-center cursor-default">
+                  <h3 className="font-bold p-2 border border-blue-500 rounded w-[100px] text-blue-400 text-center cursor-default ml-6 md:ml-0">
                     ${product.price.toFixed(2)}
                   </h3>
 
