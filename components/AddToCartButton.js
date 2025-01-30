@@ -14,14 +14,14 @@ export default function AddToCartButton({ product }) {
   }
 
   return (
-    <div>
+    <div className="ml-16 pl-48">
       <div className="mb-3">
-        <p className="mb-2">
-          <small><small>QTY.</small></small>
+        <p className="mb-2 ml-16">
+          <small><small>QTY. TO ORDER</small></small>
         </p>
         <input
           type="number"
-          className="input bg-inherit border border-gray-200 w-20 mb-4 p-2"
+          className="input bg-inherit border border-gray-200 w-20 mb-4 p-2 ml-16"
           value={quantity}
           onChange={(e) => setQuantity(parseInt(e.target.value))}
           min="1"

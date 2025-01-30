@@ -57,7 +57,7 @@ export default function ProductDetails({ product }) {
                       <small>MODEL NO.</small>
                     </small>
                   </p>
-                  <p className="p-2 border border-gray-200 rounded w-[100px] text-center cursor-default">
+                  <p className="p-3 border border-gray-200 rounded w-[100px] text-center cursor-default">
                     <small>{product.modelNumber}</small>
                   </p>
                   <p className="mt-6 mb-2">
@@ -79,10 +79,10 @@ export default function ProductDetails({ product }) {
                 <div className="mb-3 md:pl-6">
                   <p className="mb-2 pl-6 md:pl-0">
                     <small>
-                      <small>UNIT PRICE</small>
+                      <small>UNIT PRICE *</small>
                     </small>
                   </p>
-                  <h3 className="font-bold p-2 border border-blue-500 rounded w-[100px] text-blue-400 text-center cursor-default ml-6 md:ml-0">
+                  <h3 className="text-lg font-bold p-[10px] border border-gray-200 rounded w-[100px] text-gray-200 text-center cursor-default ml-6 md:ml-0">
                     ${product.price.toFixed(2)}
                   </h3>
 
@@ -105,16 +105,14 @@ export default function ProductDetails({ product }) {
                   </center>
                 </div>
                 <small>
-                  <small>
-                    YOU WILL BE GIVEN THE OPPORTUNITY TO PROVIDE A RESALE CERTIFICATE PROVIDED BY YOUR STATE
-                    GOVERNMENT OR LOCAL MUNICIPALITY FOR ORDERS WHICH MEET TAX EXEMPTIONS.
-                    <br />
-                    <br /> ALL SALES TAX EXEMPTION CERTIFICATES ARE CHECKED FOR AUTHENTICITY AND KEPT ON FILE FOR YOUR BUSINESS FOR ONE
-                    CALENDAR YEAR.
-                    <br />
-                    <br />
-                    CUSTOM, GRADE-A PROTECTIVE PACKAGING IS PROVIDED FREE OF CHARGE TO ENSURE THAT YOUR TOOLS, PARTS, OR ACCESSORIES ARRIVED SAFE AND SOUND.
-                  </small>
+                  YOU WILL BE GIVEN THE OPPORTUNITY TO PROVIDE A RESALE CERTIFICATE PROVIDED BY YOUR STATE
+                  GOVERNMENT OR LOCAL MUNICIPALITY FOR ORDERS WHICH MEET TAX EXEMPTIONS.
+                  <br />
+                  <br /> ALL SALES TAX EXEMPTION CERTIFICATES ARE CHECKED FOR AUTHENTICITY AND KEPT ON FILE FOR YOUR BUSINESS FOR ONE
+                  CALENDAR YEAR.
+                  <br />
+                  <br />
+                  CUSTOM, GRADE-A PROTECTIVE PACKAGING IS PROVIDED FREE OF CHARGE TO ENSURE THAT YOUR TOOLS, PARTS, OR ACCESSORIES ARRIVED SAFE AND SOUND.
                 </small>
               </div>
             </div>
@@ -125,11 +123,9 @@ export default function ProductDetails({ product }) {
               <div className="rounded-lg shadow-sm">
                 <p className="mb-2">
                   <small>
-                    <small>
-                      THIS PRODUCT SHIPS FROM DESTIN, FL 32541&nbsp;&nbsp;USA. SHIPPING AND HANDLING ARE AN ADDITIONAL
-                      $20.00 TO ANYWHERE IN THE CONTIGUOUS UNITED STATES EXCL. HI, PR, AK, INTL SHIPPING AVAILABLE AT
-                      YOUR COST.
-                    </small>
+                    THIS PRODUCT SHIPS FROM DESTIN, FL 32541&nbsp;&nbsp;USA.<br />
+                    *SHIPPING AND HANDLING ARE AN ADDITIONAL
+                    $20.00 TO ANYWHERE IN THE CONTIGUOUS UNITED STATES.
                   </small>
                 </p>
               </div>
