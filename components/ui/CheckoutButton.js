@@ -11,7 +11,7 @@ const CheckoutButton = () => (
       type="button"
     >
       <FaCreditCard className="text-lg" />
-      Checkout
+      Proceed to Checkout
     </button>
   </div>
 );
