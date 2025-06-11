@@ -1,9 +1,17 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import AnimatedButton from '@/components/ui/AnimatedButton';
 
-export default function CheckoutForm() {
+export default function CheckoutForm({ autoFocus }) {
+  const nameInputRef = useRef(null);
+
+  useEffect(() => {
+    if (autoFocus && nameInputRef.current) {
+      nameInputRef.current.focus();
+    }
+  }, [autoFocus]);
+
   const [billing, setBilling] = useState({
     billingName: '',
     billingAddressOne: '',
@@ -12,6 +20,7 @@ export default function CheckoutForm() {
     billingState: '',
     billingZipCode: '',
   });
+
   const [shipping, setShipping] = useState({ ...billing });
   const [differentShipping, setDifferentShipping] = useState(false);
 
@@ -44,21 +53,20 @@ export default function CheckoutForm() {
   const handleSubmit = (e) => {
     e.preventDefault();
     // Submit billing and shipping info here
-    // ...
     alert('Order submitted!');
   };
 
   return (
     <div className="container mx-auto p-4 mb-24">
       <form onSubmit={handleSubmit}>
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div className="flex flex-col gap-8">
           {/* Billing Details */}
-          <div className="secondary_bg_color p-6 rounded-lg border-[.1rem] border-gray-100 shadow-md">
+          <div className="secondary_bg_color md:w-[45%] md:mx-auto p-6 rounded-lg border-[.05rem] border-gray-100 shadow-md">
             <h2 className="text-xl font-semibold text-gray-300 mb-4">Billing Details</h2>
             <div className="space-y-4">
               <div>
                 <label htmlFor="billingName" className="block text-sm font-medium text-gray-300 mb-1">Name</label>
-                <input type="text" id="billingName" name="billingName" className="w-full p-2 text-sm tertiary_bg_color text-gray-300 border border-gray-300 rounded-lg" value={billing.billingName} onChange={handleBillingChange} required />
+                <input type="text" id="billingName" name="billingName" className="w-full p-2 text-sm tertiary_bg_color text-gray-300 border border-gray-300 rounded-lg" value={billing.billingName} onChange={handleBillingChange} ref={nameInputRef} required />
               </div>
               <div>
                 <label htmlFor="billingAddressOne" className="block text-sm font-medium text-gray-300 mb-1">Address Line 1</label>
@@ -83,9 +91,19 @@ export default function CheckoutForm() {
             </div>
           </div>
 
-          {/* Shipping Details */}
-          <div className="secondary_bg_color p-6 rounded-lg border-[.1rem] border-gray-100 shadow-md">
-            <div className="flex items-center mb-4">
+          {/* Checkbox for different shipping */}
+          <div
+            className="md:w-[45%] md:mx-auto p-6 rounded-lg border-[.05rem] border-gray-100 shadow-md cursor-pointer select-none"
+            onClick={() => {
+              const checkbox = document.getElementById("differentShipping");
+              if (checkbox) {
+                const newChecked = !checkbox.checked;
+                checkbox.checked = newChecked; // Update checkbox UI
+                handleCheckbox({ target: { checked: newChecked } }); // Call handleCheckbox
+              }
+            }}
+          >
+            <div className="flex items-center">
               <input
                 type="checkbox"
                 id="differentShipping"
@@ -93,42 +111,53 @@ export default function CheckoutForm() {
                 onChange={handleCheckbox}
                 className="mr-2"
               />
-              <label htmlFor="differentShipping" className="text-gray-300 font-medium">
-                Shipping address is different from billing
+              <label
+                htmlFor="differentShipping"
+                className="text-gray-300 font-medium select-none"
+                onClick={(e) => e.preventDefault()} // Prevent label's default toggle
+              >
+                Press here if shipping address differs from billing
               </label>
             </div>
-            <h2 className="text-xl font-semibold text-gray-300 mb-4">Shipping Details</h2>
-            <div className="space-y-4">
-              <div>
-                <label htmlFor="shippingName" className="block text-sm font-medium text-gray-300 mb-1">Name</label>
-                <input type="text" id="shippingName" name="shippingName" className="w-full p-2 text-sm tertiary_bg_color text-gray-300 border border-gray-300 rounded-lg" value={shipping.shippingName} onChange={handleShippingChange} required />
-              </div>
-              <div>
-                <label htmlFor="shippingAddressOne" className="block text-sm font-medium text-gray-300 mb-1">Address Line 1</label>
-                <input type="text" id="shippingAddressOne" name="shippingAddressOne" className="w-full p-2 text-sm tertiary_bg_color text-gray-300 border border-gray-300 rounded-lg" value={shipping.shippingAddressOne} onChange={handleShippingChange} required />
-              </div>
-              <div>
-                <label htmlFor="shippingAddressTwo" className="block text-sm font-medium text-gray-300 mb-1">Address Line 2</label>
-                <input type="text" id="shippingAddressTwo" name="shippingAddressTwo" className="w-full p-2 text-sm tertiary_bg_color text-gray-300 border border-gray-300 rounded-lg" value={shipping.shippingAddressTwo} onChange={handleShippingChange} />
-              </div>
-              <div>
-                <label htmlFor="shippingCity" className="block text-sm font-medium text-gray-300 mb-1">City</label>
-                <input type="text" id="shippingCity" name="shippingCity" className="w-full p-2 text-sm tertiary_bg_color text-gray-300 border border-gray-300 rounded-lg" value={shipping.shippingCity} onChange={handleShippingChange} required />
-              </div>
-              <div>
-                <label htmlFor="shippingState" className="block text-sm font-medium text-gray-300 mb-1">State</label>
-                <input type="text" id="shippingState" name="shippingState" className="w-full p-2 text-sm tertiary_bg_color text-gray-300 border border-gray-300 rounded-lg" value={shipping.shippingState} onChange={handleShippingChange} required />
-              </div>
-              <div>
-                <label htmlFor="shippingZipCode" className="block text-sm font-medium text-gray-300 mb-1">Zip Code</label>
-                <input type="text" id="shippingZipCode" name="shippingZipCode" className="w-full p-2 text-sm tertiary_bg_color text-gray-300 border border-gray-300 rounded-lg" value={shipping.shippingZipCode} onChange={handleShippingChange} required />
+          </div>
+
+          {/* Shipping Details (conditionally rendered) */}
+          {differentShipping && (
+            <div className="secondary_bg_color md:w-[45%] md:mx-auto p-6 rounded-lg border-[.05rem] border-gray-100 shadow-md">
+              <h2 className="text-xl font-semibold text-gray-300 mb-4">Shipping Details</h2>
+              <div className="space-y-4">
+                <div>
+                  <label htmlFor="shippingName" className="block text-sm font-medium text-gray-300 mb-1">Name</label>
+                  <input type="text" id="shippingName" name="shippingName" className="w-full p-2 text-sm tertiary_bg_color text-gray-300 border border-gray-300 rounded-lg" value={shipping.shippingName} onChange={handleShippingChange} required />
+                </div>
+                <div>
+                  <label htmlFor="shippingAddressOne" className="block text-sm font-medium text-gray-300 mb-1">Address Line 1</label>
+                  <input type="text" id="shippingAddressOne" name="shippingAddressOne" className="w-full p-2 text-sm tertiary_bg_color text-gray-300 border border-gray-300 rounded-lg" value={shipping.shippingAddressOne} onChange={handleShippingChange} required />
+                </div>
+                <div>
+                  <label htmlFor="shippingAddressTwo" className="block text-sm font-medium text-gray-300 mb-1">Address Line 2</label>
+                  <input type="text" id="shippingAddressTwo" name="shippingAddressTwo" className="w-full p-2 text-sm tertiary_bg_color text-gray-300 border border-gray-300 rounded-lg" value={shipping.shippingAddressTwo} onChange={handleShippingChange} />
+                </div>
+                <div>
+                  <label htmlFor="shippingCity" className="block text-sm font-medium text-gray-300 mb-1">City</label>
+                  <input type="text" id="shippingCity" name="shippingCity" className="w-full p-2 text-sm tertiary_bg_color text-gray-300 border border-gray-300 rounded-lg" value={shipping.shippingCity} onChange={handleShippingChange} required />
+                </div>
+                <div>
+                  <label htmlFor="shippingState" className="block text-sm font-medium text-gray-300 mb-1">State</label>
+                  <input type="text" id="shippingState" name="shippingState" className="w-full p-2 text-sm tertiary_bg_color text-gray-300 border border-gray-300 rounded-lg" value={shipping.shippingState} onChange={handleShippingChange} required />
+                </div>
+                <div>
+                  <label htmlFor="shippingZipCode" className="block text-sm font-medium text-gray-300 mb-1">Zip Code</label>
+                  <input type="text" id="shippingZipCode" name="shippingZipCode" className="w-full p-2 text-sm tertiary_bg_color text-gray-300 border border-gray-300 rounded-lg" value={shipping.shippingZipCode} onChange={handleShippingChange} required />
+                </div>
               </div>
             </div>
-          </div>
+          )}
+
+          <AnimatedButton type="submit" className="w-[200px] p-4 mt-8 mx-auto text-center">
+            Submit Order
+          </AnimatedButton>
         </div>
-        <AnimatedButton type="submit" className="w-full mt-8">
-          Submit Order
-        </AnimatedButton>
       </form>
     </div>
   );

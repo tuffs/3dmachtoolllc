@@ -8,7 +8,7 @@ export default function CartCheckoutClient({ children }) {
   const [showCheckout, setShowCheckout] = useState(false);
 
   if (showCheckout) {
-    return <CheckoutForm />;
+    return <CheckoutForm autoFocus />;
   }
 
   return (
