@@ -79,13 +79,19 @@ export default async function ShoppingCartPage() {
                   {/* Total Row */}
                   <tr>
                     <td></td>
-                    <td className="p-5 text-right font-bold text-gray-300">TOTAL</td>
+                    <td className="p-5 text-right font-bold text-gray-300">PRE TAX SUBTOTAL</td>
                     <td className="p-5 text-right font-bold text-white">
                       ${total.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
                     </td>
                   </tr>
                 </tbody>
               </table>
+
+              <p className="text-sm my-3 mx-auto text-center text-white">
+                <i>
+                  Business Tax Exemption certificates are honored, you will be able to utilize your certificate during the checkout process. You MUST provide a valid PDF certificate at the time of checkout.
+                </i>
+              </p>
 
               <CheckoutButton />
             </div>
