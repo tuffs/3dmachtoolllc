@@ -2,31 +2,28 @@ import Hero from '@/components/Hero';
 import CheckoutButton from "@/components/ui/CheckoutButton";
 import { cookies } from 'next/headers';
 import { getCart } from '@/lib/cartUtils';
-import { getProductDetails } from '@/lib/products';
+import { getProductDetails } from '@/actions/getProductDetails';
 
 export default async function ShoppingCartPage() {
 
-  // Get cart from cookies
   const cookieStore = cookies();
   const cartCookie = cookieStore.get('3dmandt_cart')?.value;
   const cart = cartCookie ? getCart(cartCookie) : {};
 
-  // Get product IDs and quantities
-  const productIds = Object.keys(cart);
+  console.log('cartCookie:', cartCookie);
+  console.log('cart:', cart);
+
+  const productIds = Object.keys(cart).map(id => Number(id));
   let products = [];
   let total = 0;
 
   if (productIds.length > 0) {
-    // fetch product details from DB
     products = await getProductDetails(productIds);
-
-    // Calculate total price
     total = products.reduce((sum, product) => {
       const qty = cart[product.id] || 0;
       return sum + product.price * qty;
     }, 0);
   }
-
 
   return (
     <>
@@ -69,7 +66,7 @@ export default async function ShoppingCartPage() {
                       <tr key={product.id} className="hover:bg-gray-900 transition-colors">
                         <td className="p-5 border-b border-gray-800">
                           <a href={`/products/${product.id}`} className="underline text-blue-400 hover:text-blue-300 transition-colors">
-                            {product.sku} - {product.name}
+                            {product.name}
                           </a>
                         </td>
                         <td className="p-5 text-right border-b border-gray-800">{cart[product.id]}</td>
