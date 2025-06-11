@@ -1,7 +1,33 @@
 import Hero from '@/components/Hero';
 import CheckoutButton from "@/components/ui/CheckoutButton";
+import { cookies } from 'next/headers';
+import { getCart } from '@/lib/cartUtils';
+import { getProductDetails } from '@/lib/products';
 
-export default function ShoppingCartPage() {
+export default async function ShoppingCartPage() {
+
+  // Get cart from cookies
+  const cookieStore = cookies();
+  const cartCookie = cookieStore.get('3dmandt_cart')?.value;
+  const cart = cartCookie ? getCart(cartCookie) : {};
+
+  // Get product IDs and quantities
+  const productIds = Object.keys(cart);
+  let products = [];
+  let total = 0;
+
+  if (productIds.length > 0) {
+    // fetch product details from DB
+    products = await getProductDetails(productIds);
+
+    // Calculate total price
+    total = products.reduce((sum, product) => {
+      const qty = cart[product.id] || 0;
+      return sum + product.price * qty;
+    }, 0);
+  }
+
+
   return (
     <>
       <div className="my-24">
@@ -32,21 +58,34 @@ export default function ShoppingCartPage() {
                     <td className="py-2"></td>
                     <td className="py-2"></td>
                   </tr>
-                  {/* Example Product Row */}
-                  <tr className="hover:bg-gray-900 transition-colors">
-                    <td className="p-5 border-b border-gray-800">
-                      <a href={`/products/1`} className="underline text-blue-400 hover:text-blue-300 transition-colors">
-                        EXMPL1 - My First Product
-                      </a>
-                    </td>
-                    <td className="p-5 text-right border-b border-gray-800">1</td>
-                    <td className="p-5 text-right border-b border-gray-800">$399.99</td>
-                  </tr>
+                  {products.length === 0 ? (
+                    <tr>
+                      <td colSpan={3} className="p-8 text-center text-gray-400">
+                        Your cart is empty.
+                      </td>
+                    </tr>
+                  ) : (
+                    products.map(product => (
+                      <tr key={product.id} className="hover:bg-gray-900 transition-colors">
+                        <td className="p-5 border-b border-gray-800">
+                          <a href={`/products/${product.id}`} className="underline text-blue-400 hover:text-blue-300 transition-colors">
+                            {product.sku} - {product.name}
+                          </a>
+                        </td>
+                        <td className="p-5 text-right border-b border-gray-800">{cart[product.id]}</td>
+                        <td className="p-5 text-right border-b border-gray-800">
+                          ${Number(product.price).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
+                        </td>
+                      </tr>
+                    ))
+                  )}
                   {/* Total Row */}
                   <tr>
                     <td></td>
                     <td className="p-5 text-right font-bold text-gray-300">TOTAL</td>
-                    <td className="p-5 text-right font-bold text-white">$399.99</td>
+                    <td className="p-5 text-right font-bold text-white">
+                      ${total.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
+                    </td>
                   </tr>
                 </tbody>
               </table>
