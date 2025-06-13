@@ -105,7 +105,7 @@ We need for the form fields to represent the fields from the database so that we
 
 So we will need the proper server actions for saving and logging in as a customer as `@/actions/createCustomer.js` and `@/actions/signInCustomer.js` for this.
 
-The component will be called `CreateCustomerOrSignInForm`, this form also needs email and name but can be done without a password for a guest checkout.
+The component will be called `<CreateCustomerOrSignInForm/>`, this form also needs email and name but can be done without a password for a guest checkout. The name field will be removed from the billing and shipping details forms and elevated to the new component for signing in and signing up.
 
 
 `Changes to the Sales Tax and Billing/Shipping Details`
@@ -116,6 +116,8 @@ We need to somehow show that price on this form below the form fields, and a sma
 Originally, the tax for the order should be `TBD` and show the total in a top to bottom format like on a receipt. Then, as the form is filled out, if the zip code is not a Florida zip code, denoted by Florida not being selected as the state in the appropriate shipping or billing field. If it is Florida zip code, once that zip code is entered we need to lookup the surtax and add that in as a line item tax.
 
 So if we have a Florida Customer whose billing and shipping address are in a Florida zip code area we charge them 6% + the surtax returned from the database of zip codes and surtaxes. (We will need to create a server action for this).
+
+Also, this will Facilitate the need for a Dropdown for the State field which will have an exported list of all US States and Territories. These need to go into a statesAndTerritories.js hard data file in the `/lib` folder as `@/lib/statesAndTerritories.js` -- and then import that data as a required field to replace the states text input and instead map over that created list in Alphabetical order as an option / select dropdown that is styled the same as other fields and required.
 
 Then, we need to complete the receipt at the bottom of the address forms so that customers can see what they are paying for, products plus tax (on one line displayed as TAX: $5.55 for example which is (6% + `surtax percentage from database based on the zip code`)).
 
