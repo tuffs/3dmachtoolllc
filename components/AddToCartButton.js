@@ -17,7 +17,7 @@ export default function AddToCartButton({ product }) {
     <div className="ml-16 pl-48">
       <div className="mb-3">
         <p className="mb-2 ml-16">
-          <small><small>QTY. TO ORDER</small></small>
+          <small><small>QUANTITY</small></small>
         </p>
         <input
           type="number"
