@@ -1,9 +1,8 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 
 export default function CheckoutForm() {
-
   const [form, setForm] = useState({
     name: '',
     email: '',
@@ -20,11 +19,42 @@ export default function CheckoutForm() {
     shippingZipCode: '',
   });
 
+  // Check billing and shipping info differ
+  const [differentShippingInformation, setDifferentShippingInformation] = useState(false);
+
+  useEffect(() => {
+    if (differentShippingInformation) {
+      setForm((prev) => ({
+        ...prev,
+        shippingAddressOne: '',
+        shippingAddressTwo: '',
+        shippingCity: '',
+        shippingState: '',
+        shippingZipCode: '',
+      }));
+    } else {
+      setForm((prev) => ({
+        ...prev,
+        shippingAddressOne: prev.billingAddressOne,
+        shippingAddressTwo: prev.billingAddressTwo,
+        shippingCity: prev.billingCity,
+        shippingState: prev.billingState,
+        shippingZipCode: prev.billingZipCode,
+      }));
+    }
+  }, [differentShippingInformation]);
+
   const handleChange = (e) => {
     const { name, value } = e.target;
     setForm((prev) => {
-      // If it's a billing address field, sync shipping as well
-      if (name.startsWith('billingAddress') || name.startsWith('billingCity') || name.startsWith('billingState') || name.startsWith('billingZipCode')) {
+      // If billing field and not using different shipping, sync shipping
+      if (
+        !differentShippingInformation &&
+        (name.startsWith('billingAddress') ||
+          name.startsWith('billingCity') ||
+          name.startsWith('billingState') ||
+          name.startsWith('billingZipCode'))
+      ) {
         const shippingField = name.replace('billing', 'shipping');
         return {
           ...prev,
@@ -39,9 +69,6 @@ export default function CheckoutForm() {
       };
     });
   };
-
-  // Check billing and shipping info differ
-  const [differentShippingInformation, setDifferentShippingInformation] = useState(false);
 
   return (
     <div className="container mx-auto p-4">
@@ -161,96 +188,98 @@ export default function CheckoutForm() {
               onChange={() => setDifferentShippingInformation(!differentShippingInformation)}
               className="h-4 w-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500"
             />
-            <label htmlFor="differentShippingInformation" className="text-sm text-gray-300">Use different shipping information</label>
+            <label htmlFor="differentShippingInformation" className="text-sm text-gray-300">Check here if your shipping address differs from your billing address information.</label>
           </div>
 
-          <h2 className="text-xl font-semibold text-gray-300 mb-4 pt-6">Shipping Details</h2>
-          <div>
-            <label htmlFor="shippingAddressOne" className="block text-sm font-medium text-gray-300 mb-1">Shipping Address One</label>
-            <input
-              type="text"
-              id="shippingAddressOne"
-              name="shippingAddressOne"
-              className="w-full p-2 text-sm tertiary_bg_color text-gray-300 border border-gray-300 rounded-lg"
-              value={form.shippingAddressOne}
-              onChange={handleChange}
-              readOnly
-              required
-            />
-          </div>
+          {differentShippingInformation && (
+            <div id="shippingDetails">
+              <h2 className="text-xl font-semibold text-gray-300 mb-4 pt-6">Shipping Details</h2>
+              <div>
+                <label htmlFor="shippingAddressOne" className="block text-sm font-medium text-gray-300 mb-1">Shipping Address One</label>
+                <input
+                  type="text"
+                  id="shippingAddressOne"
+                  name="shippingAddressOne"
+                  className="w-full p-2 text-sm tertiary_bg_color text-gray-300 border border-gray-300 rounded-lg"
+                  value={form.shippingAddressOne}
+                  onChange={handleChange}
+                  required
+                />
+              </div>
 
-          <div>
-            <label htmlFor="shippingAddressTwo" className="block text-sm font-medium text-gray-300 mb-1">Shipping Address Two</label>
-            <input
-              type="text"
-              id="shippingAddressTwo"
-              name="shippingAddressTwo"
-              className="w-full p-2 text-sm tertiary_bg_color text-gray-300 border border-gray-300 rounded-lg"
-              value={form.shippingAddressTwo}
-              onChange={handleChange}
-              readOnly
-              required
-            />
-          </div>
+              <div>
+                <label htmlFor="shippingAddressTwo" className="block text-sm font-medium text-gray-300 mb-1">Shipping Address Two</label>
+                <input
+                  type="text"
+                  id="shippingAddressTwo"
+                  name="shippingAddressTwo"
+                  className="w-full p-2 text-sm tertiary_bg_color text-gray-300 border border-gray-300 rounded-lg"
+                  value={form.shippingAddressTwo}
+                  onChange={handleChange}
+                  required
+                />
+              </div>
 
-          <div>
-            <label htmlFor="shippingCity" className="block text-sm font-medium text-gray-300 mb-1">Shipping City</label>
-            <input
-              type="text"
-              id="shippingCity"
-              name="shippingCity"
-              className="w-full p-2 text-sm tertiary_bg_color text-gray-300 border border-gray-300 rounded-lg"
-              value={form.shippingCity}
-              onChange={handleChange}
-              readOnly
-              required
-            />
-          </div>
+              <div>
+                <label htmlFor="shippingCity" className="block text-sm font-medium text-gray-300 mb-1">Shipping City</label>
+                <input
+                  type="text"
+                  id="shippingCity"
+                  name="shippingCity"
+                  className="w-full p-2 text-sm tertiary_bg_color text-gray-300 border border-gray-300 rounded-lg"
+                  value={form.shippingCity}
+                  onChange={handleChange}
+                  required
+                />
+              </div>
 
-          <div>
-            <label htmlFor="shippingState" className="block text-sm font-medium text-gray-300 mb-1">Shipping State</label>
-            <input
-              type="text"
-              id="shippingState"
-              name="shippingState"
-              className="w-full p-2 text-sm tertiary_bg_color text-gray-300 border border-gray-300 rounded-lg"
-              value={form.shippingState}
-              onChange={handleChange}
-              readOnly
-              required
-            />
-          </div>
+              <div>
+                <label htmlFor="shippingState" className="block text-sm font-medium text-gray-300 mb-1">Shipping State</label>
+                <input
+                  type="text"
+                  id="shippingState"
+                  name="shippingState"
+                  className="w-full p-2 text-sm tertiary_bg_color text-gray-300 border border-gray-300 rounded-lg"
+                  value={form.shippingState}
+                  onChange={handleChange}
+                  required
+                />
+              </div>
 
-          <div>
-            <label htmlFor="shippingZipCode" className="block text-sm font-medium text-gray-300 mb-1">Shipping Zip Code</label>
-            <input
-              type="text"
-              id="shippingZipCode"
-              name="shippingZipCode"
-              className="w-full p-2 text-sm tertiary_bg_color text-gray-300 border border-gray-300 rounded-lg"
-              value={form.shippingZipCode}
-              onChange={handleChange}
-              readOnly
-              required
-            />
-          </div>
+              <div>
+                <label htmlFor="shippingZipCode" className="block text-sm font-medium text-gray-300 mb-1">Shipping Zip Code</label>
+                <input
+                  type="text"
+                  id="shippingZipCode"
+                  name="shippingZipCode"
+                  className="w-full p-2 text-sm tertiary_bg_color text-gray-300 border border-gray-300 rounded-lg"
+                  value={form.shippingZipCode}
+                  onChange={handleChange}
+                  required
+                />
+              </div>
+            </div>
+          )}
 
-          <div class="flex items-center space-y-8">
+          <div className="purchase_order_summary">
             <div className="outputShippingAddress">
               <p className="text-sm text-gray-300 mt-4">
                 <strong>Billing Address:</strong><br />
-                {form.billingAddressOne && `${form.billingAddressOne}<br />`}
-                {form.billingAddressTwo && `${form.billingAddressTwo}<br />`}
-                {form.billingCity && `${form.billingCity}, `}{form.billingState && `${form.billingState}`}&nbsp;&nbsp; {form.billingZipCode && `${form.billingZipCode}<br />`}
+                {form.billingAddressOne && (<>{form.billingAddressOne}<br /></>)}
+                {form.billingAddressTwo && (<>{form.billingAddressTwo}<br /></>)}
+                {form.billingCity && form.billingState && (
+                  <>{form.billingCity}, {form.billingState}&nbsp;&nbsp;{form.billingZipCode}<br /></>
+                )}
               </p>
             </div>
-
             <div className="outputShippingAddress">
               <p className="text-sm text-gray-300 mt-4">
                 <strong>Shipping Address:</strong><br />
-                {form.shippingAddressOne && `${form.shippingAddressOne}<br />`}
-                {form.shippingAddressTwo && `${form.shippingAddressTwo}<br />`}
-                {form.shippingCity && `${form.shippingCity}, `}{form.shippingState && `${form.shippingState}`}&nbsp;&nbsp; {form.shippingZipCode && `${form.shippingZipCode}<br />`}
+                {form.shippingAddressOne && (<>{form.shippingAddressOne}<br /></>)}
+                {form.shippingAddressTwo && (<>{form.shippingAddressTwo}<br /></>)}
+                {form.shippingCity && form.shippingState && (
+                  <>{form.shippingCity}, {form.shippingState}&nbsp;&nbsp;{form.shippingZipCode}<br /></>
+                )}
               </p>
             </div>
           </div>
