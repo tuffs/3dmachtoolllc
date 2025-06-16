@@ -8,7 +8,7 @@ export default function CustomerInformation() {
   const [phone, setPhone] = useState('');
 
   const handleChange = (e) => {
-    if (e.taget.name === 'name') {
+    if (e.target.name === 'name') {
       setName(e.target.value);
     }
 
@@ -40,7 +40,7 @@ export default function CustomerInformation() {
           <div>
             <label htmlFor="email" className="block text-sm font-medium text-gray-300 mb-1">Email Address</label>
             <input
-              type="email"
+              type="text"
               id="email"
               name="email"
               className="w-full p-2 text-sm tertiary_bg_color text-gray-300 border border-gray-300 rounded-lg"
@@ -52,7 +52,7 @@ export default function CustomerInformation() {
           <div>
             <label htmlFor="phone" className="block text-sm font-medium text-gray-300 mb-1">Phone Number</label>
             <input
-              type="phone"
+              type="text"
               id="phone"
               name="phone"
               className="w-full p-2 text-sm tertiary_bg_color text-gray-300 border border-gray-300 rounded-lg"
