@@ -5,13 +5,18 @@ import React, { useState } from 'react';
 export default function CustomerInformation() {
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
+  const [phone, setPhone] = useState('');
 
   const handleChange = (e) => {
     if (e.taget.name === 'name') {
       setName(e.target.value);
     }
 
-    else {
+    if (e.target.phone === 'phone') {
+      setPhone(e.target.value);
+    }
+
+    if (e.target.email === 'email') {
       setEmail(e.target.value);
     }
   };
@@ -19,7 +24,7 @@ export default function CustomerInformation() {
   return (
     <div className="container mx-auto p-4">
       <div className="flex flex-col gap-8">
-        <div className="secondary_bg_color md:w-[45%] md:mx-auto p-6 rounded-lg border-[.1rem] border-gray-100 shadow-md mb-8 space-y-4">
+        <div className="secondary_bg_color md:w-[45%] md:mx-auto p-6 rounded-lg border-[.1rem] border-gray-100 shadow-md space-y-4">
           <div>
             <label htmlFor="name" className="block text-sm font-medium text-gray-300 mb-1">Name or Business Name</label>
             <input
@@ -40,6 +45,18 @@ export default function CustomerInformation() {
               name="email"
               className="w-full p-2 text-sm tertiary_bg_color text-gray-300 border border-gray-300 rounded-lg"
               value={email}
+              onChange={handleChange}
+              required
+            />
+          </div>
+          <div>
+            <label htmlFor="phone" className="block text-sm font-medium text-gray-300 mb-1">Phone Number</label>
+            <input
+              type="phone"
+              id="phone"
+              name="phone"
+              className="w-full p-2 text-sm tertiary_bg_color text-gray-300 border border-gray-300 rounded-lg"
+              value={phone}
               onChange={handleChange}
               required
             />
