@@ -3,7 +3,19 @@ import database from "@/prisma/database"
 import ProductDetails from "@/components/ProductDetails"
 
 export default async function ProductPage({ params }) {
-  const productId = Number.parseInt(params.id)
+
+  const id = params.id
+
+  if (!/^\d+$/.test(id)) {
+    notFound()
+  }
+
+  const productId = Number.parseInt(id, 10)
+
+  if (!Number.isInteger(productId)) {
+    notFound()
+  }
+
   const product = await database.product.findUnique({
     where: { id: productId },
   });
