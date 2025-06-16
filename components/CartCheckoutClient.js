@@ -1,7 +1,6 @@
 'use client';
 
 import React, { useState } from 'react';
-import CustomerInformation from '@/components/CustomerInformation';
 import CheckoutForm from '@/components/CheckoutForm';
 import CheckoutButton from "@/components/ui/CheckoutButton";
 
@@ -11,8 +10,7 @@ export default function CartCheckoutClient({ children }) {
   if (showCheckout) {
     return (
       <>
-        <CustomerInformation />
-        <CheckoutForm autoFocus />
+        <CheckoutForm />
       </>
     );
   }
