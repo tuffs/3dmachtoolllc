@@ -66,7 +66,7 @@ export default function CheckoutForm({ autoFocus }) {
             <div className="space-y-4">
               <div>
                 <label htmlFor="billingName" className="block text-sm font-medium text-gray-300 mb-1">Name</label>
-                <input type="text" id="billingName" name="billingName" className="w-full p-2 text-sm tertiary_bg_color text-gray-300 border border-gray-300 rounded-lg" value={billing.billingName} onChange={handleBillingChange} ref={nameInputRef} required />
+                <input type="text" id="billingName" name="billingName" className="w-full p-2 text-sm tertiary_bg_color text-gray-300 border border-gray-300 rounded-lg" value={billing.billingName} onChange={handleBillingChange} required />
               </div>
               <div>
                 <label htmlFor="billingAddressOne" className="block text-sm font-medium text-gray-300 mb-1">Address Line 1</label>
