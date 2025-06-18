@@ -2,10 +2,16 @@
 
 import { useState } from 'react';
 import { addToCart } from '@/lib/cartUtils';
+import { getCart } from "@/lib/cartUtils"
 
 export default function AddToCartButton({ product }) {
   const [message, setMessage] = useState(null);
   const [quantity, setQuantity] = useState(1);
+
+  const cart = getCart();
+
+  // Check if there are any products in the cart with quantities > 0
+  const cartLoaded = Object.values(cart).some(quantity => quantity > 0);
 
   const handleAddToCart = () => {
     addToCart(product.id, quantity);
@@ -34,6 +40,11 @@ export default function AddToCartButton({ product }) {
         Add to Cart
       </button>
       {message && <p className="mt-2 text-green-500">{message}</p>}
+      {cartLoaded && (
+        <div className="mt-1">
+          <a href="/cart" className="underline text-gray-300">Proceed to Checkout</a>
+        </div>
+      )}
     </div>
   );
 }
