@@ -74,7 +74,7 @@ export default function CheckoutForm(children) {
     <form>
       <div className="container mx-auto p-4">
         <div className="flex flex-col gap-8">
-          <div className="secondary_bg_color md:w-[45%] md:mx-auto p-6 rounded-lg border-[.1rem] border-gray-100 shadow-md space-y-4">
+          <div className="secondary_bg_color md:w-[45%] md:mx-auto p-6 rounded-lg border-[.1rem] border-gray-100 shadow-md space-y-6">
             <h2 className="text-xl font-semibold text-gray-300 mb-4">Billing Details</h2>
             <div>
               <label htmlFor="name" className="block text-sm font-medium text-gray-300 mb-1">Billing Name or Business</label>
@@ -193,8 +193,8 @@ export default function CheckoutForm(children) {
             </div>
 
             {differentShippingInformation && (
-              <div id="shippingDetails">
-                <h2 className="text-xl font-semibold text-gray-300 mb-4 pt-6">Shipping Details</h2>
+              <div id="shippingDetails" className="space-y-6 pt-3 pb-6">
+                <h2 className="text-xl font-semibold text-gray-300 mb-4">Shipping Details</h2>
                 <div>
                   <label htmlFor="shippingAddressOne" className="block text-sm font-medium text-gray-300 mb-1">Shipping Address One</label>
                   <input
@@ -263,6 +263,7 @@ export default function CheckoutForm(children) {
             )}
 
             <div className="purchase_order_summary">
+              <h3 className="text-lg font-semibold text-gray-300 mb-4">Your Purchase Details:</h3>
               <div className="outputShippingAddress">
                 <p className="text-sm text-gray-300 mt-4">
                   <strong>Billing Address:</strong><br />
