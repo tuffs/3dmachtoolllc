@@ -4,13 +4,13 @@ import React, { useState } from 'react';
 import CheckoutForm from '@/components/CheckoutForm';
 import CheckoutButton from "@/components/ui/CheckoutButton";
 
-export default function CartCheckoutClient({ children }) {
+export default function CartCheckoutClient({ pre_tax_subtotal, children }) {
   const [showCheckout, setShowCheckout] = useState(false);
 
   if (showCheckout) {
     return (
       <>
-        <CheckoutForm children={children} />
+        <CheckoutForm children={children} pre_tax_subtotal={pre_tax_subtotal} />
       </>
     );
   }

@@ -1,7 +1,5 @@
 import Hero from '@/components/Hero';
 import CartCheckoutClient from '@/components/CartCheckoutClient';
-import CheckoutForm from '@/components/CheckoutForm';
-import CheckoutButton from "@/components/ui/CheckoutButton";
 import { cookies } from 'next/headers';
 import { getCart } from '@/lib/cartUtils';
 import { getProductDetails } from '@/actions/getProductDetails';
@@ -13,15 +11,17 @@ export default async function ShoppingCartPage() {
 
   const productIds = Object.keys(cart).map(id => Number(id));
   let products = [];
-  let total = 0;
+  let pre_tax_subtotal = 0;
 
   if (productIds.length > 0) {
     products = await getProductDetails(productIds);
-    total = products.reduce((sum, product) => {
+    pre_tax_subtotal = products.reduce((sum, product) => {
       const qty = cart[product.id] || 0;
       return sum + product.price * qty;
     }, 0);
   }
+
+  console.log('Pre Tax Subtotal: ', pre_tax_subtotal);
 
   // Render the cart table as a variable
   const cartTable = (
@@ -67,7 +67,7 @@ export default async function ShoppingCartPage() {
                 <td></td>
                 <td className="p-5 text-right font-bold text-gray-300">PRE TAX SUBTOTAL</td>
                 <td className="p-5 text-right font-bold text-white">
-                  ${total.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
+                  ${pre_tax_subtotal.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
                 </td>
               </tr>
             </tbody>
@@ -88,11 +88,11 @@ export default async function ShoppingCartPage() {
       <div className="mt-24 text-white pt-0 p-8">
         <section className="mb-3">
           <h1 className="text-4xl font-bold text-center">
-            My Shopping Cart
+            Current Order
           </h1>
         </section>
       </div>
-      <CartCheckoutClient>
+      <CartCheckoutClient pre_tax_subtotal={pre_tax_subtotal}>
         {cartTable}
       </CartCheckoutClient>
     </div>
