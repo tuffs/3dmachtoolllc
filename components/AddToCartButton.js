@@ -1,8 +1,7 @@
 'use client';
 
 import { useState } from 'react';
-import { addToCart } from '@/lib/cartUtils';
-import { getCart } from "@/lib/cartUtils"
+import { addToCart, getCart } from '@/lib/cartUtils';
 
 export default function AddToCartButton({ product }) {
   const [message, setMessage] = useState(null);
@@ -39,9 +38,9 @@ export default function AddToCartButton({ product }) {
       >
         Add to Cart
       </button>
-      {message && <p className="mt-2 text-green-500">{message}</p>}
+      {message && <p className="text-xs my-4 text-green-500">{message}</p>}
       {cartLoaded && (
-        <div className="mt-1">
+        <div className="mt-4">
           <a href="/cart" className="underline text-gray-300">Proceed to Checkout</a>
         </div>
       )}
