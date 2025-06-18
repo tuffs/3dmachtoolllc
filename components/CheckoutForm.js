@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect } from 'react';
 
-export default function CheckoutForm() {
+export default function CheckoutForm(children) {
   const [form, setForm] = useState({
     name: '',
     email: '',
@@ -284,6 +284,8 @@ export default function CheckoutForm() {
                 </p>
               </div>
             </div>
+
+            {children.children}
 
           </div>
         </div>

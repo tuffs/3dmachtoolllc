@@ -25,8 +25,8 @@ export default async function ShoppingCartPage() {
 
   // Render the cart table as a variable
   const cartTable = (
-    <div className="w-full bg-inherit p-4 md:p-8">
-      <div className="w-full flex justify-center bg-inherit p-4 md:p-8">
+    <div className="w-full bg-inherit">
+      <div className="w-full flex justify-center bg-inherit p-1">
         <div className="w-full max-w-3xl">
           <table className="w-full rounded-xl overflow-hidden shadow-lg bg-gray-950 border border-gray-800">
             <thead>

@@ -10,11 +10,7 @@ export default function CartCheckoutClient({ children }) {
   if (showCheckout) {
     return (
       <>
-        <CheckoutForm />
-
-        {/* Display the purchase product matrix below the form */}
-        {children}
-
+        <CheckoutForm children={children} />
       </>
     );
   }
