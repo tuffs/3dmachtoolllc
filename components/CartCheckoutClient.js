@@ -18,9 +18,12 @@ export default function CartCheckoutClient({ pre_tax_subtotal, children }) {
   return (
     <>
       {children}
-      <div className="flex justify-center mt-8">
-        <CheckoutButton onClick={() => setShowCheckout(true)} />
-      </div>
+
+      {pre_tax_subtotal !== 0 && (
+        <div className="flex justify-center mt-8">
+          <CheckoutButton onClick={() => setShowCheckout(true)} />
+        </div>
+      )}
     </>
   );
 }

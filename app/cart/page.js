@@ -34,6 +34,7 @@ export default async function ShoppingCartPage() {
                 <th className="p-5 text-left font-semibold tracking-wide border-b border-gray-700">ITEM</th>
                 <th className="p-5 text-right font-semibold tracking-wide border-b border-gray-700">QTY</th>
                 <th className="p-5 text-right font-semibold tracking-wide border-b border-gray-700">PRICE</th>
+                <th className="p-5 text-right font-semibold tracking-wide border-b border-gray-700">ACTION</th>
               </tr>
             </thead>
             <tbody>
@@ -41,10 +42,11 @@ export default async function ShoppingCartPage() {
                 <td className="py-2"></td>
                 <td className="py-2"></td>
                 <td className="py-2"></td>
+                <td className="py-2"></td>
               </tr>
               {products.length === 0 ? (
                 <tr>
-                  <td colSpan={3} className="p-8 text-center text-gray-400">
+                  <td colSpan={4} className="p-8 text-center text-gray-400">
                     Your cart is empty.
                   </td>
                 </tr>
@@ -59,6 +61,9 @@ export default async function ShoppingCartPage() {
                     <td className="p-5 text-right border-b border-gray-800">{cart[product.id]}</td>
                     <td className="p-5 text-right border-b border-gray-800">
                       ${Number(product.price).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
+                    </td>
+                    <td className="p-5 text-right text-xs border-b border-gray-800">
+                      <a href="#!">remove</a>
                     </td>
                   </tr>
                 ))
