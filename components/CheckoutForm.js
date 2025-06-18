@@ -290,7 +290,7 @@ export default function CheckoutForm(children) {
 
             <br />
 
-            PRE TAX SUBTOTAL: ${children.pre_tax_subtotal}
+            *REMOVE FROM CODE* PRE TAX SUBTOTAL: ${children.pre_tax_subtotal}
           </div>
         </div>
       </div>
