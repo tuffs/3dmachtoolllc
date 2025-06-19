@@ -3,6 +3,7 @@ import CartCheckoutClient from '@/components/CartCheckoutClient';
 import { cookies } from 'next/headers';
 import { getCart } from '@/lib/cartUtils';
 import { getProductDetails } from '@/actions/getProductDetails';
+import { FaTimes } from 'react-icons/fa';
 
 export default async function ShoppingCartPage() {
   const cookieStore = cookies();
@@ -32,7 +33,6 @@ export default async function ShoppingCartPage() {
                 <th className="p-5 text-left font-semibold tracking-wide border-b border-gray-700">ITEM</th>
                 <th className="p-5 text-right font-semibold tracking-wide border-b border-gray-700">QTY</th>
                 <th className="p-5 text-right font-semibold tracking-wide border-b border-gray-700">PRICE</th>
-                <th className="p-5 text-right font-semibold tracking-wide border-b border-gray-700">ACTION</th>
               </tr>
             </thead>
             <tbody>
@@ -40,11 +40,10 @@ export default async function ShoppingCartPage() {
                 <td className="py-2"></td>
                 <td className="py-2"></td>
                 <td className="py-2"></td>
-                <td className="py-2"></td>
               </tr>
               {products.length === 0 ? (
                 <tr>
-                  <td colSpan={4} className="p-8 text-center text-gray-400">
+                  <td colSpan={3} className="p-8 text-center text-gray-400">
                     Your cart is empty.
                   </td>
                 </tr>
@@ -54,20 +53,17 @@ export default async function ShoppingCartPage() {
                     <td className="p-5 border-b border-gray-800">
                       <a href={`/products/${product.id}`} className="underline text-blue-400 hover:text-blue-300 transition-colors">
                         {product.name}
+                        <a href="#!"><FaTimes className="text-block block" /></a>
                       </a>
                     </td>
                     <td className="p-5 text-right border-b border-gray-800">{cart[product.id]}</td>
                     <td className="p-5 text-right border-b border-gray-800">
                       ${Number(product.price).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
                     </td>
-                    <td className="p-5 text-right text-xs border-b border-gray-800">
-                      <a href="#!">remove</a>
-                    </td>
                   </tr>
                 ))
               )}
               <tr>
-                <td></td>
                 <td></td>
                 <td className="p-5 text-right font-bold text-gray-300">PRE TAX SUBTOTAL</td>
                 <td className="p-5 text-right font-bold text-white">
@@ -83,7 +79,7 @@ export default async function ShoppingCartPage() {
           </p>
         </div>
       </div>
-    </div>
+    </div >
   );
 
   return (
