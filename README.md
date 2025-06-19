@@ -55,3 +55,33 @@ to complete purchases.
 The ACTION column needs to be removed and removal of a product from the
 shopping cart integrated into the existing width of the table as it
 stands now.
+
+
+# PROMPT
+Ok, before we proceed. You mention that zipCode is an Int in the database. The table we are looking up is purely a reference table at this point, you are correct that we need to match the type before executing a lookup in the server action we are working with at present.
+
+Also, you mention: `here’s no validation to ensure zipCode is a valid US zip code format (e.g., 5 digits or 5+4). Since your form uses validator.isPostalCode(value, 'US'), you should validate similarly in the action.`
+
+While this is great, we will only be looking out for the base 5 digit zip code in the United States as we will ONLY sell inside of the USA via this form. This being said, we may need to look into the validator US zip code validation and make some modifications here. All of the zip codes that we lookup in the reference table are pure 5 digit zip codes, no plus 4 that the USPS tried to get us to use as a quicker and more precise locator. While it is used, I do not use the plus 4 and it is unneeded with the US Postal Service, only allowed. Almost no one knows what their own +4 code is, save attorneys and the post master or employees of the USPS, maybe.
+
+You also mention:
+
+```
+Query Return Value:
+The query returns an object { rate: Float } (e.g., { rate: 7.5 }), but your action is named getSurtaxPercent, suggesting it should return the rate directly (e.g., 7.5). Returning the object requires the caller to access .rate, which may be less convenient.
+
+Why: Aligning the return type with the function’s purpose improves usability and clarity.
+```
+
+Which I agree with, however, I need some clarification on what needs to be changed with your opinions and suggestions.
+
+Also, you stated:
+
+```
+No Default Rate Handling:
+If no record is found for the zip code, the query returns null, but the action doesn’t explicitly handle this case (beyond the initial !zipCode check). Returning 0.0 for invalid or missing zip codes may not be the desired behavior in all cases.
+```
+
+This is correct, we do need to handle errors a bit more cautiously here so that when someone has input `FL` as their desired state and the zip code is not found on my lookup table with a corresponding rate, we need that user to know that the zip code that they are using is not a `FL` zip code and that we have detected a user input error to avoid later confusion over where to ship packages in the real world. We need an error handler here that will pop back into the form and tell our customer what is going on and require that either the state or zip code be changed. We do also want to provide a default value (rate) of `0.0`   in this event or any other event where the Florida zip code is not found. Providing `null` as a return value helps no one here, you are correct.
+
+As well, my Prisma ORM import path is correct based on my setup. I have used this throughout this application and others. It is tried and true at this point. I appreciate your seeking confirmation here.
