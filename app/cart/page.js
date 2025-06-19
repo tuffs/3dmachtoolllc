@@ -21,8 +21,6 @@ export default async function ShoppingCartPage() {
     }, 0);
   }
 
-  console.log('Pre Tax Subtotal: ', pre_tax_subtotal);
-
   // Render the cart table as a variable
   const cartTable = (
     <div className="w-full bg-inherit">
@@ -70,6 +68,7 @@ export default async function ShoppingCartPage() {
               )}
               <tr>
                 <td></td>
+                <td></td>
                 <td className="p-5 text-right font-bold text-gray-300">PRE TAX SUBTOTAL</td>
                 <td className="p-5 text-right font-bold text-white">
                   ${pre_tax_subtotal.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
@@ -79,7 +78,7 @@ export default async function ShoppingCartPage() {
           </table>
           <p className="text-sm my-3 mx-auto text-center text-white">
             <i>
-              Business Tax Exemption certificates are honored, you will be able to utilize your certificate during the checkout process. You MUST provide a valid PDF certificate at the time of checkout.
+              You may provide your Tax Exemption certificate during the checkout process next. You MUST provide a valid PDF certificate at the point of sale.
             </i>
           </p>
         </div>
