@@ -9,6 +9,20 @@ Prisma will then be used as the ORM to interface between our app and SaaS soluti
 - [ ] Recreate the animation set for the <Hero/> component.
   - [ ] The logo should hover, isolating slowly "in place" with framer motion.
 
+## CHECKOUT PROCESS
+
+- [ ] Ability to completely checkout with multiple products and quantities
+  - [ ] Checkout Form and all of its intricacies
+    - [ ] Ensure that the US address provided is recognized by the USPS as a definitive ship to location
+    - [ ] Allow override with acknowledgement that any shipping errors are on the customer
+    - [ ] Sales Tax Calculation and Final Pricing Provided
+    - [ ] Acceptance of valid Exemption Certificates in PDF format
+      - [ ] Can we query AI to check if the uploaded PDF appears to be a legitimate copy by US State?
+        - [ ] Use ChatGPT or Grok to offload processing power for this
+  - [ ] Add on a Stripe Payment processor which completes sales
+    - [ ] Ensure we are capable to complete these forms in mobile devices
+
+
 ## MOBILE PHONE NAVIGATION
 
 - [ ] Create an animated fullscreen menu for desktop (smaller display, user enforced) and primarily for mobile phones.
