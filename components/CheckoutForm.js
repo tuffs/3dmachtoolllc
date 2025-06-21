@@ -289,8 +289,7 @@ export default function CheckoutForm({ children }) {
         autoCorrect="off"
         spellCheck={name === 'email' ? 'false' : 'true'}
         placeholder={
-          name === 'name' ? 'Full Name or Registered Business Name' :
-            name === 'billingState' || name === 'shippingState' ? 'CA' : undefined
+          name === 'name' ? 'Full Name or Registered Business Name' : undefined
         }
         maxLength={name === 'billingState' || name === 'shippingState' ? 2 : undefined}
       />
