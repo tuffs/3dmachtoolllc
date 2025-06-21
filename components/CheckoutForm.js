@@ -3,6 +3,7 @@
 import React, { useState, useEffect } from 'react';
 import validator from 'validator';
 import DOMPurify from 'dompurify';
+import { getSurtaxPercent } from '@/actions/getSurtaxPercent';
 
 export default function CheckoutForm({ children }) {
   const [form, setForm] = useState({
@@ -23,6 +24,21 @@ export default function CheckoutForm({ children }) {
 
   const [errors, setErrors] = useState({});
   const [differentShippingInformation, setDifferentShippingInformation] = useState(false);
+  const [taxRate, setTaxRate] = useState({ rate: 0.0, error: null });
+
+  // Fetch tax rate when zip code changes
+  useEffect(() => {
+    async function fetchTaxRate() {
+      const zipCode = differentShippingInformation ? form.shippingZipCode : form.billingZipCode;
+      if (zipCode && validator.isPostalCode(zipCode, 'US')) {
+        const result = await getSurtaxPercent(zipCode);
+        setTaxRate(result);
+      } else {
+        setTaxRate({ rate: 0.0, error: 'Invalid zip code' });
+      }
+    }
+    fetchTaxRate();
+  }, [form.billingZipCode, form.shippingZipCode, differentShippingInformation]);
 
   // Validation function
   const validateField = (name, value) => {
@@ -88,15 +104,14 @@ export default function CheckoutForm({ children }) {
     const { name, value } = e.target;
     let sanitizedValue = value;
 
-    // Sanitize inputs
     switch (name) {
       case 'name':
-        sanitizedValue = value; // Preserve all characters, including spaces
-        console.log(`Name input: raw=${value}, sanitized=${sanitizedValue}`); // Debug
+        sanitizedValue = value;
+        console.log(`Name input: raw=${value}, sanitized=${sanitizedValue}`);
         break;
       case 'email':
-        sanitizedValue = value; // Only trim whitespace
-        console.log(`Email input: raw=${value}, sanitized=${sanitizedValue}`); // Debug
+        sanitizedValue = value;
+        console.log(`Email input: raw=${value}, sanitized=${sanitizedValue}`);
         break;
       case 'phone':
         sanitizedValue = value.replace(/[\s-()]/g, '');
@@ -113,7 +128,7 @@ export default function CheckoutForm({ children }) {
         break;
       case 'billingState':
       case 'shippingState':
-        sanitizedValue = validator.trim(value).toUpperCase(); // Convert to uppercase
+        sanitizedValue = validator.trim(value).toUpperCase();
         break;
       case 'billingZipCode':
       case 'shippingZipCode':
@@ -140,7 +155,6 @@ export default function CheckoutForm({ children }) {
       return updatedForm;
     });
 
-    // Validate field
     const error = validateField(name, sanitizedValue);
     setErrors((prev) => ({
       ...prev,
@@ -191,7 +205,6 @@ export default function CheckoutForm({ children }) {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    // Sanitize name and email before submission
     const finalForm = {
       ...form,
       name: DOMPurify.sanitize(validator.trim(form.name)),
@@ -222,7 +235,7 @@ export default function CheckoutForm({ children }) {
         const response = await fetch('/api/checkout', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify(finalForm),
+          body: JSON.stringify({ ...finalForm, taxRate: taxRate.rate }),
         });
 
         if (response.ok) {
@@ -244,6 +257,7 @@ export default function CheckoutForm({ children }) {
           });
           setDifferentShippingInformation(false);
           setErrors({});
+          setTaxRate({ rate: 0.0, error: null });
         } else {
           console.error('Submission failed');
         }
@@ -274,7 +288,7 @@ export default function CheckoutForm({ children }) {
         spellCheck={name === 'email' ? 'false' : 'true'}
         placeholder={
           name === 'name' ? 'Full Name or Registered Business Name' :
-            name === 'billingState' || name === 'shippingState' ? 'FL' : undefined
+            name === 'billingState' || name === 'shippingState' ? 'CA' : undefined
         }
         maxLength={name === 'billingState' || name === 'shippingState' ? 2 : undefined}
       />
@@ -342,8 +356,13 @@ export default function CheckoutForm({ children }) {
                   {form.shippingAddressOne && <>{form.shippingAddressOne}<br /></>}
                   {form.shippingAddressTwo && <>{form.shippingAddressTwo}<br /></>}
                   {form.shippingCity && form.shippingState && (
-                    <>{form.shippingCity}, {form.shippingState} {form.billingZipCode}<br /></>
+                    <>{form.shippingCity}, {form.shippingState} {form.shippingZipCode}<br /></>
                   )}
+                </p>
+              </div>
+              <div className="taxRate">
+                <p className="text-sm text-gray-300 mt-4">
+                  <strong>Sales Tax Rate:</strong> {taxRate.error ? taxRate.error : `${taxRate.rate}%`}
                 </p>
               </div>
             </div>
