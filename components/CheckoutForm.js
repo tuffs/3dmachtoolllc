@@ -25,6 +25,7 @@ export default function CheckoutForm({ children }) {
   const [errors, setErrors] = useState({});
   const [differentShippingInformation, setDifferentShippingInformation] = useState(false);
   const [taxRate, setTaxRate] = useState({ rate: 0.0, error: null });
+  const [finalTaxRate, setFinalTaxRate] = useState(0.06);
 
   // Fetch tax rate when zip code changes
   useEffect(() => {
@@ -155,6 +156,7 @@ export default function CheckoutForm({ children }) {
       return updatedForm;
     });
 
+    // Validation Error Handling
     const error = validateField(name, sanitizedValue);
     setErrors((prev) => ({
       ...prev,
@@ -362,7 +364,7 @@ export default function CheckoutForm({ children }) {
               </div>
               <div className="taxRate">
                 <p className="text-sm text-gray-300 mt-4">
-                  <strong>Sales Tax Rate:</strong> {taxRate.error ? taxRate.error : `${taxRate.rate}%`}
+                  <strong>Sales Tax Multiplier:</strong> {taxRate.error ? taxRate.error : `${taxRate.rate}`}
                 </p>
               </div>
             </div>

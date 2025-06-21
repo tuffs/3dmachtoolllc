@@ -31,7 +31,7 @@ export default async function ShoppingCartPage() {
             <thead>
               <tr className="bg-gradient-to-r from-gray-900 to-gray-800 text-white">
                 <th className="p-5 text-left font-semibold tracking-wide border-b border-gray-700">ITEM</th>
-                <th className="p-5 text-right font-semibold tracking-wide border-b border-gray-700">QTY</th>
+                <th className="p-5 text-right font-semibold tracking-wide border-b border-gray-700" width="33%">QTY</th>
                 <th className="p-5 text-right font-semibold tracking-wide border-b border-gray-700">PRICE</th>
               </tr>
             </thead>
@@ -51,10 +51,16 @@ export default async function ShoppingCartPage() {
                 products.map(product => (
                   <tr key={product.id} className="hover:bg-gray-900 transition-colors">
                     <td className="p-5 border-b border-gray-800">
-                      <a href={`/products/${product.id}`} className="underline text-blue-400 hover:text-blue-300 transition-colors">
-                        {product.name}
-                        <a href="#!"><FaTimes className="text-block block" /></a>
-                      </a>
+                      <div className="flex items-center justify-between">
+                        <div className="flex flex-col">
+                          <a href={`/products/${product.id}`} className="underline text-blue-400 hover:text-blue-300 transition-colors">
+                            {product.name}
+                          </a>
+                        </div>
+                        <div className="flex flex-col">
+                          <a href="#!" className="text-red-500 hover:text-red-700 transition-colors"><div className="flex"><FaTimes className="flex flex-col text-block block" /><small className="flex flex-col pl-1 hover:underline"><small>remove item</small></small></div></a>
+                        </div>
+                      </div>
                     </td>
                     <td className="p-5 text-right border-b border-gray-800">{cart[product.id]}</td>
                     <td className="p-5 text-right border-b border-gray-800">
@@ -78,7 +84,7 @@ export default async function ShoppingCartPage() {
             </i>
           </p>
         </div>
-      </div>
+      </div >
     </div >
   );
 
