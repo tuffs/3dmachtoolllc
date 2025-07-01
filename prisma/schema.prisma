@@ -62,18 +62,20 @@ model FloridaSalesTax {
   id        Int      @id @default(autoincrement())
   county    String
   zipCode   Int
-  rate      Float
+  rate      Float // Surtax as a decimal (e.g., 0.015 for 1.5%)
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 }
 
 model Order {
   id                 Int      @id @default(autoincrement())
-  orderNumber        String
-  subtotal           Float
+  orderNumber        String   @unique
+  preTaxSubtotal     Float
+  stateTax           Float
+  surtax             Float
   total              Float
-  taxRate            Float
-  taxExemptionStatus Boolean
+  taxRate            Float // Multiplier (e.g., 1.075)
+  taxExemptionStatus Boolean  @default(false)
   status             String
   purchasedItems     Json
   createdAt          DateTime @default(now())
@@ -84,7 +86,8 @@ model Order {
   shippingCity       String
   shippingState      String
   shippingZipCode    String
-  customer           Customer @relation(fields: [id], references: [id])
+  customerId         Int      @unique
+  customer           Customer @relation(fields: [customerId], references: [id])
 }
 
 model Customer {

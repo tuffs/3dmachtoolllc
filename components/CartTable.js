@@ -10,6 +10,7 @@ export default function CartTable({ products, cart, pre_tax_subtotal }) {
             <thead>
               <tr className="bg-gradient-to-r from-gray-900 to-gray-800 text-white">
                 <th className="p-5 text-left font-semibold tracking-wide border-b border-gray-700">ITEM</th>
+                <th className="p-5 text-left font-semibold tracking-wide border-b border-gray-700"></th>
                 <th className="p-5 text-right font-semibold tracking-wide border-b border-gray-700" width="33%">
                   QTY
                 </th>
@@ -21,10 +22,11 @@ export default function CartTable({ products, cart, pre_tax_subtotal }) {
                 <td className="py-2"></td>
                 <td className="py-2"></td>
                 <td className="py-2"></td>
+                <td className="py-2"></td>
               </tr>
               {products.length === 0 ? (
                 <tr>
-                  <td colSpan={3} className="p-8 text-center text-gray-400">
+                  <td colSpan={4} className="p-8 text-center text-gray-400">
                     Your cart is empty.
                   </td>
                 </tr>
@@ -41,19 +43,21 @@ export default function CartTable({ products, cart, pre_tax_subtotal }) {
                             {product.name}
                           </Link>
                         </div>
-                        <div className="flex flex-col">
-                          <a
-                            href="#!"
-                            className="text-red-500 hover:text-red-700 transition-colors"
-                          >
-                            <div className="flex">
-                              <FaTimes className="flex flex-col text-block block" />
-                              <small className="flex flex-col pl-1 hover:underline">
-                                <small>remove item</small>
-                              </small>
-                            </div>
-                          </a>
-                        </div>
+                      </div>
+                    </td>
+                    <td className="p-5 border-b border-gray-800">
+                      <div className="flex flex-col">
+                        <a
+                          href="#!"
+                          className="text-red-500 hover:text-red-700 transition-colors"
+                        >
+                          <div className="flex">
+                            <FaTimes className="flex flex-col text-block block" />
+                            <small className="flex flex-col pl-1 hover:underline">
+                              <small>remove item</small>
+                            </small>
+                          </div>
+                        </a>
                       </div>
                     </td>
                     <td className="p-5 text-right border-b border-gray-800">{cart[product.id]}</td>

@@ -6,6 +6,8 @@ import { getCart } from '@/lib/cartUtils';
 import { getProductDetails } from '@/actions/getProductDetails';
 
 export default async function ShoppingCartPage() {
+
+
   const cookieStore = cookies();
   const cartCookie = cookieStore.get('3dmandt_cart')?.value;
   const cart = cartCookie ? getCart(cartCookie) : {};
@@ -27,7 +29,7 @@ export default async function ShoppingCartPage() {
       <Hero />
       <div className="mt-24 text-white pt-0 p-8">
         <section className="mb-3">
-          <h1 className="text-4xl font-bold text-center">Current Order</h1>
+          <h1 className="text-4xl font-bold text-center">Your Shopping Cart</h1>
         </section>
       </div>
       <CartCheckoutClient pre_tax_subtotal={pre_tax_subtotal}>
