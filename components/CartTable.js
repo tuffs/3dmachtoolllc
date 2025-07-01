@@ -68,7 +68,7 @@ export default function CartTable({ products, cart, pre_tax_subtotal }) {
                 ))
               )}
               <tr>
-                <td></td>
+                <td colspan="2"></td>
                 <td className="p-5 text-right font-bold text-gray-300">PRE TAX SUBTOTAL</td>
                 <td className="p-5 text-right font-bold text-white">
                   ${pre_tax_subtotal.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
@@ -76,10 +76,9 @@ export default function CartTable({ products, cart, pre_tax_subtotal }) {
               </tr>
             </tbody>
           </table>
-          <p className="text-sm my-3 mx-auto text-center text-white">
+          <p className="text-md my-3 mx-auto text-center text-white">
             <i>
-              You may provide your Tax Exemption certificate during the checkout process next. You MUST provide a valid PDF
-              certificate at the point of sale.
+              Tax Exemption Certificates in PDF format are honored. This must be provided at the time of sale.
             </i>
           </p>
         </div>
