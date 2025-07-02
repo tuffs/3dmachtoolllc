@@ -1,12 +1,61 @@
 'use client';
 
 import React, { useState, useEffect, useCallback, useTransition } from 'react';
+import AnimatedButton from './ui/AnimatedButton';
 import { getSurtaxPercent } from '@/actions/getSurtaxPercent';
+import { FaCheckCircle } from 'react-icons/fa';
+
 
 export default function CheckoutForm({ pre_tax_subtotal, children }) {
 
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [isDifferentBilling, setIsDifferentBilling] = useState(false);
+
+  // State for Purchase Form
+  const [formData, setFormData] = useState({
+    name: '',
+    email: '',
+    phone: '',
+    shippingAddressOne: '',
+    shippingAddressTwo: '',
+    shippingCity: '',
+    shippingState: '',
+    shippingZipCode: '',
+  });
+
+  // Handle form input changes
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setFormData((prev) => ({
+      ...prev,
+      [name]: value,
+    }));
+  };
+
+  // State for hidden input values
+  // const [preTaxSubtotal, setPreTaxSubtotal] = useState(pre_tax_subtotal);
+  // const [stateTax, setStateTax] = useState(0);
+  // const [surtax, setSurtax] = useState(0);
+  // const [taxRate, setTaxRate] = useState(0);
+  // const [total, setTotal] = useState(0);
+
+  // Calculate total whenever values are changed
+  // useEffect(() => {
+  //   const calculateTotal = preTaxSubtotal + (stateTax * preTaxSubtotal) + surtax;
+  //   setTotal(calculateTotal);
+  // }, [preTaxSubtotal, stateTax, surtax]);
+
+  // Console log for debugging
+  // useEffect(() => {
+  //   console.clear();
+  //   console.log('--- CHECKOUT FORM VALUES ---');
+  //   console.log('Pre-Tax Subtotal:', preTaxSubtotal);
+  //   console.log('State Tax:', stateTax);
+  //   console.log('Surtax:', surtax);
+  //   console.log('Tax Rate:', taxRate);
+  //   console.log('');
+  //   console.log('Total: $', total);
+  // }, [preTaxSubtotal, stateTax, surtax, total, taxRate]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -25,26 +74,41 @@ export default function CheckoutForm({ pre_tax_subtotal, children }) {
             <h4 className="text-lg font-bold">Purchaser Contact Details</h4>
             <input
               type="text"
-              name="fullName"
+              name="name"
               placeholder="Business Name or Full Name"
-              className={`w-full p-2 text-sm tertiary_bg_color text-gray-300 border rounded-sm my-2`}
+              className={`w-[94%] p-2 text-sm tertiary_bg_color text-gray-300 border rounded-sm my-2 inline-block`}
+              value={formData.name}
+              onChange={handleChange}
               required
             />
+            {formData.name && formData.name.length > 3 && (
+              <FaCheckCircle className="text-green-500 inline-block ml-3" />
+            )}
             <input
               type="email"
               name="email"
               placeholder="Email Address"
-              className={`w-full p-2 text-sm tertiary_bg_color text-gray-300 border rounded-sm my-2`}
+              className={`w-[94%] p-2 text-sm tertiary_bg_color text-gray-300 border rounded-sm my-2`}
+              value={formData.email}
+              onChange={handleChange}
               required
             />
+            {formData.email && formData.email.includes("@") && (
+              <FaCheckCircle className="text-green-500 inline-block ml-3" />
+            )}
             <input
               type="tel"
-              name="phoneNumber"
+              name="phone"
               placeholder="Phone Number"
-              className={`w-full p-2 text-sm tertiary_bg_color text-gray-300 border rounded-sm my-2`}
+              className={`w-[94%] p-2 text-sm tertiary_bg_color text-gray-300 border rounded-sm my-2`}
               pattern="[0-9]{3}-[0-9]{3}-[0-9]{4}"
+              value={formData.phone}
+              onChange={handleChange}
               required
             />
+            {formData.phone && formData.phone.length === 10 && (
+              <FaCheckCircle className="text-green-500 inline-block ml-3" />
+            )}
           </div>
 
           <div className="shipping_information mb-6" data-testid="shipping_information_section">
@@ -54,6 +118,8 @@ export default function CheckoutForm({ pre_tax_subtotal, children }) {
               name="shippingAddressOne"
               placeholder="Address Line 1"
               className={`w-full p-2 text-sm tertiary_bg_color text-gray-300 border rounded-sm my-2`}
+              value={formData.shippingAddressOne}
+              onChange={handleChange}
               required
             />
             <input
@@ -61,12 +127,16 @@ export default function CheckoutForm({ pre_tax_subtotal, children }) {
               name="shippingAddressTwo"
               placeholder="Address Line 2"
               className={`w-full p-2 text-sm tertiary_bg_color text-gray-300 border rounded-sm my-2`}
+              value={formData.shippingAddressTwo}
+              onChange={handleChange}
             />
             <input
               type="text"
               name="shippingCity"
               placeholder="City"
               className={`w-full p-2 text-sm tertiary_bg_color text-gray-300 border rounded-sm my-2`}
+              value={formData.shippingCity}
+              onChange={handleChange}
               required
             />
             <input
@@ -75,6 +145,8 @@ export default function CheckoutForm({ pre_tax_subtotal, children }) {
               placeholder="State"
               className={`w-full p-2 text-sm tertiary_bg_color text-gray-300 border rounded-sm my-2`}
               pattern="[A-Z]{2}"
+              value={formData.shippingState}
+              onChange={handleChange}
               required
             />
             <input
@@ -83,6 +155,8 @@ export default function CheckoutForm({ pre_tax_subtotal, children }) {
               placeholder="Zip Code"
               className={`w-full p-2 text-sm tertiary_bg_color text-gray-300 border rounded-sm my-2`}
               pattern="[0-9]{5}"
+              value={formData.shippingZipCode}
+              onChange={handleChange}
               required
             />
 
@@ -144,7 +218,7 @@ export default function CheckoutForm({ pre_tax_subtotal, children }) {
             <input
               type="hidden"
               name="preTaxSubtotal"
-              value={pre_tax_subtotal}
+              value={0.00}
             />
 
 
@@ -158,14 +232,14 @@ export default function CheckoutForm({ pre_tax_subtotal, children }) {
             <input
               type="hidden"
               name="surtax"
-              value={getSurtaxPercent()}
+              value={0.015}
             />
 
 
             <input
               type="hidden"
               name="total"
-              value={pre_tax_subtotal + 0.06 * pre_tax_subtotal + getSurtaxPercent()}
+              value={0.015}
             />
 
 
@@ -190,23 +264,12 @@ export default function CheckoutForm({ pre_tax_subtotal, children }) {
             />
           </div>
 
-
-          <button
+          <AnimatedButton
             type="submit"
-            className="w-3/4 mx-auto py-3 px-6 text-white font-semibold rounded-lg
-                      bg-gradient-to-b from-gray-400 via-gray-500 to-gray-700
-                      hover:bg-gradient-to-b hover:from-gray-500 hover:via-gray-600 hover:to-gray-800
-                      active:bg-gradient-to-b active:from-gray-600 active:via-gray-700 active:to-gray-900
-                      focus:outline-none focus:ring-4 focus:ring-white focus:ring-opacity-50
-                      disabled:opacity-50 disabled:cursor-not-allowed
-                      transform transition-all duration-200 ease-in-out
-                      hover:w-[90%] hover:scale-105 active:scale-95
-                      shadow-lg hover:shadow-xl active:shadow-md
-                      block"
-            disabled={isSubmitted}
+            className="w-full mt-6 tertiary_bg_color border-[.1rem] border-gray-100 text-gray-200 font-semibold py-2 px-4 rounded-lg text-sm"
           >
             {isSubmitted ? 'Processing...' : 'Complete Purchase'}
-          </button>
+          </AnimatedButton>
         </form>
 
         <div className="checkout_summary w-full md:w-1/2 p-6 bg-inherit rounded-lg shadow-md">

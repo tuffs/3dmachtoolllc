@@ -68,7 +68,7 @@ export default function CartTable({ products, cart, pre_tax_subtotal }) {
                 ))
               )}
               <tr>
-                <td colspan="2"></td>
+                <td colSpan="2"></td>
                 <td className="p-5 text-right font-bold text-gray-300">PRE TAX SUBTOTAL</td>
                 <td className="p-5 text-right font-bold text-white">
                   ${pre_tax_subtotal.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
