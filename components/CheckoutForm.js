@@ -91,6 +91,7 @@ export default function CheckoutForm({ pre_tax_subtotal, children }) {
               name="email"
               placeholder="Email Address"
               className={`w-[94%] p-2 text-sm tertiary_bg_color text-gray-300 border rounded-sm my-2`}
+              pattern="^[a-zA-Z0-9][a-zA-Z0-9_-]*[a-zA-Z0-9]@[a-zA-Z0-9][a-zA-Z0-9.-]*[a-zA-Z0-9]\.[a-zA-Z]{2,}$"
               value={formData.email}
               onChange={handleChange}
               required
