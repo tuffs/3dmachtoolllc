@@ -33,29 +33,29 @@ export default function CheckoutForm({ pre_tax_subtotal, children }) {
   };
 
   // State for hidden input values
-  // const [preTaxSubtotal, setPreTaxSubtotal] = useState(pre_tax_subtotal);
-  // const [stateTax, setStateTax] = useState(0);
-  // const [surtax, setSurtax] = useState(0);
-  // const [taxRate, setTaxRate] = useState(0);
-  // const [total, setTotal] = useState(0);
+  const [preTaxSubtotal, setPreTaxSubtotal] = useState(pre_tax_subtotal);
+  const [stateTax, setStateTax] = useState(0);
+  const [surtax, setSurtax] = useState(0);
+  const [taxRate, setTaxRate] = useState(0);
+  const [total, setTotal] = useState(0);
 
   // Calculate total whenever values are changed
-  // useEffect(() => {
-  //   const calculateTotal = preTaxSubtotal + (stateTax * preTaxSubtotal) + surtax;
-  //   setTotal(calculateTotal);
-  // }, [preTaxSubtotal, stateTax, surtax]);
+  useEffect(() => {
+    const calculateTotal = preTaxSubtotal + (stateTax * preTaxSubtotal) + surtax;
+    setTotal(calculateTotal);
+  }, [preTaxSubtotal, stateTax, surtax]);
 
   // Console log for debugging
-  // useEffect(() => {
-  //   console.clear();
-  //   console.log('--- CHECKOUT FORM VALUES ---');
-  //   console.log('Pre-Tax Subtotal:', preTaxSubtotal);
-  //   console.log('State Tax:', stateTax);
-  //   console.log('Surtax:', surtax);
-  //   console.log('Tax Rate:', taxRate);
-  //   console.log('');
-  //   console.log('Total: $', total);
-  // }, [preTaxSubtotal, stateTax, surtax, total, taxRate]);
+  useEffect(() => {
+    console.clear();
+    console.log('--- CHECKOUT FORM VALUES ---');
+    console.log('Pre-Tax Subtotal:', preTaxSubtotal);
+    console.log('State Tax:', stateTax);
+    console.log('Surtax:', surtax);
+    console.log('Tax Rate:', taxRate);
+    console.log('');
+    console.log('Total: $', total);
+  }, [preTaxSubtotal, stateTax, surtax, total, taxRate]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -72,6 +72,7 @@ export default function CheckoutForm({ pre_tax_subtotal, children }) {
           <h2 className="text-2xl font-bold mb-4 text-center">Checkout</h2>
           <div className="contact_information mb-6" data-testid="contact_information_section">
             <h4 className="text-lg font-bold">Purchaser Contact Details</h4>
+
             <input
               type="text"
               name="name"
@@ -84,6 +85,7 @@ export default function CheckoutForm({ pre_tax_subtotal, children }) {
             {formData.name && formData.name.length > 3 && (
               <FaCheckCircle className="text-green-500 inline-block ml-3" />
             )}
+
             <input
               type="email"
               name="email"
@@ -96,6 +98,7 @@ export default function CheckoutForm({ pre_tax_subtotal, children }) {
             {formData.email && formData.email.includes("@") && (
               <FaCheckCircle className="text-green-500 inline-block ml-3" />
             )}
+
             <input
               type="tel"
               name="phone"
@@ -109,6 +112,7 @@ export default function CheckoutForm({ pre_tax_subtotal, children }) {
             {formData.phone && formData.phone.length === 10 && (
               <FaCheckCircle className="text-green-500 inline-block ml-3" />
             )}
+
           </div>
 
           <div className="shipping_information mb-6" data-testid="shipping_information_section">
@@ -117,24 +121,31 @@ export default function CheckoutForm({ pre_tax_subtotal, children }) {
               type="text"
               name="shippingAddressOne"
               placeholder="Address Line 1"
-              className={`w-full p-2 text-sm tertiary_bg_color text-gray-300 border rounded-sm my-2`}
+              className={`w-[94%] p-2 text-sm tertiary_bg_color text-gray-300 border rounded-sm my-2`}
               value={formData.shippingAddressOne}
               onChange={handleChange}
               required
             />
+            {formData.shippingAddressOne && formData.shippingAddressOne.length > 3 && (
+              <FaCheckCircle className="text-green-500 inline-block ml-3" />
+            )}
+
             <input
               type="text"
               name="shippingAddressTwo"
               placeholder="Address Line 2"
-              className={`w-full p-2 text-sm tertiary_bg_color text-gray-300 border rounded-sm my-2`}
+              className={`w-[94%] p-2 text-sm tertiary_bg_color text-gray-300 border rounded-sm my-2`}
               value={formData.shippingAddressTwo}
               onChange={handleChange}
             />
+            {formData.shippingAddressTwo && (
+              <FaCheckCircle className="text-green-500 inline-block ml-3" />
+            )}
             <input
               type="text"
               name="shippingCity"
               placeholder="City"
-              className={`w-full p-2 text-sm tertiary_bg_color text-gray-300 border rounded-sm my-2`}
+              className={`w-[94%] p-2 text-sm tertiary_bg_color text-gray-300 border rounded-sm my-2`}
               value={formData.shippingCity}
               onChange={handleChange}
               required
@@ -143,7 +154,7 @@ export default function CheckoutForm({ pre_tax_subtotal, children }) {
               type="text"
               name="shippingState"
               placeholder="State"
-              className={`w-full p-2 text-sm tertiary_bg_color text-gray-300 border rounded-sm my-2`}
+              className={`w-[94%] p-2 text-sm tertiary_bg_color text-gray-300 border rounded-sm my-2`}
               pattern="[A-Z]{2}"
               value={formData.shippingState}
               onChange={handleChange}
@@ -153,7 +164,7 @@ export default function CheckoutForm({ pre_tax_subtotal, children }) {
               type="text"
               name="shippingZipCode"
               placeholder="Zip Code"
-              className={`w-full p-2 text-sm tertiary_bg_color text-gray-300 border rounded-sm my-2`}
+              className={`w-[94%] p-2 text-sm tertiary_bg_color text-gray-300 border rounded-sm my-2`}
               pattern="[0-9]{5}"
               value={formData.shippingZipCode}
               onChange={handleChange}
@@ -179,27 +190,27 @@ export default function CheckoutForm({ pre_tax_subtotal, children }) {
                     type="text"
                     name="billingAddressOne"
                     placeholder="Billing Address Line 1"
-                    className={`w-full p-2 text-sm tertiary_bg_color text-gray-300 border rounded-sm my-2`}
+                    className={`w-[94%] p-2 text-sm tertiary_bg_color text-gray-300 border rounded-sm my-2`}
                     required
                   />
                   <input
                     type="text"
                     name="billingAddressTwo"
                     placeholder="Billing Address Line 2"
-                    className={`w-full p-2 text-sm tertiary_bg_color text-gray-300 border rounded-sm my-2`}
+                    className={`w-[94%] p-2 text-sm tertiary_bg_color text-gray-300 border rounded-sm my-2`}
                   />
                   <input
                     type="text"
                     name="billingCity"
                     placeholder="Billing City"
-                    className={`w-full p-2 text-sm tertiary_bg_color text-gray-300 border rounded-sm my-2`}
+                    className={`w-[94%] p-2 text-sm tertiary_bg_color text-gray-300 border rounded-sm my-2`}
                     required
                   />
                   <input
                     type="text"
                     name="billingState"
                     placeholder="Billing State"
-                    className={`w-full p-2 text-sm tertiary_bg_color text-gray-300 border rounded-sm my-2`}
+                    className={`w-[94%] p-2 text-sm tertiary_bg_color text-gray-300 border rounded-sm my-2`}
                     pattern="[A-Z]{2}"
                     required
                   />
@@ -207,7 +218,7 @@ export default function CheckoutForm({ pre_tax_subtotal, children }) {
                     type="text"
                     name="billingZipCode"
                     placeholder="Billing Zip Code"
-                    className={`w-full p-2 text-sm tertiary_bg_color text-gray-300 border rounded-sm my-2`}
+                    className={`w-[94%] p-2 text-sm tertiary_bg_color text-gray-300 border rounded-sm my-2`}
                     pattern="[0-9]{5}"
                     required
                   />
