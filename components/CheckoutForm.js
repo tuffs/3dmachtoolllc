@@ -122,7 +122,7 @@ export default function CheckoutForm({ pre_tax_subtotal, children }) {
               type="text"
               name="shippingAddressOne"
               placeholder="Address Line 1"
-              className={`w-[94%] p-2 text-sm tertiary_bg_color text-gray-300 border rounded-sm my-2`}
+              className={`w-[94%] p-2 text-sm tertiary_bg_color text-gray-300 border rounded-sm my-2 ${formData.shippingAddressOne.length > 3 ? 'border-green-500' : 'border-gray-300'}`}
               value={formData.shippingAddressOne}
               onChange={handleChange}
               required
@@ -135,7 +135,7 @@ export default function CheckoutForm({ pre_tax_subtotal, children }) {
               type="text"
               name="shippingAddressTwo"
               placeholder="Address Line 2"
-              className={`w-[94%] p-2 text-sm tertiary_bg_color text-gray-300 border rounded-sm my-2`}
+              className={`w-[94%] p-2 text-sm tertiary_bg_color text-gray-300 border rounded-sm my-2 ${formData.shippingAddressTwo ? 'border-green-500' : 'border-gray-300'}`}
               value={formData.shippingAddressTwo}
               onChange={handleChange}
             />
@@ -146,32 +146,42 @@ export default function CheckoutForm({ pre_tax_subtotal, children }) {
               type="text"
               name="shippingCity"
               placeholder="City"
-              className={`w-[94%] p-2 text-sm tertiary_bg_color text-gray-300 border rounded-sm my-2`}
+              className={`w-[94%] p-2 text-sm tertiary_bg_color text-gray-300 border rounded-sm my-2 ${formData.shippingCity.length >= 2 ? 'border-green-500' : 'border-gray-300'}`}
               value={formData.shippingCity}
               onChange={handleChange}
               required
             />
+            {formData.shippingCity.length > 3 && (
+              <FaCheckCircle className="text-green-500 inline-block ml-3" />
+            )}
             <input
               type="text"
               name="shippingState"
-              placeholder="State"
-              className={`w-[94%] p-2 text-sm tertiary_bg_color text-gray-300 border rounded-sm my-2`}
+              placeholder="State (2 Letter Code)"
+              className={`w-[94%] p-2 text-sm tertiary_bg_color text-gray-300 border rounded-sm my-2 ${formData.shippingState.length === 2 ? 'border-green-500' : 'border-gray-300'}`}
               pattern="[A-Z]{2}"
+              maxLength="2"
+              minLength="2"
               value={formData.shippingState}
               onChange={handleChange}
               required
             />
+            {formData.shippingState.length === 2 && (
+              <FaCheckCircle className="text-green-500 inline-block ml-3" />
+            )}
             <input
               type="text"
               name="shippingZipCode"
               placeholder="Zip Code"
-              className={`w-[94%] p-2 text-sm tertiary_bg_color text-gray-300 border rounded-sm my-2`}
+              className={`w-[94%] p-2 text-sm tertiary_bg_color text-gray-300 border rounded-sm my-2 ${formData.shippingZipCode.length === 5 ? 'border-green-500' : 'border-gray-300'}`}
               pattern="[0-9]{5}"
               value={formData.shippingZipCode}
               onChange={handleChange}
               required
             />
-
+            {formData.shippingZipCode.length === 5 && (
+              <FaCheckCircle className="text-green-500 inline-block ml-3" />
+            )}
             <div>
               <input
                 type="checkbox"
