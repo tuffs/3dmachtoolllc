@@ -236,11 +236,15 @@ export default function CheckoutForm({ pre_tax_subtotal, children }) {
                     type="text"
                     name="billingAddressOne"
                     placeholder="Billing Address Line 1"
-                    className={`w-[94%] p-2 text-sm tertiary_bg_color text-gray-300 border rounded-sm my-2`}
+                    className={`w-[94%] p-2 text-sm tertiary_bg_color text-gray-300 border rounded-sm my-2 focus:outline-none ${isDifferentBilling && formData.billingAddressOne.length > 3 ? 'border-green-500 focus:border-green-500' : 'border-gray-300 focus:border-gray-300'}`}
                     value={formData.billingAddressOne}
                     onChange={handleChange}
                     required={isDifferentBilling ? true : false}
                   />
+                  {isDifferentBilling && formData.billingAddressOne.length > 3 && (
+                    <FaCheckCircle className="text-green-500 inline-block ml-3" />
+                  )}
+
                   <input
                     type="text"
                     name="billingAddressTwo"

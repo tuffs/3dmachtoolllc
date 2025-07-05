@@ -6,14 +6,12 @@ export default function CartTable({ products, cart, pre_tax_subtotal }) {
     <div className="w-full bg-inherit">
       <div className="w-full flex justify-center bg-inherit p-1">
         <div className="w-full max-w-3xl">
-          <table className="w-full rounded-xl overflow-hidden shadow-lg bg-gray-950 border border-gray-800">
+          <table className="w-full rounded-xl overflow-hidden shadow-lg border border-gray-800">
             <thead>
-              <tr className="bg-gradient-to-r from-gray-900 to-gray-800 text-white">
+              <tr className="bg-gray-700 text-white">
                 <th className="p-5 text-left font-semibold tracking-wide border-b border-gray-700">ITEM</th>
                 <th className="p-5 text-left font-semibold tracking-wide border-b border-gray-700"></th>
-                <th className="p-5 text-right font-semibold tracking-wide border-b border-gray-700" width="33%">
-                  QTY
-                </th>
+                <th className="p-5 text-right font-semibold tracking-wide border-b border-gray-700" width="33%">QTY</th>
                 <th className="p-5 text-right font-semibold tracking-wide border-b border-gray-700">PRICE</th>
               </tr>
             </thead>
