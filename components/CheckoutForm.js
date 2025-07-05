@@ -22,7 +22,30 @@ export default function CheckoutForm({ pre_tax_subtotal, children }) {
     shippingCity: '',
     shippingState: '',
     shippingZipCode: '',
+    billingAddressOne: '',
+    billingAddressTwo: '',
+    billingCity: '',
+    billingState: '',
+    billingZipCode: '',
   });
+
+  // Handle Billing Address Toggle
+  const handleBillingAddressDiffers = () => {
+    if (!isDifferentBilling) {
+      setIsDifferentBilling(true);
+      // Reset billing address fields if they are not different
+      setFormData((prev) => ({
+        ...prev,
+        billingAddressOne: '',
+        billingAddressTwo: '',
+        billingCity: '',
+        billingState: '',
+        billingZipCode: '',
+      }));
+    } else {
+      setIsDifferentBilling(false);
+    }
+  }
 
   // Handle form input changes
   const handleChange = (e) => {
@@ -69,17 +92,14 @@ export default function CheckoutForm({ pre_tax_subtotal, children }) {
   }, [preTaxSubtotal, stateTax, surtax, total, taxRate]);
 
   const handleSubmit = async (e) => {
-    e.preventDefault();
     setIsSubmitted(true);
-
-    // Submission logic here
     alert('Submitted!');
   }
 
   return (
     <>
       <div className="flex flex-col md:flex-row md:space-x-4 space-y-4 md:space-y-0 p-12">
-        <form className="checkout_form w-full md:w-1/2 p-6 bg-[#161717] rounded-lg shadow-md">
+        <form className="checkout_form w-full md:w-1/2 p-6 bg-[#161717] rounded-lg shadow-md" action={handleSubmit}>
           <h2 className="text-2xl font-bold mb-4 text-center">Checkout</h2>
           <div className="contact_information mb-6" data-testid="contact_information_section">
             <h4 className="text-lg font-bold">Contact Details</h4>
@@ -202,8 +222,8 @@ export default function CheckoutForm({ pre_tax_subtotal, children }) {
                 type="checkbox"
                 name="sameAsShipping"
                 className="my-2"
-                checked={!isDifferentBilling}
-                onChange={() => setIsDifferentBilling(!isDifferentBilling)}
+                checked={isDifferentBilling}
+                onChange={handleBillingAddressDiffers}
               />
               <label className="ml-2 text-sm text-gray-400"><div className="inline-block" style={{ lineHeight: '2rem' }}>My billing address is the same as my shipping address.</div></label>
             </div>
@@ -217,20 +237,23 @@ export default function CheckoutForm({ pre_tax_subtotal, children }) {
                     name="billingAddressOne"
                     placeholder="Billing Address Line 1"
                     className={`w-[94%] p-2 text-sm tertiary_bg_color text-gray-300 border rounded-sm my-2`}
-                    required
+                    value={formData.billingAddressOne}
+                    onChange={handleChange}
+                    required={isDifferentBilling ? true : false}
                   />
                   <input
                     type="text"
                     name="billingAddressTwo"
                     placeholder="Billing Address Line 2"
                     className={`w-[94%] p-2 text-sm tertiary_bg_color text-gray-300 border rounded-sm my-2`}
+                    required={isDifferentBilling ? true : false}
                   />
                   <input
                     type="text"
                     name="billingCity"
                     placeholder="Billing City"
                     className={`w-[94%] p-2 text-sm tertiary_bg_color text-gray-300 border rounded-sm my-2`}
-                    required
+                    required={isDifferentBilling ? true : false}
                   />
                   <input
                     type="text"
@@ -238,7 +261,7 @@ export default function CheckoutForm({ pre_tax_subtotal, children }) {
                     placeholder="Billing State"
                     className={`w-[94%] p-2 text-sm tertiary_bg_color text-gray-300 border rounded-sm my-2`}
                     pattern="[A-Z]{2}"
-                    required
+                    required={isDifferentBilling ? true : false}
                   />
                   <input
                     type="text"
@@ -246,7 +269,7 @@ export default function CheckoutForm({ pre_tax_subtotal, children }) {
                     placeholder="Billing Zip Code"
                     className={`w-[94%] p-2 text-sm tertiary_bg_color text-gray-300 border rounded-sm my-2`}
                     pattern="[0-9]{5}"
-                    required
+                    required={isDifferentBilling ? true : false}
                   />
                 </>
               )
