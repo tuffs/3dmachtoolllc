@@ -249,9 +249,13 @@ export default function CheckoutForm({ pre_tax_subtotal, children }) {
                     type="text"
                     name="billingAddressTwo"
                     placeholder="Billing Address Line 2"
-                    className={`w-[94%] p-2 text-sm tertiary_bg_color text-gray-300 border rounded-sm my-2`}
-                    required={isDifferentBilling ? true : false}
+                    className={`w-[94%] p-2 text-sm tertiary_bg_color text-gray-300 border rounded-sm my-2 focus:outline-none ${formData.billingAddressTwo ? 'border-green-500 focus:border-green-500' : 'border-gray-300 focus:border-gray-300'}`}
+                    onChange={handleChange}
                   />
+                  {formData.billingAddressTwo && (
+                    <FaCheckCircle className="text-green-500 inline-block ml-3" />
+                  )}
+
                   <input
                     type="text"
                     name="billingCity"
@@ -259,6 +263,7 @@ export default function CheckoutForm({ pre_tax_subtotal, children }) {
                     className={`w-[94%] p-2 text-sm tertiary_bg_color text-gray-300 border rounded-sm my-2`}
                     required={isDifferentBilling ? true : false}
                   />
+
                   <input
                     type="text"
                     name="billingState"
@@ -267,6 +272,7 @@ export default function CheckoutForm({ pre_tax_subtotal, children }) {
                     pattern="[A-Z]{2}"
                     required={isDifferentBilling ? true : false}
                   />
+
                   <input
                     type="text"
                     name="billingZipCode"

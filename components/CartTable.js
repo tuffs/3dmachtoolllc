@@ -1,14 +1,28 @@
+'use client';
+
 import { FaTimes } from 'react-icons/fa';
 import Link from 'next/link';
+import AnimatedButton from './ui/AnimatedButton';
 
 export default function CartTable({ products, cart, pre_tax_subtotal }) {
+
+  const handleRemoveItem = (productId) => {
+    return (e) => {
+      e.preventDefault();
+      // Dispatch an action to remove the item from the cart
+      // Assuming you have a function to handle this, e.g., removeItemFromCart(productId)
+      // removeItemFromCart(productId);
+      console.log(`Removing item with ID: ${productId}`);
+    };
+  }
+
   return (
     <div className="w-full bg-inherit">
       <div className="w-full flex justify-center bg-inherit p-1">
         <div className="w-full max-w-3xl">
           <table className="w-full rounded-xl overflow-hidden shadow-lg border border-gray-800">
             <thead>
-              <tr className="bg-gray-700 text-white">
+              <tr className="bg-inherit text-white">
                 <th className="p-5 text-left font-semibold tracking-wide border-b border-gray-700">ITEM</th>
                 <th className="p-5 text-left font-semibold tracking-wide border-b border-gray-700"></th>
                 <th className="p-5 text-right font-semibold tracking-wide border-b border-gray-700" width="33%">QTY</th>
@@ -30,13 +44,13 @@ export default function CartTable({ products, cart, pre_tax_subtotal }) {
                 </tr>
               ) : (
                 products.map((product) => (
-                  <tr key={product.id} className="hover:bg-gray-900 transition-colors">
+                  <tr key={product.id} className="hover:bg-[#101010] transition-colors">
                     <td className="p-5 border-b border-gray-800">
                       <div className="flex items-center justify-between">
                         <div className="flex flex-col">
                           <Link
                             href={`/products/${product.id}`}
-                            className="underline text-blue-400 hover:text-blue-300 transition-colors"
+                            className="text-white hover:underline transition-colors"
                           >
                             {product.name}
                           </Link>
@@ -49,12 +63,12 @@ export default function CartTable({ products, cart, pre_tax_subtotal }) {
                           href="#!"
                           className="text-red-500 hover:text-red-700 transition-colors"
                         >
-                          <div className="flex">
-                            <FaTimes className="flex flex-col text-block block" />
-                            <small className="flex flex-col pl-1 hover:underline">
-                              <small>remove item</small>
-                            </small>
-                          </div>
+                          <button
+                            className="flex items-center justify-center bg-red-500 p-[.415rem] h-[1.65rem] rounded hover:bg-red-600 transition-colors"
+                            onClick={handleRemoveItem(product.id)}
+                          >
+                            <span className="text-white text-xs">remove</span>
+                          </button>
                         </a>
                       </div>
                     </td>
