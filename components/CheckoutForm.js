@@ -4,6 +4,7 @@ import React, { useState, useEffect, useCallback, useTransition } from 'react';
 import AnimatedButton from './ui/AnimatedButton';
 import { getSurtaxPercent } from '@/actions/getSurtaxPercent';
 import { FaCheckCircle } from 'react-icons/fa';
+import FinalPurchaseSummary from '@/components/FinalPurchaseSummary';
 
 
 export default function CheckoutForm({ pre_tax_subtotal, children }) {
@@ -249,10 +250,11 @@ export default function CheckoutForm({ pre_tax_subtotal, children }) {
                     type="text"
                     name="billingAddressTwo"
                     placeholder="Billing Address Line 2"
-                    className={`w-[94%] p-2 text-sm tertiary_bg_color text-gray-300 border rounded-sm my-2 focus:outline-none ${formData.billingAddressTwo ? 'border-green-500 focus:border-green-500' : 'border-gray-300 focus:border-gray-300'}`}
+                    className={`w-[94%] p-2 text-sm tertiary_bg_color text-gray-300 border rounded-sm my-2 focus:outline-none ${isDifferentBilling && formData.billingAddressTwo ? 'border-green-500 focus:border-green-500' : 'border-gray-300 focus:border-gray-300'}`}
+                    value={formData.billingAddressTwo}
                     onChange={handleChange}
                   />
-                  {formData.billingAddressTwo && (
+                  {isDifferentBilling && formData.billingAddressTwo && (
                     <FaCheckCircle className="text-green-500 inline-block ml-3" />
                   )}
 
@@ -260,27 +262,44 @@ export default function CheckoutForm({ pre_tax_subtotal, children }) {
                     type="text"
                     name="billingCity"
                     placeholder="Billing City"
-                    className={`w-[94%] p-2 text-sm tertiary_bg_color text-gray-300 border rounded-sm my-2`}
+                    className={`w-[94%] p-2 text-sm tertiary_bg_color text-gray-300 border rounded-sm my-2 focus:outline-none ${isDifferentBilling && formData.billingCity.length >= 2 ? 'border-green-500 focus:border-green-500' : 'border-gray-300 focus:border-gray-300'}`}
                     required={isDifferentBilling ? true : false}
+                    value={formData.billingCity}
+                    onChange={handleChange}
                   />
+                  {isDifferentBilling && formData.billingCity.length >= 2 && (
+                    <FaCheckCircle className="text-green-500 inline-block ml-3" />
+                  )}
 
                   <input
                     type="text"
                     name="billingState"
                     placeholder="Billing State"
-                    className={`w-[94%] p-2 text-sm tertiary_bg_color text-gray-300 border rounded-sm my-2`}
+                    className={`w-[94%] p-2 text-sm tertiary_bg_color text-gray-300 border rounded-sm my-2 focus:outline-none ${isDifferentBilling && formData.billingState.length === 2 ? 'border-green-500 focus:border-green-500' : 'border-gray-300 focus:border-gray-300'}`}
                     pattern="[A-Z]{2}"
+                    maxLength="2"
+                    minLength="2"
                     required={isDifferentBilling ? true : false}
+                    value={formData.billingState}
+                    onChange={handleChange}
                   />
+                  {isDifferentBilling && formData.billingState.length === 2 && (
+                    <FaCheckCircle className="text-green-500 inline-block ml-3" />
+                  )}
 
                   <input
                     type="text"
                     name="billingZipCode"
                     placeholder="Billing Zip Code"
-                    className={`w-[94%] p-2 text-sm tertiary_bg_color text-gray-300 border rounded-sm my-2`}
+                    className={`w-[94%] p-2 text-sm tertiary_bg_color text-gray-300 border rounded-sm my-2 focus:outline-none ${isDifferentBilling && formData.billingZipCode.length === 5 ? 'border-green-500 focus:border-green-500' : 'border-gray-300 focus:border-gray-300'}`}
                     pattern="[0-9]{5}"
                     required={isDifferentBilling ? true : false}
+                    value={formData.billingZipCode}
+                    onChange={handleChange}
                   />
+                  {isDifferentBilling && formData.billingZipCode.length === 5 && (
+                    <FaCheckCircle className="text-green-500 inline-block ml-3" />
+                  )}
                 </>
               )
             }
@@ -345,6 +364,13 @@ export default function CheckoutForm({ pre_tax_subtotal, children }) {
         <div className="checkout_summary w-full md:w-1/2 p-6 bg-inherit rounded-lg shadow-md">
           <h2 className="text-2xl font-bold mb-4 text-center">Items to Purchase</h2>
           {children}
+          <FinalPurchaseSummary
+            preTaxSubtotal={preTaxSubtotal}
+            stateTax={stateTax}
+            surtax={surtax}
+            taxRate={taxRate}
+            total={total}
+          />
         </div>
       </div>
     </>
