@@ -23,18 +23,15 @@ export default function CartTable({ products, cart, pre_tax_subtotal }) {
           <table className="w-full rounded-xl overflow-hidden shadow-lg border border-gray-800">
             <thead>
               <tr className="bg-inherit text-white">
-                <th className="p-5 text-left font-semibold tracking-wide border-b border-gray-700">ITEM</th>
-                <th className="p-5 text-left font-semibold tracking-wide border-b border-gray-700"></th>
-                <th className="p-5 text-right font-semibold tracking-wide border-b border-gray-700" width="33%">QTY</th>
-                <th className="p-5 text-right font-semibold tracking-wide border-b border-gray-700">PRICE</th>
+                <th className="p-1 text-md text-left font-semibold tracking-wide border-b border-gray-700">ITEM</th>
+                <th className="p-1 text-md text-left font-semibold tracking-wide border-b border-gray-700"></th>
+                <th className="p-1 text-md text-center font-semibold tracking-wide border-b border-gray-700" width="33%">QTY</th>
+                <th className="p-1 text-md text-right font-semibold tracking-wide border-b border-gray-700">PRICE&nbsp;&nbsp;&nbsp;</th>
               </tr>
             </thead>
             <tbody>
               <tr>
-                <td className="py-2"></td>
-                <td className="py-2"></td>
-                <td className="py-2"></td>
-                <td className="py-2"></td>
+                <td colSpan="4"></td>
               </tr>
               {products.length === 0 ? (
                 <tr>
@@ -50,7 +47,7 @@ export default function CartTable({ products, cart, pre_tax_subtotal }) {
                         <div className="flex flex-col">
                           <Link
                             href={`/products/${product.id}`}
-                            className="text-white hover:underline transition-colors"
+                            className="text-white text-sm hover:underline transition-colors"
                           >
                             {product.name}
                           </Link>
@@ -64,7 +61,7 @@ export default function CartTable({ products, cart, pre_tax_subtotal }) {
                           className="text-red-500 hover:text-red-700 transition-colors"
                         >
                           <button
-                            className="flex items-center justify-center bg-red-500 p-[.415rem] h-[1.65rem] rounded hover:bg-red-600 transition-colors"
+                            className="flex items-center justify-center border-white p-[.415rem] h-[1.65rem] rounded hover:bg-[#191919] transition-colors"
                             onClick={handleRemoveItem(product.id)}
                           >
                             <span className="text-white text-xs">remove</span>
@@ -72,7 +69,33 @@ export default function CartTable({ products, cart, pre_tax_subtotal }) {
                         </a>
                       </div>
                     </td>
-                    <td className="p-5 text-right border-b border-gray-800">{cart[product.id]}</td>
+                    <td className="p-5 text-right border-b border-gray-800">
+                      <div className="flex items-center justify-end">
+                        <div className="flex">
+                          <button
+                            type="button"
+                            className="px-2 py-1 bg-gray-700 hover:bg-gray-600 text-white rounded-l border border-gray-600 transition-colors"
+                          >
+                            -
+                          </button>
+                          <input
+                            id={`quantity_cell_${product.id}`}
+                            name={`${product.id}_quantity`}
+                            type="number"
+                            className="text-center w-18 bg-gray-800 text-white border-t border-b border-gray-600 focus:outline-none"
+                            value={cart[product.id]}
+                            min="1"
+                            readOnly
+                          />
+                          <button
+                            type="button"
+                            className="px-2 py-1 bg-gray-700 hover:bg-gray-600 text-white rounded-r border border-gray-600 transition-colors"
+                          >
+                            +
+                          </button>
+                        </div>
+                      </div>
+                    </td>
                     <td className="p-5 text-right border-b border-gray-800">
                       ${Number(product.price).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
                     </td>
