@@ -68,10 +68,20 @@ export default function CheckoutForm({ pre_tax_subtotal, children }) {
   };
 
   // State for hidden input values
+  // checks out across the board, has a useEffect to sync
   const [preTaxSubtotal, setPreTaxSubtotal] = useState(pre_tax_subtotal);
-  const [stateTax, setStateTax] = useState(0);
+  // Keep the preTaxSubtotal in sync with prop value
+  useEffect(() => {
+    setPreTaxSubtotal(pre_tax_subtotal);
+  }, [pre_tax_subtotal]);
+
+  // State of Florida base Tax Rate
+  const [stateTax, setStateTax] = useState(parseFloat(process.env.NEXT_PUBLIC_STATE_TAX) || 0.06);
+
+  // This will initially be zero, unless and until the
+  // user selects Florida and a Florida county Zip Code
   const [surtax, setSurtax] = useState(0);
-  const [taxRate, setTaxRate] = useState(0);
+  const [taxRate, setTaxRate] = useState(stateTax + surtax);
   const [total, setTotal] = useState(0);
 
   // Calculate total whenever values are changed
@@ -274,7 +284,7 @@ export default function CheckoutForm({ pre_tax_subtotal, children }) {
                   <input
                     type="text"
                     name="billingState"
-                    placeholder="Billing State"
+                    placeholder="Billing State (2 Letter Code)"
                     className={`w-[94%] p-2 text-sm tertiary_bg_color text-gray-300 border rounded-sm my-2 focus:outline-none ${isDifferentBilling && formData.billingState.length === 2 ? 'border-green-500 focus:border-green-500' : 'border-gray-300 focus:border-gray-300'}`}
                     pattern="[A-Z]{2}"
                     maxLength="2"

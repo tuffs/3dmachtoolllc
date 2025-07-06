@@ -23,6 +23,8 @@ export default async function ShoppingCartPage() {
     }, 0);
   }
 
+  console.log('Pre Tax Subtotal:', pre_tax_subtotal);
+
   return (
     <div className="my-24">
       <Hero />
