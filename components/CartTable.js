@@ -1,19 +1,16 @@
 'use client';
 
 import Link from 'next/link';
-import { updateCartItem } from '@/lib/cartUtils';
+import { updateCartItem, removeFromCart } from '@/lib/cartUtils';
 import { FaTimesCircle } from 'react-icons/fa';
 
 export default function CartTable({ products, cart, pre_tax_subtotal, onCartUpdate }) {
 
   const handleRemoveItem = (productId) => {
-    return (e) => {
-      e.preventDefault();
-      // Dispatch an action to remove the item from the cart
-      // Assuming you have a function to handle this, e.g., removeItemFromCart(productId)
-      // removeItemFromCart(productId);
-      console.log(`Removing item with ID: ${productId}`);
-    };
+    removeFromCart(productId);
+    if (onCartUpdate) {
+      onCartUpdate();
+    }
   }
 
   const handleUpdateQuantity = (productId, quantity) => {
@@ -73,11 +70,11 @@ export default function CartTable({ products, cart, pre_tax_subtotal, onCartUpda
                       <div className="item_removal mt-3">
                         <a
                           href="#!"
-                          id={`remove_item_${product.id}`}
+                          id={`remove_item__${product.id}`}
                         >
                           <button
                             className="flex items-center justify-center hover:underline"
-                            onClick={handleRemoveItem(product.id)}
+                            onClick={() => handleRemoveItem(product.id)}
                           >
                             <div className="text-white text-xs">
                               <div className="flex-col">
