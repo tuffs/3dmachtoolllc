@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState, useEffect, useCallback, useTransition } from 'react';
+import React, { useState, useEffect } from 'react';
 import AnimatedButton from './ui/AnimatedButton';
 import { getSurtaxPercent } from '@/actions/getSurtaxPercent';
 import { FaCheckCircle } from 'react-icons/fa';
@@ -33,7 +33,6 @@ export default function CheckoutForm({ pre_tax_subtotal, children }) {
   // Handle Billing Address Toggle
   const handleBillingAddressDiffers = () => {
     if (!isDifferentBilling) {
-      setIsDifferentBilling(true);
       // Reset billing address fields if they are not different
       setFormData((prev) => ({
         ...prev,
@@ -43,13 +42,15 @@ export default function CheckoutForm({ pre_tax_subtotal, children }) {
         billingState: '',
         billingZipCode: '',
       }));
+      // Set isDifferentBilling to true AFTER resetting form values
+      setIsDifferentBilling(true);
     } else {
       setIsDifferentBilling(false);
     }
   }
 
   // Handle form input changes
-  const handleChange = (e) => {
+  const handleChange = async (e) => {
     const { name, value } = e.target;
     setFormData((prev) => ({
       ...prev,
@@ -67,6 +68,7 @@ export default function CheckoutForm({ pre_tax_subtotal, children }) {
     }
   };
 
+  // BASE STATE TAX RATE:
   // State for hidden input values
   // checks out across the board, has a useEffect to sync
   const [preTaxSubtotal, setPreTaxSubtotal] = useState(pre_tax_subtotal);
@@ -78,10 +80,50 @@ export default function CheckoutForm({ pre_tax_subtotal, children }) {
   // State of Florida base Tax Rate
   const [stateTax, setStateTax] = useState(parseFloat(process.env.NEXT_PUBLIC_STATE_TAX) || 0.06);
 
+
+  // SURTAX:
   // This will initially be zero, unless and until the
   // user selects Florida and a Florida county Zip Code
   const [surtax, setSurtax] = useState(0);
+
+  // We only need to concern ourselves with the shipping state's zip code
+  // so, is the shipping state Florida? What is that shipping zip code?
+  // this means, that if isDifferentBilling is true, surtax, tax, and taxRate are zero
+  // because we do not know which is the case in the handleChange function, we must
+  // only check for the shippingState and shippingZipCode 
+
+  // This is all correct, but the surtax is not a Float, it has 3 decimal places
+  // so we must account for that, also when handleChange is called, it is not
+  // being called with the full 5 digit zip code for some reason.
+
+  // We have to use another callback function with useEffect to grab the surtax properly
+  // after we fix the surtax value.
+
+  const getSurtax = async () => {
+    let surtaxPct = await getSurtaxPercent(formData.shippingZipCode);
+    return surtaxPct;
+  }
+
+  useEffect(() => {
+    // is the zip code 5 digits and Floridian?
+    const stateCode = formData.shippingState;
+    if (stateCode === 'FL' && formData.shippingZipCode.length === 5) {
+      // Now we will get the surtax percent
+      let surtaxPct = getSurtax()
+        .then((data) => {
+          const { surtax } = data;
+          setSurtax(parseFloat(surtax));
+          console.log('Surtax:', surtax);
+        });
+    }
+  }, [formData.shippingZipCode]);
+
   const [taxRate, setTaxRate] = useState(stateTax + surtax);
+
+  useEffect(() => {
+    setTaxRate(surtax + stateTax);
+  }, [surtax]);
+
   const [total, setTotal] = useState(0);
 
   // Calculate total whenever values are changed
