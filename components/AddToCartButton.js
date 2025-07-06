@@ -19,14 +19,14 @@ export default function AddToCartButton({ product }) {
   }
 
   return (
-    <div className="ml-16 pl-48">
+    <div className="">
       <div className="mb-3">
-        <p className="mb-2 ml-16">
+        <p className="mb-2">
           <small><small>QUANTITY</small></small>
         </p>
         <input
           type="number"
-          className="input bg-inherit border border-gray-200 w-20 mb-4 p-2 ml-16"
+          className="input bg-inherit border border-gray-200 w-20 mb-4 p-2"
           value={quantity}
           onChange={(e) => setQuantity(parseInt(e.target.value))}
           min="1"
