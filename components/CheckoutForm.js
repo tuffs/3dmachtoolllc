@@ -222,7 +222,7 @@ export default function CheckoutForm({ pre_tax_subtotal, children }) {
                 type="checkbox"
                 name="sameAsShipping"
                 className="my-2"
-                checked={isDifferentBilling}
+                checked={!isDifferentBilling}
                 onChange={handleBillingAddressDiffers}
               />
               <label className="ml-2 text-sm text-gray-400"><div className="inline-block" style={{ lineHeight: '2rem' }}>My billing address is the same as my shipping address.</div></label>
