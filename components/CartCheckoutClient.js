@@ -11,6 +11,7 @@ export default function CartCheckoutClient({ pre_tax_subtotal, children }) {
   const [cartData, setCartData] = useState({});
   const [productsData, setProductsData] = useState([]);
   const [subtotal, setSubtotal] = useState(pre_tax_subtotal);
+  const [isLoadingProducts, setIsLoadingProducts] = useState(true);
 
   // Initialize cart data on mount
   useEffect(() => {
@@ -20,6 +21,7 @@ export default function CartCheckoutClient({ pre_tax_subtotal, children }) {
   }, []);
 
   const fetchProducts = async (cart) => {
+    setIsLoadingProducts(true);
     const productIds = Object.keys(cart).map(id => Number(id));
     if (productIds.length > 0) {
       const products = await getProductDetails(productIds);
@@ -35,6 +37,7 @@ export default function CartCheckoutClient({ pre_tax_subtotal, children }) {
       setProductsData([]);
       setSubtotal(0);
     }
+    setIsLoadingProducts(false);
   }
 
   const handleCartUpdate = () => {
@@ -50,7 +53,8 @@ export default function CartCheckoutClient({ pre_tax_subtotal, children }) {
           products: productsData,
           cart: cartData,
           pre_tax_subtotal: subtotal,
-          onCartUpdate: handleCartUpdate
+          onCartUpdate: handleCartUpdate,
+          isLoadingProducts: isLoadingProducts
         })}
       </CheckoutForm>
     );
@@ -63,7 +67,8 @@ export default function CartCheckoutClient({ pre_tax_subtotal, children }) {
         products: productsData,
         cart: cartData,
         pre_tax_subtotal: subtotal,
-        onCartUpdate: handleCartUpdate
+        onCartUpdate: handleCartUpdate,
+        isLoadingProducts: isLoadingProducts
       })}
       <div className="flex justify-center mt-8">
         <CheckoutButton onClick={() => setShowCheckout(true)} />

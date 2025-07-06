@@ -4,7 +4,7 @@ import Link from 'next/link';
 import { updateCartItem, removeFromCart } from '@/lib/cartUtils';
 import { FaTimesCircle } from 'react-icons/fa';
 
-export default function CartTable({ products, cart, pre_tax_subtotal, onCartUpdate }) {
+export default function CartTable({ products, cart, pre_tax_subtotal, onCartUpdate, isLoadingProducts = true }) {
 
   const handleRemoveItem = (productId) => {
     removeFromCart(productId);
@@ -47,7 +47,16 @@ export default function CartTable({ products, cart, pre_tax_subtotal, onCartUpda
               <tr>
                 <td colSpan="3"></td>
               </tr>
-              {products.length === 0 ? (
+              {isLoadingProducts ? (
+                <tr>
+                  <td colSpan={3} className="p-8 text-center text-gray-400">
+                    <div className="flex items-center justify-center space-x-2">
+                      <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-gray-400"></div>
+                      <span>Loading cart items...</span>
+                    </div>
+                  </td>
+                </tr>
+              ) : products.length === 0 ? (
                 <tr>
                   <td colSpan={3} className="p-8 text-center text-gray-400">
                     Your cart is empty.
