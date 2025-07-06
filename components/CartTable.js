@@ -2,6 +2,7 @@
 
 import Link from 'next/link';
 import { updateCartItem } from '@/lib/cartUtils';
+import { FaTimesCircle } from 'react-icons/fa';
 
 export default function CartTable({ products, cart, pre_tax_subtotal, onCartUpdate }) {
 
@@ -35,31 +36,30 @@ export default function CartTable({ products, cart, pre_tax_subtotal, onCartUpda
 
   return (
     <div className="w-full bg-inherit">
-      <div className="w-full flex justify-center bg-inherit p-1">
+      <div className="w-full flex justify-center bg-inherit">
         <div className="w-full md:max-w-3xl">
           <table className="w-full rounded-xl overflow-hidden shadow-lg border border-gray-800">
             <thead>
               <tr className="bg-inherit text-white">
                 <th className="p-1 text-md text-left font-semibold tracking-wide border-b border-gray-700">ITEM</th>
-                <th className="p-1 text-md text-left font-semibold tracking-wide border-b border-gray-700"></th>
-                <th className="p-1 text-md text-center font-semibold tracking-wide border-b border-gray-700" width="33%">QTY</th>
+                <th className="p-1 text-md text-center font-semibold tracking-wide border-b border-gray-700">QTY</th>
                 <th className="p-1 text-md text-right font-semibold tracking-wide border-b border-gray-700">PRICE&nbsp;&nbsp;&nbsp;</th>
               </tr>
             </thead>
             <tbody>
               <tr>
-                <td colSpan="4"></td>
+                <td colSpan="3"></td>
               </tr>
               {products.length === 0 ? (
                 <tr>
-                  <td colSpan={4} className="p-8 text-center text-gray-400">
+                  <td colSpan={3} className="p-8 text-center text-gray-400">
                     Your cart is empty.
                   </td>
                 </tr>
               ) : (
                 products.map((product) => (
                   <tr key={product.id} className="hover:bg-[#101010] transition-colors">
-                    <td className="p-5 border-b border-gray-800">
+                    <td className="p-5 border-b border-gray-800 align-top">
                       <div className="flex items-center justify-between">
                         <div className="flex flex-col">
                           <Link
@@ -70,25 +70,27 @@ export default function CartTable({ products, cart, pre_tax_subtotal, onCartUpda
                           </Link>
                         </div>
                       </div>
-                    </td>
-                    <td className="p-5 border-b border-gray-800">
-                      <div className="flex flex-col">
+                      <div className="item_removal mt-3">
                         <a
                           href="#!"
-                          className="text-red-500 hover:text-red-700 transition-colors"
+                          id={`remove_item_${product.id}`}
                         >
                           <button
-                            className="flex items-center justify-center border-white p-[.415rem] h-[1.65rem] rounded hover:bg-[#191919] transition-colors"
+                            className="flex items-center justify-center hover:underline"
                             onClick={handleRemoveItem(product.id)}
                           >
-                            <span className="text-white text-xs">remove</span>
+                            <div className="text-white text-xs">
+                              <div className="flex-col">
+                                <small>remove</small>
+                              </div>
+                            </div>
                           </button>
                         </a>
                       </div>
                     </td>
-                    <td className="p-5 text-right border-b border-gray-800">
-                      <div className="flex items-center justify-end">
-                        <div className="flex">
+                    <td className="p-5 text-right border-b border-gray-800 align-top">
+                      <div className="flex items-center justify-center">
+                        <div className="flex mb-2">
                           <button
                             type="button"
                             className="px-2 py-1 bg-gray-700 hover:bg-gray-600 text-white rounded-l border border-gray-600 transition-colors"
@@ -115,14 +117,14 @@ export default function CartTable({ products, cart, pre_tax_subtotal, onCartUpda
                         </div>
                       </div>
                     </td>
-                    <td className="p-5 text-right border-b border-gray-800">
+                    <td className="p-5 text-right border-b border-gray-800 align-top">
                       ${Number(product.price).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
                     </td>
                   </tr>
                 ))
               )}
               <tr>
-                <td colSpan="2"></td>
+                <td></td>
                 <td className="p-5 text-right font-bold text-gray-300">PRE TAX SUBTOTAL</td>
                 <td className="p-5 text-right font-bold text-white">
                   ${pre_tax_subtotal.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
