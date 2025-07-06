@@ -1,10 +1,9 @@
 'use client';
 
-import { FaTimes } from 'react-icons/fa';
 import Link from 'next/link';
-import AnimatedButton from './ui/AnimatedButton';
+import { updateCartItem } from '@/lib/cartUtils';
 
-export default function CartTable({ products, cart, pre_tax_subtotal }) {
+export default function CartTable({ products, cart, pre_tax_subtotal, onCartUpdate }) {
 
   const handleRemoveItem = (productId) => {
     return (e) => {
@@ -16,10 +15,28 @@ export default function CartTable({ products, cart, pre_tax_subtotal }) {
     };
   }
 
+  const handleUpdateQuantity = (productId, quantity) => {
+    updateCartItem(productId, quantity);
+    // Trigger parent component to re-fetch cart data
+    if (onCartUpdate) {
+      onCartUpdate();
+    }
+  }
+
+  const handleDecrementItem = (productId) => {
+    const quantity = cart[productId];
+    handleUpdateQuantity(productId, quantity - 1);
+  }
+
+  const handleIncrementItem = (productId) => {
+    const quantity = cart[productId];
+    handleUpdateQuantity(productId, quantity + 1);
+  }
+
   return (
     <div className="w-full bg-inherit">
       <div className="w-full flex justify-center bg-inherit p-1">
-        <div className="w-full max-w-3xl">
+        <div className="w-full md:max-w-3xl">
           <table className="w-full rounded-xl overflow-hidden shadow-lg border border-gray-800">
             <thead>
               <tr className="bg-inherit text-white">
@@ -75,6 +92,7 @@ export default function CartTable({ products, cart, pre_tax_subtotal }) {
                           <button
                             type="button"
                             className="px-2 py-1 bg-gray-700 hover:bg-gray-600 text-white rounded-l border border-gray-600 transition-colors"
+                            onClick={() => handleDecrementItem(product.id, cart[product.id])}
                           >
                             -
                           </button>
@@ -82,14 +100,15 @@ export default function CartTable({ products, cart, pre_tax_subtotal }) {
                             id={`quantity_cell_${product.id}`}
                             name={`${product.id}_quantity`}
                             type="number"
-                            className="text-center w-18 bg-gray-800 text-white border-t border-b border-gray-600 focus:outline-none"
+                            className="text-center bg-gray-800 text-sm text-white border-t border-b border-gray-600 focus:outline-none"
+                            style={{ width: '45px', paddingLeft: '10px' }}
                             value={cart[product.id]}
-                            min="1"
                             readOnly
                           />
                           <button
                             type="button"
                             className="px-2 py-1 bg-gray-700 hover:bg-gray-600 text-white rounded-r border border-gray-600 transition-colors"
+                            onClick={() => handleIncrementItem(product.id, cart[product.id])}
                           >
                             +
                           </button>

@@ -7,7 +7,6 @@ import { getProductDetails } from '@/actions/getProductDetails';
 
 export default async function ShoppingCartPage() {
 
-
   const cookieStore = cookies();
   const cartCookie = cookieStore.get('3dmandt_cart')?.value;
   const cart = cartCookie ? getCart(cartCookie) : {};

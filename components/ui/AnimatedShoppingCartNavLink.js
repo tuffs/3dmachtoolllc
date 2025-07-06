@@ -15,10 +15,16 @@ const AnimatedShoppingCartNavLink = () => {
     }
 
     updateCartCount()
+
+    // Listen for storage events (when cart changes in other tabs)
     window.addEventListener("storage", updateCartCount)
+
+    // Listen for custom cart update events (when cart changes on same page)
+    window.addEventListener("cartUpdated", updateCartCount)
 
     return () => {
       window.removeEventListener("storage", updateCartCount)
+      window.removeEventListener("cartUpdated", updateCartCount)
     }
   }, [])
 
