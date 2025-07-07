@@ -10,7 +10,7 @@ export async function getTaxesAndTotal(state, zipCode, pre_tax_subtotal) {
     const stateTax = parseFloat(process.env.STATE_TAX) || 0.06;
 
     // Fetch the surtax if needed
-    if (state === 'FL' && zipCode) {
+    if (state === 'FL' && zipCode.length === 5) {
       let surtaxData;
 
       try {
