@@ -5,6 +5,7 @@ import AnimatedButton from './ui/AnimatedButton';
 import { getSurtaxPercent } from '@/actions/getSurtaxPercent';
 import { FaCheckCircle } from 'react-icons/fa';
 import FinalPurchaseSummary from '@/components/FinalPurchaseSummary';
+import { getTaxesAndTotal } from '@/actions/getTaxesAndTotal';
 
 
 export default function CheckoutForm({ pre_tax_subtotal, children }) {
@@ -72,65 +73,82 @@ export default function CheckoutForm({ pre_tax_subtotal, children }) {
   // State for hidden input values
   // checks out across the board, has a useEffect to sync
   const [preTaxSubtotal, setPreTaxSubtotal] = useState(pre_tax_subtotal);
+
+  // State of Florida base Tax Rate
+  const [stateTax, setStateTax] = useState(process.env.NEXT_PUBLIC_STATE_TAX || 0.06);
+  const [surtax, setSurtax] = useState(0);
+  const [taxRate, setTaxRate] = useState(parseFloat(process.env.NEXT_PUBLIC_STATE_TAX || 0.06) + 0);
+  // Initialize total with base FL tax applied
+  const initialStateTax = parseFloat(process.env.NEXT_PUBLIC_STATE_TAX || 0.06);
+  const [total, setTotal] = useState(parseFloat((pre_tax_subtotal + (pre_tax_subtotal * initialStateTax)).toFixed(2)));
+
   // Keep the preTaxSubtotal in sync with prop value
   useEffect(() => {
     setPreTaxSubtotal(pre_tax_subtotal);
-  }, [pre_tax_subtotal]);
+    // Also update the total when subtotal changes (applying current tax rate)
+    const currentTaxRate = parseFloat(stateTax) + parseFloat(surtax);
+    const newTotal = parseFloat((pre_tax_subtotal + (pre_tax_subtotal * currentTaxRate)).toFixed(2));
+    setTotal(newTotal);
+  }, [pre_tax_subtotal, stateTax, surtax]);
 
-  // State of Florida base Tax Rate
-  const [stateTax, setStateTax] = useState(parseFloat(process.env.NEXT_PUBLIC_STATE_TAX) || 0.06);
-
-
-  // SURTAX:
-  // This will initially be zero, unless and until the
-  // user selects Florida and a Florida county Zip Code
-  const [surtax, setSurtax] = useState(0);
-
-  // We only need to concern ourselves with the shipping state's zip code
-  // so, is the shipping state Florida? What is that shipping zip code?
-  // this means, that if isDifferentBilling is true, surtax, tax, and taxRate are zero
-  // because we do not know which is the case in the handleChange function, we must
-  // only check for the shippingState and shippingZipCode 
-
-  // This is all correct, but the surtax is not a Float, it has 3 decimal places
-  // so we must account for that, also when handleChange is called, it is not
-  // being called with the full 5 digit zip code for some reason.
-
-  // We have to use another callback function with useEffect to grab the surtax properly
-  // after we fix the surtax value.
-
-  const getSurtax = async () => {
-    let surtaxPct = await getSurtaxPercent(formData.shippingZipCode);
-    return surtaxPct;
-  }
+  // We only need to concern ourselves with the Shipping State and Zip Code
+  // all other values are irrelevant.
 
   useEffect(() => {
-    // is the zip code 5 digits and Floridian?
-    const stateCode = formData.shippingState;
-    if (stateCode === 'FL' && formData.shippingZipCode.length === 5) {
-      // Now we will get the surtax percent
-      let surtaxPct = getSurtax()
-        .then((data) => {
-          const { surtax } = data;
-          setSurtax(parseFloat(surtax));
-          console.log('Surtax:', surtax);
-        });
+    const differentBilling = isDifferentBilling;
+
+    let state, zipCode, subtotal;
+    if (differentBilling) {
+      state = formData.billingState;
+      zipCode = formData.billingZipCode;
+      subtotal = preTaxSubtotal;
+    } else {
+      state = formData.shippingState;
+      zipCode = formData.shippingZipCode;
+      subtotal = preTaxSubtotal;
     }
-  }, [formData.shippingZipCode]);
 
-  const [taxRate, setTaxRate] = useState(stateTax + surtax);
+    // Function to get all sales information in a single object
+    // If the state is not Florida, we can skip the tax calculation
+    const callTaxesAndTotal = async () => {
+      try {
+        console.log('Calling getTaxesAndTotal with:', { state, zipCode, subtotal });
+        // Get the taxes and totals - AWAIT the server action
+        const salesInfo = await getTaxesAndTotal(state, zipCode, subtotal);
+        console.log('Sales info result:', salesInfo);
 
+        if (salesInfo.success) {
+          setSurtax(salesInfo.surtax);
+          setStateTax(salesInfo.stateTax);
+          setPreTaxSubtotal(salesInfo.subtotal);
+          setTotal(parseFloat(salesInfo.total.toFixed(2)));
+          setTaxRate(salesInfo.taxRate);
+        } else if (salesInfo.success === false) {
+          setSurtax(0);
+          setStateTax(0);
+          setPreTaxSubtotal(preTaxSubtotal);
+          setTotal(preTaxSubtotal);
+          setTaxRate(0.00);
+          console.error('No sales tax to charge.');
+        }
+        return;
+      } catch (error) {
+        console.error('Error fetching taxes and total:', error);
+        return;
+      }
+    }
+
+    // Actually call the function when state, zipCode, or subtotal changes
+    if (state && zipCode && subtotal) {
+      callTaxesAndTotal();
+    }
+  }, [formData.shippingState, formData.shippingZipCode, preTaxSubtotal, formData.billingState, formData.billingZipCode, isDifferentBilling]);
+
+  // Keep the taxRate in sync with stateTax and surtax changes
   useEffect(() => {
-    setTaxRate(surtax + stateTax);
-  }, [surtax]);
-
-  const [total, setTotal] = useState(0);
-
-  // Calculate total whenever values are changed
-  useEffect(() => {
-    const calculateTotal = preTaxSubtotal + (stateTax * preTaxSubtotal) + surtax;
-    setTotal(calculateTotal);
-  }, [preTaxSubtotal, stateTax, surtax]);
+    const newTaxRate = parseFloat(stateTax) + parseFloat(surtax);
+    setTaxRate(newTaxRate);
+  }, [stateTax, surtax]);
 
   // Console log for debugging
   useEffect(() => {
@@ -359,35 +377,35 @@ export default function CheckoutForm({ pre_tax_subtotal, children }) {
             <input
               type="hidden"
               name="preTaxSubtotal"
-              value={0.00}
+              value={preTaxSubtotal}
             />
 
 
             <input
               type="hidden"
               name="stateTax"
-              value={0.06}
+              value={stateTax}
             />
 
 
             <input
               type="hidden"
               name="surtax"
-              value={0.015}
+              value={surtax}
             />
 
 
             <input
               type="hidden"
               name="total"
-              value={0.015}
+              value={total}
             />
 
 
             <input
               type="hidden"
               name="taxRate"
-              value={0.06}
+              value={taxRate}
             />
 
 
