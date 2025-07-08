@@ -4,7 +4,6 @@ import { getSurtaxPercent } from '@/actions/getSurtaxPercent';
 
 export async function getTaxesAndTotal(state, zipCode, pre_tax_subtotal) {
   try {
-    console.log('getTaxesAndTotal called with:', { state, zipCode, pre_tax_subtotal });
 
     // Base State Tax Rate - convert to number
     const stateTax = parseFloat(process.env.STATE_TAX) || 0.06;
@@ -15,9 +14,7 @@ export async function getTaxesAndTotal(state, zipCode, pre_tax_subtotal) {
 
       try {
         surtaxData = await getSurtaxPercent(zipCode);
-        console.log('Surtax data received:', surtaxData); // Debug log
       } catch (error) {
-        console.error('Error fetching surtax data: ', error);
         return { success: false, error: "There was an error fetching the surtax data." };
       }
 
@@ -25,8 +22,6 @@ export async function getTaxesAndTotal(state, zipCode, pre_tax_subtotal) {
         const surtax = parseFloat(surtaxData.surtax) || 0;
         const taxRate = stateTax + surtax;
         const total = parseFloat((pre_tax_subtotal + (pre_tax_subtotal * taxRate)).toFixed(2));
-
-        console.log('FL tax calculation:', { stateTax, surtax, taxRate, total });
 
         return {
           success: true,
@@ -37,22 +32,22 @@ export async function getTaxesAndTotal(state, zipCode, pre_tax_subtotal) {
           total,
         };
       } else {
-        console.log('Surtax fetch failed:', surtaxData); // Debug log
         return { success: false, error: "Error fetching surtax data." };
       }
     } else if (state !== 'FL') {
-      console.log('Non-FL state, no tax applied');
       return {
         success: true,
         surtax: 0,
-        stateTax: 0,
-        taxRate: 0,
+        stateTax: 0.06,
+        taxRate: 0.06,
         subtotal: pre_tax_subtotal,
-        total: pre_tax_subtotal,
+        total: parseFloat(pre_tax_subtotal + (pre_tax_subtotal * stateTax)).toFixed(2),
       };
     } else {
-      // This handles the case where state is FL but no zipCode is provided yet
-      console.log('FL state but no zipCode, applying only state tax');
+      // This handles the case where state is FL but 
+      // no zipCode is provided yet
+
+      // 0%- $0.00 TAX RATE
       const taxRate = stateTax;
       const total = parseFloat((pre_tax_subtotal + (pre_tax_subtotal * taxRate)).toFixed(2));
 
@@ -66,7 +61,6 @@ export async function getTaxesAndTotal(state, zipCode, pre_tax_subtotal) {
       };
     }
   } catch (error) {
-    console.error('Error in getTaxesAndTotal: ', error);
     return { success: false, error: "There was an error calculating taxes." };
   }
 }

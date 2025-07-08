@@ -4,6 +4,7 @@ import CartTable from '@/components/CartTable';
 import { cookies } from 'next/headers';
 import { getCart } from '@/lib/cartUtils';
 import { getProductDetails } from '@/actions/getProductDetails';
+import { FaShoppingBasket } from 'react-icons/fa';
 
 export default async function ShoppingCartPage() {
 
@@ -30,7 +31,7 @@ export default async function ShoppingCartPage() {
       <Hero />
       <div className="mt-24 text-white pt-0 p-8">
         <section className="mb-3">
-          <h1 className="text-4xl font-bold text-center">Your Shopping Cart</h1>
+          <h1 className="text-4xl font-bold text-center flex items-center justify-center"><FaShoppingBasket className="inline-block mr-4" /> Shopping Cart</h1>
         </section>
       </div>
       <CartCheckoutClient pre_tax_subtotal={pre_tax_subtotal}>
