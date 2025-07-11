@@ -16,15 +16,13 @@ model Product {
   slug             String
   price            Float
   quantity         Int
-  imageUrls        Json
-  tags             String[]
   createdAt        DateTime @default(now())
   updatedAt        DateTime @updatedAt
+  imageUrls        Json
+  tags             String[]
 }
 
 model Quotation {
-  id                  Int      @id @default(autoincrement())
-  uploadedDesignFiles Json
   projectDescription  String
   quantity            Int
   leadTimeWeeks       Int
@@ -35,46 +33,45 @@ model Quotation {
   businessName        String
   phoneNumber         String
   emailAddress        String
-  respondedTo         Boolean  @default(false)
   createdAt           DateTime @default(now())
   updatedAt           DateTime @updatedAt
+  uploadedDesignFiles Json
+  id                  Int      @id @default(autoincrement())
+  respondedTo         Boolean  @default(false)
 }
 
 model Contact {
-  id          Int      @id @default(autoincrement())
   name        String
   email       String
-  phone       String
   message     String
-  respondedTo Boolean  @default(false)
-  spamScore   Int      @default(0)
   createdAt   DateTime @default(now())
+  phone       String
+  id          Int      @id @default(autoincrement())
+  spamScore   Int      @default(0)
+  respondedTo Boolean  @default(false)
 }
 
 model Admin {
-  id        Int      @id @default(autoincrement())
   email     String   @unique
   password  String
   createdAt DateTime @default(now())
+  id        Int      @id @default(autoincrement())
 }
 
 model FloridaSalesTax {
   id        Int      @id @default(autoincrement())
   county    String
-  zipCode   Int
-  rate      Float // Surtax as a decimal (e.g., 0.015 for 1.5%)
+  rate      Float
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+  zipCode   Int
 }
 
 model Order {
   id                 Int      @id @default(autoincrement())
   orderNumber        String   @unique
-  preTaxSubtotal     Float
-  stateTax           Float
-  surtax             Float
   total              Float
-  taxRate            Float // Multiplier (e.g., 1.075)
+  taxRate            Float
   taxExemptionStatus Boolean  @default(false)
   status             String
   purchasedItems     Json
@@ -86,7 +83,10 @@ model Order {
   shippingCity       String
   shippingState      String
   shippingZipCode    String
-  customerId         Int      @unique
+  customerId         Int
+  preTaxSubtotal     Float
+  stateTax           Float
+  surtax             Float
   customer           Customer @relation(fields: [customerId], references: [id])
 }
 
@@ -101,6 +101,6 @@ model Customer {
   billingCity       String
   billingState      String
   billingZipCode    String
-  orders            Order[]
   createdAt         DateTime @default(now())
+  orders            Order[]
 }
