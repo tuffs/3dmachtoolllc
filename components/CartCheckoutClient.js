@@ -49,9 +49,31 @@ export default function CartCheckoutClient({ pre_tax_subtotal, children }) {
   }
 
   const handleCheckoutSubmit = async (submissionData) => {
+    // Prevent double submission...
     setIsSubmitted(true);
+
     // Handle the submission data here
     console.log('Checkout submission: ', submissionData);
+    console.log('Cart data: ', cartData);
+
+    // create customerData and orderData objects
+
+    const customerData = {
+      name: submissionData.name,
+      email: submissionData.email,
+      phone: submissionData.phone,
+      shippingName: submissionData.shippingName,
+      shippingAddressOne: submissionData.shippingAddressOne,
+      shippingAddressTwo: submissionData.shippingAddressTwo ? submissionData.shippingAddressTwo : '',
+      shippingCity: submissionData.shippingCity,
+      shippingState: submissionData.shippingState,
+      shippingZipCode: submissionData.shippingZipCode,
+    };
+
+    const orderData = {
+      // Complete the data structure as needed...
+    };
+
     alert('Submitted!');
   }
 
