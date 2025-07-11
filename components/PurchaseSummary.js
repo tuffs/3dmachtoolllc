@@ -17,9 +17,8 @@ export default function PurchaseSummary({ preTaxSubtotal, stateTax, surtax, taxR
       <div className="w-full mt-6 p-4">
         <table className="">
           <tr>
-            <td colSpan="2" className="text-left font-bold pb-12">
-              <h1 className="mb-4">PURCHASE PRICE</h1>
-              <span className="text-sm font-normal text-gray-400">Enter your State and Zip Code for tax calculation. Out of state sales are taxed at the current State of Florida base tax rate: {formatPercentage(stateTax)}. As noted, once you proceed in the checkout process you will be able to provide a Sales Tax Exemption Certificate in PDF format to remove sales tax if applicable.</span>
+            <td colSpan="2" className="text-left font-bold pb-4">
+              <h1>PURCHASE PRICE</h1>
             </td>
           </tr>
           <tr>
@@ -33,6 +32,13 @@ export default function PurchaseSummary({ preTaxSubtotal, stateTax, surtax, taxR
           <tr className="border-t border-gray-400">
             <td className="text-xl font-bold text-gray-200">TOTAL</td>
             <td className="text-xl text-right font-bold text-gray-200 pt-2">${formatCurrency(total)}</td>
+          </tr>
+          <tr>
+            <td colSpan="2" className="pt-12">
+              <span className="text-sm font-normal text-gray-400">
+                A default tax of {formatPercentage(stateTax)} will be applied to your purchase. This is the State of Florida base sales tax rate, if you are order from within Florida, a surtax based on your county will be applied to the base tax rate. A breakdown of your tax rate will be provided on your invoice. Sales tax exemption certificates are accepted in PDF format during the payment process. You must provide a valid certificate at the time of purchase to avoid being charged sales tax.
+              </span>
+            </td>
           </tr>
         </table>
       </div>

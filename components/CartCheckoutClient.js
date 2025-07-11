@@ -67,13 +67,13 @@ export default function CartCheckoutClient({ pre_tax_subtotal, children }) {
             isLoadingProducts: isLoadingProducts
           })}
         </CheckoutForm>
-        <div className="w-full flex justify-center p-6">
+        <div className="w-full flex justify-center">
           <AnimatedButton
             type="submit"
-            className="w-[94%] mt-6 tertiary_bg_color border-[.1rem] border-gray-100 text-gray-200 font-semibold py-2 px-4 rounded-lg text-sm"
+            className="w-[45%] mt-6 tertiary_bg_color border-[.1rem] border-gray-100 text-gray-200 font-semibold py-2 px-4 rounded-lg text-sm"
             form="checkout-form"
           >
-            {isSubmitted ? 'Processing...' : 'Complete Purchase'}
+            {isSubmitted ? 'Processing...' : 'Continue to Payment'}
           </AnimatedButton>
         </div>
       </>
