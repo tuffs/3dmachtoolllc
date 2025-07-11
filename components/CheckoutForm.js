@@ -1,7 +1,6 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
-import { getSurtaxPercent } from '@/actions/getSurtaxPercent';
 import { FaCheckCircle } from 'react-icons/fa';
 import PurchaseSummary from '@/components/PurchaseSummary';
 import { getTaxesAndTotal } from '@/actions/getTaxesAndTotal';
