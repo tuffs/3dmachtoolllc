@@ -68,39 +68,45 @@ model FloridaSalesTax {
 }
 
 model Order {
-  id                 Int      @id @default(autoincrement())
-  orderNumber        String   @unique
-  total              Float
-  taxRate            Float
-  taxExemptionStatus Boolean  @default(false)
-  status             String
-  purchasedItems     Json
-  createdAt          DateTime @default(now())
-  updatedAt          DateTime @updatedAt
-  shippingName       String
-  shippingAddressOne String
-  shippingAddressTwo String?
-  shippingCity       String
-  shippingState      String
-  shippingZipCode    String
-  customerId         Int
-  preTaxSubtotal     Float
-  stateTax           Float
-  surtax             Float
-  customer           Customer @relation(fields: [customerId], references: [id])
+  id                           Int      @id @default(autoincrement())
+  orderNumber                  String   @unique
+  total                        Float
+  taxRate                      Float
+  taxExemptionStatus           Boolean  @default(false)
+  status                       String
+  purchasedItems               Json
+  createdAt                    DateTime @default(now())
+  updatedAt                    DateTime @updatedAt
+  shippingName                 String
+  shippingAddressOne           String
+  shippingAddressTwo           String?
+  shippingCity                 String
+  shippingState                String
+  shippingZipCode              String
+  billingDifferentFromShipping Boolean  @default(false)
+  billingAddressOne            String?
+  billingAddressTwo            String?
+  billingCity                  String?
+  billingState                 String?
+  billingZipCode               String?
+  customerId                   Int
+  preTaxSubtotal               Float
+  stateTax                     Float
+  surtax                       Float
+  customer                     Customer @relation(fields: [customerId], references: [id])
 }
 
 model Customer {
-  id                Int      @id @default(autoincrement())
-  email             String   @unique
-  password          String
-  name              String
-  billingName       String
-  billingAddressOne String
-  billingAddressTwo String?
-  billingCity       String
-  billingState      String
-  billingZipCode    String
-  createdAt         DateTime @default(now())
-  orders            Order[]
+  id         Int      @id @default(autoincrement())
+  email      String   @unique
+  phone      String?
+  password   String?
+  name       String
+  addressOne String
+  addressTwo String?
+  city       String
+  state      String
+  zipCode    String
+  createdAt  DateTime @default(now())
+  orders     Order[]
 }
