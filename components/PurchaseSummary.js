@@ -9,9 +9,6 @@ export default function PurchaseSummary({ preTaxSubtotal, stateTax, surtax, taxR
     return (parseFloat(rate) * 100).toFixed(2) + '%';
   };
 
-  // Provide absolute values for tax rates
-  const surtaxCashTotal = "$" + parseFloat(preTaxSubtotal * surtax).toFixed(2).toString();
-
   return (
     <>
       <div className="w-full mt-6 p-4">
