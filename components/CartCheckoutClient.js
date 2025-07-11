@@ -5,8 +5,10 @@ import { getCart } from '@/lib/cartUtils';
 import { getProductDetails } from '@/actions/getProductDetails';
 import CheckoutForm from '@/components/CheckoutForm';
 import CheckoutButton from "@/components/ui/CheckoutButton";
+import AnimatedButton from './ui/AnimatedButton';
 
 export default function CartCheckoutClient({ pre_tax_subtotal, children }) {
+  const [isSubmitted, setIsSubmitted] = useState(false);
   const [showCheckout, setShowCheckout] = useState(false);
   const [cartData, setCartData] = useState({});
   const [productsData, setProductsData] = useState([]);
@@ -46,17 +48,35 @@ export default function CartCheckoutClient({ pre_tax_subtotal, children }) {
     fetchProducts(updatedCart);
   }
 
+  const handleCheckoutSubmit = async (submissionData) => {
+    setIsSubmitted(true);
+    // Handle the submission data here
+    console.log('Checkout submission: ', submissionData);
+    alert('Submitted!');
+  }
+
   if (showCheckout) {
     return (
-      <CheckoutForm pre_tax_subtotal={subtotal}>
-        {React.cloneElement(children, {
-          products: productsData,
-          cart: cartData,
-          pre_tax_subtotal: subtotal,
-          onCartUpdate: handleCartUpdate,
-          isLoadingProducts: isLoadingProducts
-        })}
-      </CheckoutForm>
+      <>
+        <CheckoutForm pre_tax_subtotal={subtotal} onSubmit={handleCheckoutSubmit}>
+          {React.cloneElement(children, {
+            products: productsData,
+            cart: cartData,
+            pre_tax_subtotal: subtotal,
+            onCartUpdate: handleCartUpdate,
+            isLoadingProducts: isLoadingProducts
+          })}
+        </CheckoutForm>
+        <div className="w-full flex justify-center p-6">
+          <AnimatedButton
+            type="submit"
+            className="w-[94%] mt-6 tertiary_bg_color border-[.1rem] border-gray-100 text-gray-200 font-semibold py-2 px-4 rounded-lg text-sm"
+            form="checkout-form"
+          >
+            {isSubmitted ? 'Processing...' : 'Complete Purchase'}
+          </AnimatedButton>
+        </div>
+      </>
     );
   }
 

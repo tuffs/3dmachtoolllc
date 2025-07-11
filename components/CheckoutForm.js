@@ -1,16 +1,14 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
-import AnimatedButton from './ui/AnimatedButton';
 import { getSurtaxPercent } from '@/actions/getSurtaxPercent';
 import { FaCheckCircle } from 'react-icons/fa';
 import PurchaseSummary from '@/components/PurchaseSummary';
 import { getTaxesAndTotal } from '@/actions/getTaxesAndTotal';
 
 
-export default function CheckoutForm({ pre_tax_subtotal, children }) {
+export default function CheckoutForm({ pre_tax_subtotal, children, onSubmit }) {
 
-  const [isSubmitted, setIsSubmitted] = useState(false);
   const [isDifferentBilling, setIsDifferentBilling] = useState(false);
   const [isPhoneFormatted, setIsPhoneFormatted] = useState(false);
 
@@ -163,14 +161,29 @@ export default function CheckoutForm({ pre_tax_subtotal, children }) {
   }, [preTaxSubtotal, stateTax, surtax, total, taxRate]);
 
   const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    const submissionData = {
+      formData,
+      preTaxSubtotal,
+      stateTax,
+      surtax,
+      total,
+      taxRate,
+      isDifferentBilling
+    };
+
+    if (onSubmit) {
+      await onSubmit(submissionData);
+    }
+
     setIsSubmitted(true);
-    alert('Submitted!');
   }
 
   return (
     <>
       <div className="flex flex-col md:flex-row md:space-x-4 space-y-4 md:space-y-0 p-12">
-        <form className="checkout_form w-full md:w-1/2 p-6 bg-[#161717] rounded-lg shadow-md" action={handleSubmit}>
+        <form id="checkout-form" className="checkout_form w-full md:w-1/2 p-6 bg-[#161717] rounded-lg shadow-md" onSubmit={handleSubmit}>
           <h2 className="text-2xl font-bold mb-4 text-center">Checkout</h2>
           <div className="contact_information mb-6" data-testid="contact_information_section">
             <h4 className="text-lg font-bold">Contact Details</h4>
@@ -422,13 +435,6 @@ export default function CheckoutForm({ pre_tax_subtotal, children }) {
               value={JSON.stringify({})}
             />
           </div>
-
-          <AnimatedButton
-            type="submit"
-            className="w-[94%] mt-6 tertiary_bg_color border-[.1rem] border-gray-100 text-gray-200 font-semibold py-2 px-4 rounded-lg text-sm"
-          >
-            {isSubmitted ? 'Processing...' : 'Complete Purchase'}
-          </AnimatedButton>
         </form>
 
         <div className="checkout_summary w-full md:w-1/2 p-6 bg-inherit rounded-lg shadow-md">
