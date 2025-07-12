@@ -66,18 +66,15 @@ export default function CartCheckoutClient({ pre_tax_subtotal, children }) {
       if (result.success) {
         console.log('Customer: ', result.customer);
         console.log('Order: ', result.order);
-        alert(`Order ${orderNumber} submitted successfully!`);
 
         // Clear cart or redirect to confirmation page
         // clearCart(); // Implement this function to clear the cart
       } else {
         console.error('Error creating order and customer: ', result.error);
-        alert('Order submission failed. Please try again.');
         setIsSubmitted(false);
       }
     } catch (error) {
       console.error('Submission error: ', error);
-      alert('An error occurred. Please try again.');
       setIsSubmitted(false);
     }
   }
