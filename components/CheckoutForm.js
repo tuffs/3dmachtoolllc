@@ -147,18 +147,6 @@ export default function CheckoutForm({ pre_tax_subtotal, children, onSubmit }) {
     setTaxRate(newTaxRate);
   }, [stateTax, surtax]);
 
-  // Console log for debugging
-  useEffect(() => {
-    console.clear();
-    console.log('--- CHECKOUT FORM VALUES ---');
-    console.log('Pre-Tax Subtotal:', preTaxSubtotal);
-    console.log('State Tax:', stateTax);
-    console.log('Surtax:', surtax);
-    console.log('Tax Rate:', taxRate);
-    console.log('');
-    console.log('Total: $', total);
-  }, [preTaxSubtotal, stateTax, surtax, total, taxRate]);
-
   const handleSubmit = async (e) => {
     e.preventDefault();
 
@@ -175,8 +163,6 @@ export default function CheckoutForm({ pre_tax_subtotal, children, onSubmit }) {
     if (onSubmit) {
       await onSubmit(submissionData);
     }
-
-    setIsSubmitted(true);
   }
 
   return (

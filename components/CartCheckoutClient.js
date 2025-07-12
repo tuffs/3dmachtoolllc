@@ -6,6 +6,7 @@ import { getProductDetails } from '@/actions/getProductDetails';
 import CheckoutForm from '@/components/CheckoutForm';
 import CheckoutButton from "@/components/ui/CheckoutButton";
 import AnimatedButton from './ui/AnimatedButton';
+import { createOrderAndCustomer } from '@/actions/createOrderAndCustomer';
 
 export default function CartCheckoutClient({ pre_tax_subtotal, children }) {
   const [isSubmitted, setIsSubmitted] = useState(false);
@@ -52,45 +53,33 @@ export default function CartCheckoutClient({ pre_tax_subtotal, children }) {
     // Prevent double submission...
     setIsSubmitted(true);
 
-    // Handle the submission data here
-    console.log('Checkout submission: ', submissionData);
-    console.log('Cart data: ', cartData);
+    console.log(submissionData);
 
-    // Create an Order Number Here
-    const orderNumber = `3DMANDT-${Date.now()}`;
-    console.log('Generated Order Number: ', orderNumber);
+    try {
+      // Generate Order Number
+      const orderNumber = `3DMANDT-${Date.now()}`;
+      console.log('Generated Order Number: ', orderNumber);
 
-    // Create customerData and orderData Objects
-    const customerData = {
-      name: submissionData.name,
-      email: submissionData.email,
-      phone: submissionData.phone,
-      orderNumber: orderNumber,
-    };
+      // Call server action to create customer and order
+      const result = await createOrderAndCustomer(submissionData, cartData, orderNumber);
 
-    const createCustomerData = await global.prisma.customer.create({
-      data: {
-        name: customerData.name,
-        email: customerData.email,
-        phone: customerData.phone,
-        orders: [...orders, orderNumber]
+      if (result.success) {
+        console.log('Customer: ', result.customer);
+        console.log('Order: ', result.order);
+        alert(`Order ${orderNumber} submitted successfully!`);
+
+        // Clear cart or redirect to confirmation page
+        // clearCart(); // Implement this function to clear the cart
+      } else {
+        console.error('Error creating order and customer: ', result.error);
+        alert('Order submission failed. Please try again.');
+        setIsSubmitted(false);
       }
-    });
-
-    const orderData = {
-      // Complete the data structure as needed...
-    };
-
-    // Log customer data as created
-    console.log('Customer Data: ', customerData);
-    // Log order data as created
-    console.log('Order Data: ', orderData);
-
-    // Alert the customer that the submission was successsful
-    alert('Submitted!');
-
-    // Unset Submission Data
-    setIsSubmitted(false);
+    } catch (error) {
+      console.error('Submission error: ', error);
+      alert('An error occurred. Please try again.');
+      setIsSubmitted(false);
+    }
   }
 
   if (showCheckout) {
