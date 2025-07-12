@@ -33,22 +33,23 @@ model Quotation {
   businessName        String
   phoneNumber         String
   emailAddress        String
-  createdAt           DateTime @default(now())
-  updatedAt           DateTime @updatedAt
   uploadedDesignFiles Json
   id                  Int      @id @default(autoincrement())
   respondedTo         Boolean  @default(false)
+  createdAt           DateTime @default(now())
+  updatedAt           DateTime @updatedAt
 }
 
 model Contact {
   name        String
   email       String
   message     String
-  createdAt   DateTime @default(now())
   phone       String
   id          Int      @id @default(autoincrement())
   spamScore   Int      @default(0)
   respondedTo Boolean  @default(false)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
 }
 
 model Admin {
@@ -67,23 +68,31 @@ model FloridaSalesTax {
   zipCode   Int
 }
 
+model Customer {
+  id        Int      @id @default(autoincrement())
+  email     String   @unique
+  phone     String?
+  password  String?
+  name      String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  orders    Order[]
+}
+
 model Order {
   id                           Int      @id @default(autoincrement())
   orderNumber                  String   @unique
-  total                        Float
-  taxRate                      Float
-  taxExemptionStatus           Boolean  @default(false)
   status                       String
-  purchasedItems               Json
-  createdAt                    DateTime @default(now())
-  updatedAt                    DateTime @updatedAt
-  shippingName                 String
+  name                         String
+  email                        String
+  phone                        String
   shippingAddressOne           String
   shippingAddressTwo           String?
   shippingCity                 String
   shippingState                String
   shippingZipCode              String
   billingDifferentFromShipping Boolean  @default(false)
+  billingName                  String?
   billingAddressOne            String?
   billingAddressTwo            String?
   billingCity                  String?
@@ -93,20 +102,11 @@ model Order {
   preTaxSubtotal               Float
   stateTax                     Float
   surtax                       Float
+  total                        Float
+  taxRate                      Float
+  taxExemptionStatus           Boolean  @default(false)
+  purchasedItems               Json
   customer                     Customer @relation(fields: [customerId], references: [id])
-}
-
-model Customer {
-  id         Int      @id @default(autoincrement())
-  email      String   @unique
-  phone      String?
-  password   String?
-  name       String
-  addressOne String
-  addressTwo String?
-  city       String
-  state      String
-  zipCode    String
-  createdAt  DateTime @default(now())
-  orders     Order[]
+  createdAt                    DateTime @default(now())
+  updatedAt                    DateTime @updatedAt
 }

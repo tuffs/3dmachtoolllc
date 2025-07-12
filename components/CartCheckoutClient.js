@@ -56,25 +56,41 @@ export default function CartCheckoutClient({ pre_tax_subtotal, children }) {
     console.log('Checkout submission: ', submissionData);
     console.log('Cart data: ', cartData);
 
-    // create customerData and orderData objects
+    // Create an Order Number Here
+    const orderNumber = `3DMANDT-${Date.now()}`;
+    console.log('Generated Order Number: ', orderNumber);
 
+    // Create customerData and orderData Objects
     const customerData = {
       name: submissionData.name,
       email: submissionData.email,
       phone: submissionData.phone,
-      shippingName: submissionData.shippingName,
-      shippingAddressOne: submissionData.shippingAddressOne,
-      shippingAddressTwo: submissionData.shippingAddressTwo ? submissionData.shippingAddressTwo : '',
-      shippingCity: submissionData.shippingCity,
-      shippingState: submissionData.shippingState,
-      shippingZipCode: submissionData.shippingZipCode,
+      orderNumber: orderNumber,
     };
+
+    const createCustomerData = await global.prisma.customer.create({
+      data: {
+        name: customerData.name,
+        email: customerData.email,
+        phone: customerData.phone,
+        orders: [...orders, orderNumber]
+      }
+    });
 
     const orderData = {
       // Complete the data structure as needed...
     };
 
+    // Log customer data as created
+    console.log('Customer Data: ', customerData);
+    // Log order data as created
+    console.log('Order Data: ', orderData);
+
+    // Alert the customer that the submission was successsful
     alert('Submitted!');
+
+    // Unset Submission Data
+    setIsSubmitted(false);
   }
 
   if (showCheckout) {
