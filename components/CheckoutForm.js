@@ -1,15 +1,23 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
-import { FaCheckCircle } from 'react-icons/fa';
+import { FaCheckCircle, FaUpload, FaTimes } from 'react-icons/fa';
 import PurchaseSummary from '@/components/PurchaseSummary';
 import { getTaxesAndTotal } from '@/actions/getTaxesAndTotal';
+import { uploadTaxExemptionCertificate } from '@/actions/uploadTaxExemptionCertificate';
 
 
 export default function CheckoutForm({ pre_tax_subtotal, children, onSubmit }) {
 
   const [isDifferentBilling, setIsDifferentBilling] = useState(false);
   const [isPhoneFormatted, setIsPhoneFormatted] = useState(false);
+  const [isSubmitted, setIsSubmitted] = useState(false);
+
+  // Tax exemption states
+  const [isTaxExempt, setIsTaxExempt] = useState(false);
+  const [taxExemptionCertificateURL, setTaxExemptionCertificateURL] = useState('');
+  const [isUploadingCertificate, setIsUploadingCertificate] = useState(false);
+  const [uploadError, setUploadError] = useState('');
 
   // State for Purchase Form
   const [formData, setFormData] = useState({
@@ -66,89 +74,144 @@ export default function CheckoutForm({ pre_tax_subtotal, children, onSubmit }) {
     }
   };
 
-  // BASE STATE TAX RATE:
-  // State for hidden input values
-  // checks out across the board, has a useEffect to sync
+  // Tax calculation states
   const [preTaxSubtotal, setPreTaxSubtotal] = useState(pre_tax_subtotal);
-
-  // State of Florida base Tax Rate
-  const [stateTax, setStateTax] = useState(process.env.NEXT_PUBLIC_STATE_TAX || 0.06);
+  const [stateTax, setStateTax] = useState(0);
   const [surtax, setSurtax] = useState(0);
-  const [taxRate, setTaxRate] = useState(parseFloat(process.env.NEXT_PUBLIC_STATE_TAX || 0.06) + 0);
-  // Initialize total with base FL tax applied
-  const initialStateTax = parseFloat(process.env.NEXT_PUBLIC_STATE_TAX || 0.06);
-  const [total, setTotal] = useState(parseFloat((pre_tax_subtotal + (pre_tax_subtotal * initialStateTax)).toFixed(2)));
+  const [taxRate, setTaxRate] = useState(0);
+  const [total, setTotal] = useState(pre_tax_subtotal);
+
+  // Handle file upload
+  const handleFileUpload = async (event) => {
+    const file = event.target.files[0];
+    if (!file) return;
+
+    setIsUploadingCertificate(true);
+    setUploadError('');
+
+    const formData = new FormData();
+    formData.append('taxExemptionFile', file);
+
+    try {
+      const result = await uploadTaxExemptionCertificate(formData);
+
+      if (result.success) {
+        setTaxExemptionCertificateURL(result.url);
+        setIsTaxExempt(true);
+      } else {
+        setUploadError(result.error);
+      }
+    } catch (error) {
+      setUploadError('Failed to upload certificate');
+    }
+
+    setIsUploadingCertificate(false);
+  };
+
+  // Remove certificate
+  const removeCertificate = () => {
+    setTaxExemptionCertificateURL('');
+    setIsTaxExempt(false);
+    setUploadError('');
+  };
 
   // Keep the preTaxSubtotal in sync with prop value
   useEffect(() => {
     setPreTaxSubtotal(pre_tax_subtotal);
-    // Also update the total when subtotal changes (applying current tax rate)
-    const currentTaxRate = parseFloat(stateTax) + parseFloat(surtax);
-    const newTotal = parseFloat((pre_tax_subtotal + (pre_tax_subtotal * currentTaxRate)).toFixed(2));
-    setTotal(newTotal);
-  }, [pre_tax_subtotal, stateTax, surtax]);
+  }, [pre_tax_subtotal]);
 
-  // We only need to concern ourselves with the Shipping State and Zip Code
-  // all other values are irrelevant.
-
+  // Calculate taxes based on exemption status and SHIPPING address
   useEffect(() => {
-    const differentBilling = isDifferentBilling;
-
-    let state, zipCode, subtotal;
-    if (differentBilling) {
-      state = formData.billingState;
-      zipCode = formData.billingZipCode;
-      subtotal = preTaxSubtotal;
-    } else {
-      state = formData.shippingState;
-      zipCode = formData.shippingZipCode;
-      subtotal = preTaxSubtotal;
-    }
-
-    // Function to get all sales information in a single object
-    // If the state is not Florida, we can skip the tax calculation
-    const callTaxesAndTotal = async () => {
+    const calculateTaxes = async () => {
       try {
-        console.log('Calling getTaxesAndTotal with:', { state, zipCode, subtotal });
-        // Get the taxes and totals - AWAIT the server action
-        const salesInfo = await getTaxesAndTotal(state, zipCode, subtotal);
-        console.log('Sales info result:', salesInfo);
+        console.log('Calculating taxes with:', {
+          state: formData.shippingState,
+          zipCode: formData.shippingZipCode,
+          subtotal: preTaxSubtotal,
+          isTaxExempt
+        });
 
-        if (salesInfo.success) {
-          setSurtax(salesInfo.surtax);
-          setStateTax(salesInfo.stateTax);
-          setPreTaxSubtotal(salesInfo.subtotal);
-          setTotal(parseFloat(salesInfo.total.toFixed(2)));
-          setTaxRate(salesInfo.taxRate);
-        } else if (salesInfo.success === false) {
-          setSurtax(0);
+        // If tax exempt, no taxes at all
+        if (isTaxExempt) {
           setStateTax(0);
-          setPreTaxSubtotal(preTaxSubtotal);
+          setSurtax(0);
           setTotal(preTaxSubtotal);
-          setTaxRate(0.00);
-          console.error('No sales tax to charge.');
+          setTaxRate(0);
+          return;
         }
-        return;
+
+        // If no shipping address provided yet, apply base 6% tax
+        if (!formData.shippingState || !formData.shippingZipCode) {
+          const baseStateTax = parseFloat(process.env.NEXT_PUBLIC_STATE_TAX || 0.06);
+          const calculatedStateTax = preTaxSubtotal * baseStateTax;
+          setStateTax(calculatedStateTax);
+          setSurtax(0);
+          setTotal(preTaxSubtotal + calculatedStateTax);
+          setTaxRate(baseStateTax);
+          return;
+        }
+
+        // If state is not Florida (FL), apply 6% tax only
+        if (formData.shippingState.toUpperCase() !== 'FL') {
+          const baseStateTax = parseFloat(process.env.NEXT_PUBLIC_STATE_TAX || 0.06);
+          const calculatedStateTax = preTaxSubtotal * baseStateTax;
+          setStateTax(calculatedStateTax);
+          setSurtax(0);
+          setTotal(preTaxSubtotal + calculatedStateTax);
+          setTaxRate(baseStateTax);
+          console.log('Applied out-of-state base tax rate:', baseStateTax);
+          return;
+        }
+
+        // If state is Florida and we have a 5-digit zip code, check for county surtax
+        if (formData.shippingState.toUpperCase() === 'FL' && formData.shippingZipCode.length === 5) {
+          const salesInfo = await getTaxesAndTotal(formData.shippingState, formData.shippingZipCode, preTaxSubtotal);
+          console.log('Florida tax calculation result:', salesInfo);
+
+          if (salesInfo.success) {
+            // Use Florida-specific taxes with surtax
+            setStateTax(parseFloat(salesInfo.stateTax || 0));
+            setSurtax(parseFloat(salesInfo.surtax || 0));
+            setTotal(parseFloat(salesInfo.total || preTaxSubtotal));
+            setTaxRate(parseFloat(salesInfo.taxRate || 0));
+          } else {
+            // Fallback to base Florida tax if county not found
+            const baseStateTax = parseFloat(process.env.NEXT_PUBLIC_STATE_TAX || 0.06);
+            const calculatedStateTax = preTaxSubtotal * baseStateTax;
+            setStateTax(calculatedStateTax);
+            setSurtax(0);
+            setTotal(preTaxSubtotal + calculatedStateTax);
+            setTaxRate(baseStateTax);
+            console.log('Applied base Florida tax rate (county not found):', baseStateTax);
+          }
+        } else if (formData.shippingState.toUpperCase() === 'FL') {
+          // Florida but incomplete zip code - apply base Florida tax
+          const baseStateTax = parseFloat(process.env.NEXT_PUBLIC_STATE_TAX || 0.06);
+          const calculatedStateTax = preTaxSubtotal * baseStateTax;
+          setStateTax(calculatedStateTax);
+          setSurtax(0);
+          setTotal(preTaxSubtotal + calculatedStateTax);
+          setTaxRate(baseStateTax);
+        }
+
       } catch (error) {
-        console.error('Error fetching taxes and total:', error);
-        return;
+        console.error('Error calculating taxes:', error);
+        // Fallback to base tax rate on error
+        const baseStateTax = parseFloat(process.env.NEXT_PUBLIC_STATE_TAX || 0.06);
+        const calculatedStateTax = preTaxSubtotal * baseStateTax;
+        setStateTax(calculatedStateTax);
+        setSurtax(0);
+        setTotal(preTaxSubtotal + calculatedStateTax);
+        setTaxRate(baseStateTax);
       }
-    }
+    };
 
-    // Actually call the function when state, zipCode, or subtotal changes
-    if (state && zipCode && subtotal) {
-      callTaxesAndTotal();
-    }
-  }, [formData.shippingState, formData.shippingZipCode, preTaxSubtotal, formData.billingState, formData.billingZipCode, isDifferentBilling]);
-
-  // Keep the taxRate in sync with stateTax and surtax changes
-  useEffect(() => {
-    const newTaxRate = parseFloat(stateTax) + parseFloat(surtax);
-    setTaxRate(newTaxRate);
-  }, [stateTax, surtax]);
+    calculateTaxes();
+  }, [formData.shippingState, formData.shippingZipCode, preTaxSubtotal, isTaxExempt]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setIsSubmitted(true);
 
     const submissionData = {
       formData,
@@ -157,19 +220,22 @@ export default function CheckoutForm({ pre_tax_subtotal, children, onSubmit }) {
       surtax,
       total,
       taxRate,
-      isDifferentBilling
+      isDifferentBilling,
+      isTaxExempt,
+      taxExemptionCertificateURL
     };
 
     if (onSubmit) {
       await onSubmit(submissionData);
     }
-  }
+  };
 
   return (
     <>
       <div className="flex flex-col md:flex-row md:space-x-4 space-y-4 md:space-y-0 p-12">
         <form id="checkout-form" className="checkout_form w-full md:w-1/2 p-6 bg-[#161717] rounded-lg shadow-md" onSubmit={handleSubmit}>
           <h2 className="text-2xl font-bold mb-4 text-center">Checkout</h2>
+
           <div className="contact_information mb-6" data-testid="contact_information_section">
             <h4 className="text-lg font-bold">Contact Details</h4>
 
@@ -213,7 +279,64 @@ export default function CheckoutForm({ pre_tax_subtotal, children, onSubmit }) {
             {formData.phone && formData.phone.length === 10 && (
               <FaCheckCircle className="text-green-500 inline-block ml-3" />
             )}
+          </div>
 
+          {/* Tax Exemption Section */}
+          <div className="tax_exemption mb-6" data-testid="tax_exemption_section">
+            <h4 className="text-lg font-bold mb-3">Sales Tax Exemption (Optional)</h4>
+
+            {!taxExemptionCertificateURL ? (
+              <div>
+                <p className="text-sm text-gray-400 mb-3">
+                  If you have a valid sales tax exemption certificate, upload it here to remove sales tax from your order.
+                </p>
+
+                <div className="upload-area border-2 border-dashed border-gray-600 rounded-lg p-6 text-center">
+                  <input
+                    type="file"
+                    id="taxExemptionFile"
+                    accept=".pdf,.jpg,.jpeg,.png"
+                    onChange={handleFileUpload}
+                    className="hidden"
+                    disabled={isUploadingCertificate}
+                  />
+
+                  <label
+                    htmlFor="taxExemptionFile"
+                    className={`cursor-pointer flex flex-col items-center ${isUploadingCertificate ? 'opacity-50' : ''}`}
+                  >
+                    <FaUpload className="text-3xl text-gray-400 mb-2" />
+                    <span className="text-sm text-gray-300">
+                      {isUploadingCertificate ? 'Uploading...' : 'Click to upload certificate'}
+                    </span>
+                    <span className="text-xs text-gray-500 mt-1">
+                      PDF, JPG, PNG (Max 10MB)
+                    </span>
+                  </label>
+                </div>
+
+                {uploadError && (
+                  <p className="text-red-500 text-sm mt-2">{uploadError}</p>
+                )}
+              </div>
+            ) : (
+              <div className="certificate-uploaded bg-green-800 border border-green-600 rounded-lg p-4">
+                <div className="flex items-center justify-between">
+                  <div className="flex items-center">
+                    <FaCheckCircle className="text-green-400 mr-2" />
+                    <span className="text-green-200">Certificate uploaded successfully</span>
+                  </div>
+                  <button
+                    type="button"
+                    onClick={removeCertificate}
+                    className="text-red-400 hover:text-red-300"
+                  >
+                    <FaTimes />
+                  </button>
+                </div>
+                <p className="text-xs text-green-300 mt-1">Sales tax has been removed from your order</p>
+              </div>
+            )}
           </div>
 
           <div className="shipping_information mb-6" data-testid="shipping_information_section">
@@ -372,53 +495,14 @@ export default function CheckoutForm({ pre_tax_subtotal, children, onSubmit }) {
               )
             }
 
-            <input
-              type="hidden"
-              name="preTaxSubtotal"
-              value={preTaxSubtotal}
-            />
-
-
-            <input
-              type="hidden"
-              name="stateTax"
-              value={stateTax}
-            />
-
-
-            <input
-              type="hidden"
-              name="surtax"
-              value={surtax}
-            />
-
-
-            <input
-              type="hidden"
-              name="total"
-              value={total}
-            />
-
-
-            <input
-              type="hidden"
-              name="taxRate"
-              value={taxRate}
-            />
-
-
-            <input
-              type="hidden"
-              name="taxExemptionStatus"
-              value={false}
-            />
-
-
-            <input
-              type="hidden"
-              name="purchasedItems"
-              value={JSON.stringify({})}
-            />
+            <input type="hidden" name="preTaxSubtotal" value={preTaxSubtotal} />
+            <input type="hidden" name="stateTax" value={stateTax} />
+            <input type="hidden" name="surtax" value={surtax} />
+            <input type="hidden" name="total" value={total} />
+            <input type="hidden" name="taxRate" value={taxRate} />
+            <input type="hidden" name="taxExemptionStatus" value={isTaxExempt} />
+            <input type="hidden" name="taxExemptionCertificateURL" value={taxExemptionCertificateURL} />
+            <input type="hidden" name="purchasedItems" value={JSON.stringify({})} />
           </div>
         </form>
 
@@ -431,9 +515,10 @@ export default function CheckoutForm({ pre_tax_subtotal, children, onSubmit }) {
             surtax={surtax}
             taxRate={taxRate}
             total={total}
+            isTaxExempt={isTaxExempt}
           />
         </div>
       </div>
     </>
-  )
+  );
 }

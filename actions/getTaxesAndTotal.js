@@ -1,66 +1,49 @@
-'use server'
+'use server';
 
-import { getSurtaxPercent } from '@/actions/getSurtaxPercent';
+import { PrismaClient } from '@prisma/client';
 
-export async function getTaxesAndTotal(state, zipCode, pre_tax_subtotal) {
+const prisma = new PrismaClient();
+
+export async function getTaxesAndTotal(state, zipCode, subtotal) {
   try {
-
-    // Base State Tax Rate - convert to number
-    const stateTax = parseFloat(process.env.STATE_TAX) || 0.06;
-
-    // Fetch the surtax if needed
-    if (state === 'FL' && zipCode.length === 5) {
-      let surtaxData;
-
-      try {
-        surtaxData = await getSurtaxPercent(zipCode);
-      } catch (error) {
-        return { success: false, error: "There was an error fetching the surtax data." };
+    // Base Florida state tax
+    const baseStateTaxRate = parseFloat(process.env.NEXT_PUBLIC_STATE_TAX || 0.06);
+    
+    // Find county-specific tax rate
+    const countyTax = await prisma.floridaSalesTax.findFirst({
+      where: {
+        zipCode: parseInt(zipCode)
       }
+    });
 
-      if (surtaxData.success) {
-        const surtax = parseFloat(surtaxData.surtax) || 0;
-        const taxRate = stateTax + surtax;
-        const total = parseFloat((pre_tax_subtotal + (pre_tax_subtotal * taxRate)).toFixed(2));
+    let stateTax = subtotal * baseStateTaxRate;
+    let surtax = 0;
+    let totalTaxRate = baseStateTaxRate;
 
-        return {
-          success: true,
-          surtax,
-          stateTax,
-          taxRate,
-          subtotal: pre_tax_subtotal,
-          total,
-        };
-      } else {
-        return { success: false, error: "Error fetching surtax data." };
-      }
-    } else if (state !== 'FL') {
-      return {
-        success: true,
-        surtax: 0,
-        stateTax: 0.06,
-        taxRate: 0.06,
-        subtotal: pre_tax_subtotal,
-        total: parseFloat(pre_tax_subtotal + (pre_tax_subtotal * stateTax)).toFixed(2),
-      };
-    } else {
-      // This handles the case where state is FL but 
-      // no zipCode is provided yet
-
-      // 0%- $0.00 TAX RATE
-      const taxRate = stateTax;
-      const total = parseFloat((pre_tax_subtotal + (pre_tax_subtotal * taxRate)).toFixed(2));
-
-      return {
-        success: true,
-        surtax: 0,
-        stateTax,
-        taxRate,
-        subtotal: pre_tax_subtotal,
-        total,
-      };
+    if (countyTax) {
+      // County surtax is in addition to state tax
+      surtax = subtotal * countyTax.rate;
+      totalTaxRate = baseStateTaxRate + countyTax.rate;
     }
+
+    const total = subtotal + stateTax + surtax;
+
+    return {
+      success: true,
+      subtotal: parseFloat(subtotal),
+      stateTax: parseFloat(stateTax.toFixed(2)),
+      surtax: parseFloat(surtax.toFixed(2)),
+      total: parseFloat(total.toFixed(2)),
+      taxRate: parseFloat(totalTaxRate.toFixed(4))
+    };
+
   } catch (error) {
-    return { success: false, error: "There was an error calculating taxes." };
+    console.error('Error calculating taxes:', error);
+    return {
+      success: false,
+      error: error.message
+    };
+  } finally {
+    await prisma.$disconnect();
   }
 }

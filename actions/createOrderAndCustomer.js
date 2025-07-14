@@ -17,11 +17,21 @@ export async function createOrderAndCustomer(submissionData, cartData, orderNumb
           name: submissionData.formData.name,
           email: submissionData.formData.email,
           phone: submissionData.formData.phone,
+          salesTaxExemptionCertificateURL: submissionData.taxExemptionCertificateURL || "",
         }
       });
-      console.log('New Customer Created: ', customer);
+      console.log('New customer created:', customer.id);
     } else {
-      console.log('Existingg customer found: ', customer);
+      // Update existing customer with certificate if provided
+      if (submissionData.taxExemptionCertificateURL) {
+        customer = await prisma.customer.update({
+          where: { id: customer.id },
+          data: {
+            salesTaxExemptionCertificateURL: submissionData.taxExemptionCertificateURL
+          }
+        });
+      }
+      console.log('Existing customer found:', customer.id);
     }
 
     // Create the order
@@ -33,30 +43,30 @@ export async function createOrderAndCustomer(submissionData, cartData, orderNumb
         email: submissionData.formData.email,
         phone: submissionData.formData.phone,
         shippingAddressOne: submissionData.formData.shippingAddressOne,
-        shippingAddressTwo: submissionData.formData.shippingAddressTwo ? submissionData.formData.shippingAddressTwo : null,
+        shippingAddressTwo: submissionData.formData.shippingAddressTwo || null,
         shippingCity: submissionData.formData.shippingCity,
         shippingState: submissionData.formData.shippingState,
         shippingZipCode: submissionData.formData.shippingZipCode,
         billingDifferentFromShipping: submissionData.isDifferentBilling,
-        billingAddressOne: submissionData.formData.billingAddressOne ? submissionData.formData.billingAddressOne : null,
-        billingAddressTwo: submissionData.formData.billingAddressTwo ? submissionData.formData.billingAddressTwo : null,
-        billingCity: submissionData.formData.billingCity ? submissionData.formData.billingCity : null,
-        billingState: submissionData.formData.billingState ? submissionData.formData.billingState : null,
-        billingZipCode: submissionData.formData.billingZipCode ? submissionData.formData.billingZipCode : null,
+        billingAddressOne: submissionData.formData.billingAddressOne || null,
+        billingAddressTwo: submissionData.formData.billingAddressTwo || null,
+        billingCity: submissionData.formData.billingCity || null,
+        billingState: submissionData.formData.billingState || null,
+        billingZipCode: submissionData.formData.billingZipCode || null,
         customerId: customer.id,
         preTaxSubtotal: submissionData.preTaxSubtotal,
         stateTax: submissionData.stateTax,
         surtax: submissionData.surtax,
         total: submissionData.total,
         taxRate: submissionData.taxRate,
-        taxExemptionStatus: false,
-        purchasedItems: cartData, // Store cart data as JSON
+        taxExemptionStatus: submissionData.isTaxExempt || false,
+        purchasedItems: cartData,
       }
     });
 
     return { success: true, customer, order };
   } catch (error) {
-    console.error('Error creating order and customer: ', error.message);
+    console.error('Error creating order and customer:', error.message);
     return { success: false, error: error.message };
   } finally {
     await prisma.$disconnect();

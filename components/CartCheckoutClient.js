@@ -6,11 +6,14 @@ import { getProductDetails } from '@/actions/getProductDetails';
 import CheckoutForm from '@/components/CheckoutForm';
 import CheckoutButton from "@/components/ui/CheckoutButton";
 import AnimatedButton from './ui/AnimatedButton';
+import CompletePurchaseForm from '@/components/CompletePurchaseForm';
 import { createOrderAndCustomer } from '@/actions/createOrderAndCustomer';
 
 export default function CartCheckoutClient({ pre_tax_subtotal, children }) {
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [showCheckout, setShowCheckout] = useState(false);
+  const [showPayment, setShowPayment] = useState(false);
+  const [orderData, setOrderData] = useState(null);
   const [cartData, setCartData] = useState({});
   const [productsData, setProductsData] = useState([]);
   const [subtotal, setSubtotal] = useState(pre_tax_subtotal);
@@ -58,17 +61,22 @@ export default function CartCheckoutClient({ pre_tax_subtotal, children }) {
     try {
       // Generate Order Number
       const orderNumber = `3DMANDT-${Date.now()}`;
-      console.log('Generated Order Number: ', orderNumber);
 
       // Call server action to create customer and order
       const result = await createOrderAndCustomer(submissionData, cartData, orderNumber);
 
       if (result.success) {
-        console.log('Customer: ', result.customer);
-        console.log('Order: ', result.order);
 
-        // Clear cart or redirect to confirmation page
-        // clearCart(); // Implement this function to clear the cart
+        setOrderData({
+          order: result.order,
+          customer: result.customer,
+          submissionData: submissionData
+        });
+
+        setShowCheckout(false);
+        setShowPayment(true);
+        setIsSubmitted(false);
+
       } else {
         console.error('Error creating order and customer: ', result.error);
         setIsSubmitted(false);
@@ -77,6 +85,30 @@ export default function CartCheckoutClient({ pre_tax_subtotal, children }) {
       console.error('Submission error: ', error);
       setIsSubmitted(false);
     }
+  }
+
+  const handlePaymentComplete = () => {
+    console.log('Payment completed successfully');
+    // Now we can clear the cart...
+    // Move to an order confirmation view or similar
+  }
+
+  const handlePaymentError = () => {
+    // Handle payment error - could go back to checkout or show an error message
+    setShowPayment(false);
+    setShowCheckout(true);
+  }
+
+  // Payment Flow
+  if (showPayment && orderData) {
+    return (
+      <CompletePurchaseForm
+        orderData={orderData}
+        total={orderData.submissionData.total}
+        onPaymentComplete={handlePaymentComplete}
+        onPaymentError={handlePaymentError}
+      />
+    );
   }
 
   if (showCheckout) {
