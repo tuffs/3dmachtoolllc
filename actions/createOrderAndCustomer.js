@@ -1,8 +1,6 @@
 'use server';
 
-import { PrismaClient } from '@prisma/client';
-
-const prisma = new PrismaClient();
+import prisma from '@/prisma/database';
 
 export async function createOrderAndCustomer(submissionData, cartData, orderNumber) {
   try {
@@ -24,6 +22,10 @@ export async function createOrderAndCustomer(submissionData, cartData, orderNumb
     } else {
       // Update existing customer with certificate if provided
       if (submissionData.taxExemptionCertificateURL) {
+
+        // TODO: Add server-side validation for tax exemption certificate
+        // e.g., check if URL is valid, file is accessible, or matches Florida requirements
+
         customer = await prisma.customer.update({
           where: { id: customer.id },
           data: {
@@ -32,6 +34,11 @@ export async function createOrderAndCustomer(submissionData, cartData, orderNumb
         });
       }
       console.log('Existing customer found:', customer.id);
+    }
+
+    // Validate tax-exempt status
+    if (submissionData.isTaxExempt && !submissionData.taxExemptionCertificateURL) {
+      throw new Error('Tax-exempt status requires a valid certificate URL.');
     }
 
     // Create the order

@@ -1,10 +1,9 @@
 'use server';
 
 import Stripe from 'stripe';
-import { PrismaClient } from '@prisma/client';
+import prisma from '@/prisma/database';
 
 const stripe = new Stripe(process.env.STRIPE_PRIVATE_KEY);
-const prisma = new PrismaClient();
 
 export async function createPaymentIntent(amount, orderId, customerId) {
   try {

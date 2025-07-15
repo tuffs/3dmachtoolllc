@@ -6,20 +6,15 @@ import PurchaseSummary from '@/components/PurchaseSummary';
 import { getTaxesAndTotal } from '@/actions/getTaxesAndTotal';
 import { uploadTaxExemptionCertificate } from '@/actions/uploadTaxExemptionCertificate';
 
-
 export default function CheckoutForm({ pre_tax_subtotal, children, onSubmit }) {
-
   const [isDifferentBilling, setIsDifferentBilling] = useState(false);
   const [isPhoneFormatted, setIsPhoneFormatted] = useState(false);
   const [isSubmitted, setIsSubmitted] = useState(false);
-
-  // Tax exemption states
   const [isTaxExempt, setIsTaxExempt] = useState(false);
   const [taxExemptionCertificateURL, setTaxExemptionCertificateURL] = useState('');
   const [isUploadingCertificate, setIsUploadingCertificate] = useState(false);
   const [uploadError, setUploadError] = useState('');
 
-  // State for Purchase Form
   const [formData, setFormData] = useState({
     name: '',
     email: '',
@@ -36,10 +31,8 @@ export default function CheckoutForm({ pre_tax_subtotal, children, onSubmit }) {
     billingZipCode: '',
   });
 
-  // Handle Billing Address Toggle
   const handleBillingAddressDiffers = () => {
     if (!isDifferentBilling) {
-      // Reset billing address fields if they are not different
       setFormData((prev) => ({
         ...prev,
         billingAddressOne: '',
@@ -48,14 +41,12 @@ export default function CheckoutForm({ pre_tax_subtotal, children, onSubmit }) {
         billingState: '',
         billingZipCode: '',
       }));
-      // Set isDifferentBilling to true AFTER resetting form values
       setIsDifferentBilling(true);
     } else {
       setIsDifferentBilling(false);
     }
-  }
+  };
 
-  // Handle form input changes
   const handleChange = async (e) => {
     const { name, value } = e.target;
     setFormData((prev) => ({
@@ -64,7 +55,6 @@ export default function CheckoutForm({ pre_tax_subtotal, children, onSubmit }) {
     }));
 
     if (name === 'phone') {
-      // format phone number with hyphens and keep validated
       const formattedPhoneNumber = value.replace(/(\d{3})(\d{3})(\d{4})/, '$1-$2-$3');
       setFormData((prev) => ({
         ...prev,
@@ -74,17 +64,18 @@ export default function CheckoutForm({ pre_tax_subtotal, children, onSubmit }) {
     }
   };
 
-  // Tax calculation states
   const [preTaxSubtotal, setPreTaxSubtotal] = useState(pre_tax_subtotal);
   const [stateTax, setStateTax] = useState(0);
   const [surtax, setSurtax] = useState(0);
   const [taxRate, setTaxRate] = useState(0);
   const [total, setTotal] = useState(pre_tax_subtotal);
 
-  // Handle file upload
   const handleFileUpload = async (event) => {
     const file = event.target.files[0];
-    if (!file) return;
+    if (!file) {
+      setUploadError('Please select a file to upload.');
+      return;
+    }
 
     setIsUploadingCertificate(true);
     setUploadError('');
@@ -98,29 +89,29 @@ export default function CheckoutForm({ pre_tax_subtotal, children, onSubmit }) {
       if (result.success) {
         setTaxExemptionCertificateURL(result.url);
         setIsTaxExempt(true);
+        setUploadError(''); // Clear any previous errors
       } else {
-        setUploadError(result.error);
+        setUploadError(result.error || 'Failed to upload certificate. Please try again.');
+        setIsTaxExempt(false);
       }
     } catch (error) {
-      setUploadError('Failed to upload certificate');
+      setUploadError('An unexpected error occurred during upload. Please try again.');
+      setIsTaxExempt(false);
     }
 
     setIsUploadingCertificate(false);
   };
 
-  // Remove certificate
   const removeCertificate = () => {
     setTaxExemptionCertificateURL('');
     setIsTaxExempt(false);
     setUploadError('');
   };
 
-  // Keep the preTaxSubtotal in sync with prop value
   useEffect(() => {
     setPreTaxSubtotal(pre_tax_subtotal);
   }, [pre_tax_subtotal]);
 
-  // Calculate taxes based on exemption status and SHIPPING address
   useEffect(() => {
     const calculateTaxes = async () => {
       try {
@@ -131,7 +122,6 @@ export default function CheckoutForm({ pre_tax_subtotal, children, onSubmit }) {
           isTaxExempt
         });
 
-        // If tax exempt, no taxes at all
         if (isTaxExempt) {
           setStateTax(0);
           setSurtax(0);
@@ -140,7 +130,6 @@ export default function CheckoutForm({ pre_tax_subtotal, children, onSubmit }) {
           return;
         }
 
-        // If no shipping address provided yet, apply base 6% tax
         if (!formData.shippingState || !formData.shippingZipCode) {
           const baseStateTax = parseFloat(process.env.NEXT_PUBLIC_STATE_TAX || 0.06);
           const calculatedStateTax = preTaxSubtotal * baseStateTax;
@@ -151,7 +140,6 @@ export default function CheckoutForm({ pre_tax_subtotal, children, onSubmit }) {
           return;
         }
 
-        // If state is not Florida (FL), apply 6% tax only
         if (formData.shippingState.toUpperCase() !== 'FL') {
           const baseStateTax = parseFloat(process.env.NEXT_PUBLIC_STATE_TAX || 0.06);
           const calculatedStateTax = preTaxSubtotal * baseStateTax;
@@ -163,19 +151,16 @@ export default function CheckoutForm({ pre_tax_subtotal, children, onSubmit }) {
           return;
         }
 
-        // If state is Florida and we have a 5-digit zip code, check for county surtax
         if (formData.shippingState.toUpperCase() === 'FL' && formData.shippingZipCode.length === 5) {
           const salesInfo = await getTaxesAndTotal(formData.shippingState, formData.shippingZipCode, preTaxSubtotal);
           console.log('Florida tax calculation result:', salesInfo);
 
           if (salesInfo.success) {
-            // Use Florida-specific taxes with surtax
             setStateTax(parseFloat(salesInfo.stateTax || 0));
             setSurtax(parseFloat(salesInfo.surtax || 0));
             setTotal(parseFloat(salesInfo.total || preTaxSubtotal));
             setTaxRate(parseFloat(salesInfo.taxRate || 0));
           } else {
-            // Fallback to base Florida tax if county not found
             const baseStateTax = parseFloat(process.env.NEXT_PUBLIC_STATE_TAX || 0.06);
             const calculatedStateTax = preTaxSubtotal * baseStateTax;
             setStateTax(calculatedStateTax);
@@ -185,7 +170,6 @@ export default function CheckoutForm({ pre_tax_subtotal, children, onSubmit }) {
             console.log('Applied base Florida tax rate (county not found):', baseStateTax);
           }
         } else if (formData.shippingState.toUpperCase() === 'FL') {
-          // Florida but incomplete zip code - apply base Florida tax
           const baseStateTax = parseFloat(process.env.NEXT_PUBLIC_STATE_TAX || 0.06);
           const calculatedStateTax = preTaxSubtotal * baseStateTax;
           setStateTax(calculatedStateTax);
@@ -193,10 +177,8 @@ export default function CheckoutForm({ pre_tax_subtotal, children, onSubmit }) {
           setTotal(preTaxSubtotal + calculatedStateTax);
           setTaxRate(baseStateTax);
         }
-
       } catch (error) {
         console.error('Error calculating taxes:', error);
-        // Fallback to base tax rate on error
         const baseStateTax = parseFloat(process.env.NEXT_PUBLIC_STATE_TAX || 0.06);
         const calculatedStateTax = preTaxSubtotal * baseStateTax;
         setStateTax(calculatedStateTax);
@@ -212,6 +194,13 @@ export default function CheckoutForm({ pre_tax_subtotal, children, onSubmit }) {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setIsSubmitted(true);
+
+    // Additional validation for tax-exempt orders
+    if (isTaxExempt && !taxExemptionCertificateURL) {
+      setUploadError('Tax exemption requires a valid certificate. Please upload a file.');
+      setIsSubmitted(false);
+      return;
+    }
 
     const submissionData = {
       formData,
@@ -238,7 +227,6 @@ export default function CheckoutForm({ pre_tax_subtotal, children, onSubmit }) {
 
           <div className="contact_information mb-6" data-testid="contact_information_section">
             <h4 className="text-lg font-bold">Contact Details</h4>
-
             <input
               type="text"
               name="name"
@@ -251,7 +239,6 @@ export default function CheckoutForm({ pre_tax_subtotal, children, onSubmit }) {
             {formData.name && formData.name.length >= 3 && (
               <FaCheckCircle className="text-green-500 inline-block ml-3" />
             )}
-
             <input
               type="email"
               name="email"
@@ -265,7 +252,6 @@ export default function CheckoutForm({ pre_tax_subtotal, children, onSubmit }) {
             {formData.email && formData.email.includes("@") && (
               <FaCheckCircle className="text-green-500 inline-block ml-3" />
             )}
-
             <input
               type="tel"
               name="phone"
@@ -276,21 +262,21 @@ export default function CheckoutForm({ pre_tax_subtotal, children, onSubmit }) {
               onChange={handleChange}
               required
             />
-            {formData.phone && formData.phone.length === 10 && (
+            {formData.phone && formData.phone.length === 12 && ( // Adjusted to check for formatted length
               <FaCheckCircle className="text-green-500 inline-block ml-3" />
             )}
           </div>
 
-          {/* Tax Exemption Section */}
           <div className="tax_exemption mb-6" data-testid="tax_exemption_section">
             <h4 className="text-lg font-bold mb-3">Sales Tax Exemption (Optional)</h4>
-
             {!taxExemptionCertificateURL ? (
               <div>
                 <p className="text-sm text-gray-400 mb-3">
-                  If you have a valid sales tax exemption certificate, upload it here to remove sales tax from your order.
+                  Upload a valid sales tax exemption certificate provided by your State (PDF, JPG, or PNG, max 10MB) to remove sales tax from your order.<br />
+                  <small>
+                    Uploading a false, fake or invalid sales tax exemption certificate will delay your order so that we may speak with you. If you fail to provide a valid certificate you will be allowed to pay the taxes owed and sent the product or your order will be refunded less the cost of Certificate Processing Fee ($45), and any transaction related fees.
+                  </small>
                 </p>
-
                 <div className="upload-area border-2 border-dashed border-gray-600 rounded-lg p-6 text-center">
                   <input
                     type="file"
@@ -300,7 +286,6 @@ export default function CheckoutForm({ pre_tax_subtotal, children, onSubmit }) {
                     className="hidden"
                     disabled={isUploadingCertificate}
                   />
-
                   <label
                     htmlFor="taxExemptionFile"
                     className={`cursor-pointer flex flex-col items-center ${isUploadingCertificate ? 'opacity-50' : ''}`}
@@ -314,7 +299,6 @@ export default function CheckoutForm({ pre_tax_subtotal, children, onSubmit }) {
                     </span>
                   </label>
                 </div>
-
                 {uploadError && (
                   <p className="text-red-500 text-sm mt-2">{uploadError}</p>
                 )}
@@ -334,7 +318,9 @@ export default function CheckoutForm({ pre_tax_subtotal, children, onSubmit }) {
                     <FaTimes />
                   </button>
                 </div>
-                <p className="text-xs text-green-300 mt-1">Sales tax has been removed from your order</p>
+                <p className="text-xs text-green-300 mt-1">
+                  Sales tax has been removed from your order. Note: Certificate is subject to verification.
+                </p>
               </div>
             )}
           </div>
@@ -353,7 +339,6 @@ export default function CheckoutForm({ pre_tax_subtotal, children, onSubmit }) {
             {formData.shippingAddressOne && formData.shippingAddressOne.length > 3 && (
               <FaCheckCircle className="text-green-500 inline-block ml-3" />
             )}
-
             <input
               type="text"
               name="shippingAddressTwo"
@@ -365,7 +350,6 @@ export default function CheckoutForm({ pre_tax_subtotal, children, onSubmit }) {
             {formData.shippingAddressTwo && (
               <FaCheckCircle className="text-green-500 inline-block ml-3" />
             )}
-
             <input
               type="text"
               name="shippingCity"
@@ -375,10 +359,9 @@ export default function CheckoutForm({ pre_tax_subtotal, children, onSubmit }) {
               onChange={handleChange}
               required
             />
-            {formData.shippingCity.length > 3 && (
+            {formData.shippingCity.length >= 2 && (
               <FaCheckCircle className="text-green-500 inline-block ml-3" />
             )}
-
             <input
               type="text"
               name="shippingState"
@@ -394,7 +377,6 @@ export default function CheckoutForm({ pre_tax_subtotal, children, onSubmit }) {
             {formData.shippingState.length === 2 && (
               <FaCheckCircle className="text-green-500 inline-block ml-3" />
             )}
-
             <input
               type="text"
               name="shippingZipCode"
@@ -408,7 +390,6 @@ export default function CheckoutForm({ pre_tax_subtotal, children, onSubmit }) {
             {formData.shippingZipCode.length === 5 && (
               <FaCheckCircle className="text-green-500 inline-block ml-3" />
             )}
-
             <div className="billingAddressSameAsShippingCheckbox mt-2">
               <input
                 type="checkbox"
@@ -419,82 +400,74 @@ export default function CheckoutForm({ pre_tax_subtotal, children, onSubmit }) {
               />
               <label className="ml-2 text-sm text-gray-400"><div className="inline-block" style={{ lineHeight: '2rem' }}>My billing address is the same as my shipping address.</div></label>
             </div>
-
-            {isDifferentBilling &&
-              (
-                <>
-                  <h4 className="text-lg font-bold mt-4">Billing Address</h4>
-                  <input
-                    type="text"
-                    name="billingAddressOne"
-                    placeholder="Billing Address Line 1"
-                    className={`w-[94%] p-2 text-sm tertiary_bg_color text-gray-300 border rounded-sm my-2 focus:outline-none ${isDifferentBilling && formData.billingAddressOne.length > 3 ? 'border-green-500 focus:border-green-500' : 'border-gray-300 focus:border-gray-300'}`}
-                    value={formData.billingAddressOne}
-                    onChange={handleChange}
-                    required={isDifferentBilling ? true : false}
-                  />
-                  {isDifferentBilling && formData.billingAddressOne.length > 3 && (
-                    <FaCheckCircle className="text-green-500 inline-block ml-3" />
-                  )}
-
-                  <input
-                    type="text"
-                    name="billingAddressTwo"
-                    placeholder="Billing Address Line 2"
-                    className={`w-[94%] p-2 text-sm tertiary_bg_color text-gray-300 border rounded-sm my-2 focus:outline-none ${isDifferentBilling && formData.billingAddressTwo ? 'border-green-500 focus:border-green-500' : 'border-gray-300 focus:border-gray-300'}`}
-                    value={formData.billingAddressTwo}
-                    onChange={handleChange}
-                  />
-                  {isDifferentBilling && formData.billingAddressTwo && (
-                    <FaCheckCircle className="text-green-500 inline-block ml-3" />
-                  )}
-
-                  <input
-                    type="text"
-                    name="billingCity"
-                    placeholder="Billing City"
-                    className={`w-[94%] p-2 text-sm tertiary_bg_color text-gray-300 border rounded-sm my-2 focus:outline-none ${isDifferentBilling && formData.billingCity.length >= 2 ? 'border-green-500 focus:border-green-500' : 'border-gray-300 focus:border-gray-300'}`}
-                    required={isDifferentBilling ? true : false}
-                    value={formData.billingCity}
-                    onChange={handleChange}
-                  />
-                  {isDifferentBilling && formData.billingCity.length >= 2 && (
-                    <FaCheckCircle className="text-green-500 inline-block ml-3" />
-                  )}
-
-                  <input
-                    type="text"
-                    name="billingState"
-                    placeholder="Billing State (2 Letter Code)"
-                    className={`w-[94%] p-2 text-sm tertiary_bg_color text-gray-300 border rounded-sm my-2 focus:outline-none ${isDifferentBilling && formData.billingState.length === 2 ? 'border-green-500 focus:border-green-500' : 'border-gray-300 focus:border-gray-300'}`}
-                    pattern="[A-Z]{2}"
-                    maxLength="2"
-                    minLength="2"
-                    required={isDifferentBilling ? true : false}
-                    value={formData.billingState}
-                    onChange={handleChange}
-                  />
-                  {isDifferentBilling && formData.billingState.length === 2 && (
-                    <FaCheckCircle className="text-green-500 inline-block ml-3" />
-                  )}
-
-                  <input
-                    type="text"
-                    name="billingZipCode"
-                    placeholder="Billing Zip Code"
-                    className={`w-[94%] p-2 text-sm tertiary_bg_color text-gray-300 border rounded-sm my-2 focus:outline-none ${isDifferentBilling && formData.billingZipCode.length === 5 ? 'border-green-500 focus:border-green-500' : 'border-gray-300 focus:border-gray-300'}`}
-                    pattern="[0-9]{5}"
-                    required={isDifferentBilling ? true : false}
-                    value={formData.billingZipCode}
-                    onChange={handleChange}
-                  />
-                  {isDifferentBilling && formData.billingZipCode.length === 5 && (
-                    <FaCheckCircle className="text-green-500 inline-block ml-3" />
-                  )}
-                </>
-              )
-            }
-
+            {isDifferentBilling && (
+              <>
+                <h4 className="text-lg font-bold mt-4">Billing Address</h4>
+                <input
+                  type="text"
+                  name="billingAddressOne"
+                  placeholder="Billing Address Line 1"
+                  className={`w-[94%] p-2 text-sm tertiary_bg_color text-gray-300 border rounded-sm my-2 focus:outline-none ${isDifferentBilling && formData.billingAddressOne.length > 3 ? 'border-green-500 focus:border-green-500' : 'border-gray-300 focus:border-gray-300'}`}
+                  value={formData.billingAddressOne}
+                  onChange={handleChange}
+                  required={isDifferentBilling}
+                />
+                {isDifferentBilling && formData.billingAddressOne.length > 3 && (
+                  <FaCheckCircle className="text-green-500 inline-block ml-3" />
+                )}
+                <input
+                  type="text"
+                  name="billingAddressTwo"
+                  placeholder="Billing Address Line 2"
+                  className={`w-[94%] p-2 text-sm tertiary_bg_color text-gray-300 border rounded-sm my-2 focus:outline-none ${isDifferentBilling && formData.billingAddressTwo ? 'border-green-500 focus:border-green-500' : 'border-gray-300 focus:border-gray-300'}`}
+                  value={formData.billingAddressTwo}
+                  onChange={handleChange}
+                />
+                {isDifferentBilling && formData.billingAddressTwo && (
+                  <FaCheckCircle className="text-green-500 inline-block ml-3" />
+                )}
+                <input
+                  type="text"
+                  name="billingCity"
+                  placeholder="Billing City"
+                  className={`w-[94%] p-2 text-sm tertiary_bg_color text-gray-300 border rounded-sm my-2 focus:outline-none ${isDifferentBilling && formData.billingCity.length >= 2 ? 'border-green-500 focus:border-green-500' : 'border-gray-300 focus:border-gray-300'}`}
+                  required={isDifferentBilling}
+                  value={formData.billingCity}
+                  onChange={handleChange}
+                />
+                {isDifferentBilling && formData.billingCity.length >= 2 && (
+                  <FaCheckCircle className="text-green-500 inline-block ml-3" />
+                )}
+                <input
+                  type="text"
+                  name="billingState"
+                  placeholder="Billing State (2 Letter Code)"
+                  className={`w-[94%] p-2 text-sm tertiary_bg_color text-gray-300 border rounded-sm my-2 focus:outline-none ${isDifferentBilling && formData.billingState.length === 2 ? 'border-green-500 focus:border-green-500' : 'border-gray-300 focus:border-gray-300'}`}
+                  pattern="[A-Z]{2}"
+                  maxLength="2"
+                  minLength="2"
+                  required={isDifferentBilling}
+                  value={formData.billingState}
+                  onChange={handleChange}
+                />
+                {isDifferentBilling && formData.billingState.length === 2 && (
+                  <FaCheckCircle className="text-green-500 inline-block ml-3" />
+                )}
+                <input
+                  type="text"
+                  name="billingZipCode"
+                  placeholder="Billing Zip Code"
+                  className={`w-[94%] p-2 text-sm tertiary_bg_color text-gray-300 border rounded-sm my-2 focus:outline-none ${isDifferentBilling && formData.billingZipCode.length === 5 ? 'border-green-500 focus:border-green-500' : 'border-gray-300 focus:border-gray-300'}`}
+                  pattern="[0-9]{5}"
+                  required={isDifferentBilling}
+                  value={formData.billingZipCode}
+                  onChange={handleChange}
+                />
+                {isDifferentBilling && formData.billingZipCode.length === 5 && (
+                  <FaCheckCircle className="text-green-500 inline-block ml-3" />
+                )}
+              </>
+            )}
             <input type="hidden" name="preTaxSubtotal" value={preTaxSubtotal} />
             <input type="hidden" name="stateTax" value={stateTax} />
             <input type="hidden" name="surtax" value={surtax} />

@@ -18,7 +18,7 @@ export async function uploadTaxExemptionCertificate(formData) {
     }
 
     // Validate file size (10Mb max)
-    if (file.size > 10 * 1024 * 1028) {
+    if (file.size > 10 * 1024 * 1024) {
       return { success: false, error: 'File size exceeds 10MB limit' };
     }
 

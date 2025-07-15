@@ -1,14 +1,12 @@
 'use server';
 
-import { PrismaClient } from '@prisma/client';
-
-const prisma = new PrismaClient();
+import prisma from '@/prisma/database';
 
 export async function getTaxesAndTotal(state, zipCode, subtotal) {
   try {
     // Base Florida state tax
     const baseStateTaxRate = parseFloat(process.env.NEXT_PUBLIC_STATE_TAX || 0.06);
-    
+
     // Find county-specific tax rate
     const countyTax = await prisma.floridaSalesTax.findFirst({
       where: {
