@@ -18,6 +18,7 @@ export default function CartCheckoutClient({ pre_tax_subtotal, children }) {
   const [productsData, setProductsData] = useState([]);
   const [subtotal, setSubtotal] = useState(pre_tax_subtotal);
   const [isLoadingProducts, setIsLoadingProducts] = useState(true);
+  const [errorMessage, setErrorMessage] = useState(''); // Add state for errors
 
   useEffect(() => {
     const cart = getCart();
@@ -27,15 +28,21 @@ export default function CartCheckoutClient({ pre_tax_subtotal, children }) {
 
   const fetchProducts = async (cart) => {
     setIsLoadingProducts(true);
+    setErrorMessage(''); // Clear previous errors
     const productIds = Object.keys(cart).map(id => Number(id));
     if (productIds.length > 0) {
-      const products = await getProductDetails(productIds);
-      setProductsData(products);
-      const newSubtotal = products.reduce((sum, product) => {
-        const qty = cart[product.id] || 0;
-        return sum + product.price * qty;
-      }, 0);
-      setSubtotal(newSubtotal);
+      try {
+        const products = await getProductDetails(productIds);
+        setProductsData(products);
+        const newSubtotal = products.reduce((sum, product) => {
+          const qty = cart[product.id] || 0;
+          return sum + product.price * qty;
+        }, 0);
+        setSubtotal(newSubtotal);
+      } catch (error) {
+        setErrorMessage('Failed to load cart items. Please try again.');
+        console.error('Error fetching products:', error);
+      }
     } else {
       setProductsData([]);
       setSubtotal(0);
@@ -51,6 +58,7 @@ export default function CartCheckoutClient({ pre_tax_subtotal, children }) {
 
   const handleCheckoutSubmit = async (submissionData) => {
     setIsSubmitted(true);
+    setErrorMessage(''); // Clear previous errors
 
     try {
       const orderNumber = `3DMANDT-${Date.now()}`;
@@ -66,10 +74,11 @@ export default function CartCheckoutClient({ pre_tax_subtotal, children }) {
         setShowPayment(true);
         setIsSubmitted(false);
       } else {
-        console.error('Error creating order and customer: ', result.error);
+        setErrorMessage(result.error || 'Failed to create order. Please check your details and try again.');
         setIsSubmitted(false);
       }
     } catch (error) {
+      setErrorMessage('An unexpected error occurred. Please try again later.');
       console.error('Submission error: ', error);
       setIsSubmitted(false);
     }
@@ -82,6 +91,7 @@ export default function CartCheckoutClient({ pre_tax_subtotal, children }) {
   };
 
   const handlePaymentError = () => {
+    setErrorMessage('Payment failed. Please review your payment details and try again.');
     setShowPayment(false);
     setShowCheckout(true);
   };
@@ -97,10 +107,37 @@ export default function CartCheckoutClient({ pre_tax_subtotal, children }) {
     );
   }
 
-  if (showCheckout) {
-    return (
-      <>
-        <CheckoutForm pre_tax_subtotal={subtotal} onSubmit={handleCheckoutSubmit}>
+  return (
+    <>
+      {errorMessage && (
+        <div className="w-full max-w-3xl mx-auto p-4 mb-4 bg-red-100 border border-red-400 text-red-700 rounded">
+          {errorMessage}
+        </div>
+      )}
+      {showCheckout ? (
+        <>
+          <CheckoutForm pre_tax_subtotal={subtotal} onSubmit={handleCheckoutSubmit}>
+            {React.cloneElement(children, {
+              products: productsData,
+              cart: cartData,
+              pre_tax_subtotal: subtotal,
+              onCartUpdate: handleCartUpdate,
+              isLoadingProducts: isLoadingProducts
+            })}
+          </CheckoutForm>
+          <div className="w-full flex justify-center">
+            <AnimatedButton
+              type="submit"
+              className="w-[45%] mt-6 tertiary_bg_color border-[.1rem] border-gray-100 text-gray-200 font-semibold py-2 px-4 rounded-lg text-sm"
+              form="checkout-form"
+              disabled={isSubmitted}
+            >
+              {isSubmitted ? 'Processing...' : 'Continue to Payment'}
+            </AnimatedButton>
+          </div>
+        </>
+      ) : (
+        <>
           {React.cloneElement(children, {
             products: productsData,
             cart: cartData,
@@ -108,32 +145,11 @@ export default function CartCheckoutClient({ pre_tax_subtotal, children }) {
             onCartUpdate: handleCartUpdate,
             isLoadingProducts: isLoadingProducts
           })}
-        </CheckoutForm>
-        <div className="w-full flex justify-center">
-          <AnimatedButton
-            type="submit"
-            className="w-[45%] mt-6 tertiary_bg_color border-[.1rem] border-gray-100 text-gray-200 font-semibold py-2 px-4 rounded-lg text-sm"
-            form="checkout-form"
-          >
-            {isSubmitted ? 'Processing...' : 'Continue to Payment'}
-          </AnimatedButton>
-        </div>
-      </>
-    );
-  }
-
-  return (
-    <>
-      {React.cloneElement(children, {
-        products: productsData,
-        cart: cartData,
-        pre_tax_subtotal: subtotal,
-        onCartUpdate: handleCartUpdate,
-        isLoadingProducts: isLoadingProducts
-      })}
-      <div className="flex justify-center mt-8">
-        <CheckoutButton onClick={() => setShowCheckout(true)} />
-      </div>
+          <div className="flex justify-center mt-8">
+            <CheckoutButton onClick={() => setShowCheckout(true)} />
+          </div>
+        </>
+      )}
     </>
   );
 }
