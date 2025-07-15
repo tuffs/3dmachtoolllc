@@ -17,7 +17,7 @@ const Navbar = () => {
 
 const DesktopLinks = ({ links }) => {
   return (
-    <ul className="hidden mt-6 ml-3 md:ml-0 md:mt-12 md:flex md:justify-center md:space-x-4">
+    <ul className="hidden mt-6 ml-3 md:ml-0 md:mt-12 md:flex md:justify-center md:space-x-4" data-testid="desktop_navbar">
       {links.map((navItemEl, index) => {
         return (
           <li
@@ -44,7 +44,7 @@ const MobileLinks = ({ links }) => {
   };
 
   return (
-    <div className="md:hidden">
+    <div className="md:hidden" data-testid="mobile_navbar">
       {/* Menu Button - Full width with button aligned to right */}
       <div className="w-full flex justify-end p-4">
         <button
