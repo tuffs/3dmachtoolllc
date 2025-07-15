@@ -475,7 +475,6 @@ export default function CheckoutForm({ pre_tax_subtotal, children, onSubmit }) {
             <input type="hidden" name="taxRate" value={taxRate} />
             <input type="hidden" name="taxExemptionStatus" value={isTaxExempt} />
             <input type="hidden" name="taxExemptionCertificateURL" value={taxExemptionCertificateURL} />
-            <input type="hidden" name="purchasedItems" value={JSON.stringify({})} />
           </div>
         </form>
 

@@ -4,7 +4,7 @@ import React, { useState, useEffect } from 'react';
 import { getCart } from '@/lib/cartUtils';
 import { getProductDetails } from '@/actions/getProductDetails';
 import CheckoutForm from '@/components/CheckoutForm';
-import CheckoutButton from "@/components/ui/CheckoutButton";
+import CheckoutButton from '@/components/ui/CheckoutButton';
 import AnimatedButton from './ui/AnimatedButton';
 import CompletePurchaseForm from '@/components/CompletePurchaseForm';
 import { createOrderAndCustomer } from '@/actions/createOrderAndCustomer';
@@ -19,7 +19,6 @@ export default function CartCheckoutClient({ pre_tax_subtotal, children }) {
   const [subtotal, setSubtotal] = useState(pre_tax_subtotal);
   const [isLoadingProducts, setIsLoadingProducts] = useState(true);
 
-  // Initialize cart data on mount
   useEffect(() => {
     const cart = getCart();
     setCartData(cart);
@@ -32,8 +31,6 @@ export default function CartCheckoutClient({ pre_tax_subtotal, children }) {
     if (productIds.length > 0) {
       const products = await getProductDetails(productIds);
       setProductsData(products);
-
-      // Recalculate subtotal
       const newSubtotal = products.reduce((sum, product) => {
         const qty = cart[product.id] || 0;
         return sum + product.price * qty;
@@ -44,39 +41,30 @@ export default function CartCheckoutClient({ pre_tax_subtotal, children }) {
       setSubtotal(0);
     }
     setIsLoadingProducts(false);
-  }
+  };
 
   const handleCartUpdate = () => {
     const updatedCart = getCart();
     setCartData(updatedCart);
     fetchProducts(updatedCart);
-  }
+  };
 
   const handleCheckoutSubmit = async (submissionData) => {
-    // Prevent double submission...
     setIsSubmitted(true);
 
-    console.log(submissionData);
-
     try {
-      // Generate Order Number
       const orderNumber = `3DMANDT-${Date.now()}`;
-
-      // Call server action to create customer and order
       const result = await createOrderAndCustomer(submissionData, cartData, orderNumber);
 
       if (result.success) {
-
         setOrderData({
           order: result.order,
           customer: result.customer,
           submissionData: submissionData
         });
-
         setShowCheckout(false);
         setShowPayment(true);
         setIsSubmitted(false);
-
       } else {
         console.error('Error creating order and customer: ', result.error);
         setIsSubmitted(false);
@@ -85,21 +73,19 @@ export default function CartCheckoutClient({ pre_tax_subtotal, children }) {
       console.error('Submission error: ', error);
       setIsSubmitted(false);
     }
-  }
+  };
 
   const handlePaymentComplete = () => {
     console.log('Payment completed successfully');
     // Now we can clear the cart...
     // Move to an order confirmation view or similar
-  }
+  };
 
   const handlePaymentError = () => {
-    // Handle payment error - could go back to checkout or show an error message
     setShowPayment(false);
     setShowCheckout(true);
-  }
+  };
 
-  // Payment Flow
   if (showPayment && orderData) {
     return (
       <CompletePurchaseForm
@@ -138,7 +124,6 @@ export default function CartCheckoutClient({ pre_tax_subtotal, children }) {
 
   return (
     <>
-      {/* Clone children and pass updated props */}
       {React.cloneElement(children, {
         products: productsData,
         cart: cartData,

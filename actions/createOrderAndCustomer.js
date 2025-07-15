@@ -1,6 +1,7 @@
 'use server';
 
 import prisma from '@/prisma/database';
+import { getProductDetails } from './getProductDetails';
 
 export async function createOrderAndCustomer(submissionData, cartData, orderNumber) {
   try {
@@ -8,7 +9,6 @@ export async function createOrderAndCustomer(submissionData, cartData, orderNumb
       where: { email: submissionData.formData.email }
     });
 
-    // If Customer does not exist, create them
     if (!customer) {
       customer = await prisma.customer.create({
         data: {
@@ -20,12 +20,7 @@ export async function createOrderAndCustomer(submissionData, cartData, orderNumb
       });
       console.log('New customer created:', customer.id);
     } else {
-      // Update existing customer with certificate if provided
       if (submissionData.taxExemptionCertificateURL) {
-
-        // TODO: Add server-side validation for tax exemption certificate
-        // e.g., check if URL is valid, file is accessible, or matches Florida requirements
-
         customer = await prisma.customer.update({
           where: { id: customer.id },
           data: {
@@ -36,10 +31,13 @@ export async function createOrderAndCustomer(submissionData, cartData, orderNumb
       console.log('Existing customer found:', customer.id);
     }
 
-    // Validate tax-exempt status
     if (submissionData.isTaxExempt && !submissionData.taxExemptionCertificateURL) {
       throw new Error('Tax-exempt status requires a valid certificate URL.');
     }
+
+    // Fetch product details to get prices for OrderItem
+    const productIds = Object.keys(cartData).map(Number);
+    const products = await getProductDetails(productIds);
 
     // Create the order
     const order = await prisma.order.create({
@@ -67,8 +65,22 @@ export async function createOrderAndCustomer(submissionData, cartData, orderNumb
         total: submissionData.total,
         taxRate: submissionData.taxRate,
         taxExemptionStatus: submissionData.isTaxExempt || false,
-        purchasedItems: cartData,
-      }
+        purchasedItems: cartData, // Keep for backward compatibility
+        orderItems: {
+          create: Object.entries(cartData).map(([productId, quantity]) => {
+            const product = products.find(p => p.id === Number(productId));
+            if (!product) {
+              throw new Error(`Product with ID ${productId} not found`);
+            }
+            return {
+              productId: Number(productId),
+              quantity,
+              price: product.price, // Store price at time of purchase
+            };
+          }),
+        },
+      },
+      include: { orderItems: true }, // Include created orderItems in response
     });
 
     return { success: true, customer, order };
