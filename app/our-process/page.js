@@ -10,7 +10,7 @@ export default function OurProcessPage() {
         <div className="mt-24 text-white pt-0 p-8">
           <section className="mb-12">
             <h1 className="text-4xl font-bold text-center">
-              Our Process for Precision
+              Our Process For Precision
             </h1>
             <h2 className="text-gray-400 text-xl mt-0 pt-0 text-center">Manufacturing + Fabrication</h2>
           </section>
