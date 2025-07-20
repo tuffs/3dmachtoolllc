@@ -12,6 +12,7 @@ export default async function ShoppingCartPage() {
   const cartCookie = cookieStore.get('3dmandt_cart')?.value;
   const cart = cartCookie ? getCart(cartCookie) : {};
 
+
   const productIds = Object.keys(cart).map((id) => Number(id));
   let products = [];
   let pre_tax_subtotal = 0;
@@ -24,7 +25,29 @@ export default async function ShoppingCartPage() {
     }, 0);
   }
 
-  console.log('Pre Tax Subtotal:', pre_tax_subtotal);
+  if (productIds.length <= 0) {
+    /*
+     *
+     * No need to do anything on this page, tell the user!
+     * 
+    */
+    return (
+      <>
+        <div className="my-24">
+          <Hero />
+          <div className="mt-24 text-white pt-0 p-8">
+            <section className="mb-3">
+              <h1 className="text-4xl font-bold text-center flex items-center justify-center"><FaShoppingBasket className="inline-block mr-4" /> Your Shopping Cart Is Empty!</h1>
+              <p className="text-center mt-4">
+                Let's fix that, <a href="/products" className="underline highlight">check out our products for sale here.</a>
+              </p>
+            </section>
+          </div>
+        </div>
+      </>
+    )
+  }
+
 
   return (
     <div className="my-24">

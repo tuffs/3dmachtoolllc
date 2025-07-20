@@ -16,7 +16,7 @@ export default function OurProcessPage() {
           </section>
 
           <section className="bg-inherit p-6">
-            <p className="text-gray-300 mb-12">You can expect for the following process to occur to ensure that your project is properly executed to your precise standards. During the first stage, we will request additional documentation or suggest additional engineering services depending on your requirements. A clear set of milestones are provided for each step of the manufacturing process so that our clients know what to expect. We reach out continually thoughout the project to ensure our client's are aware of their projects status, provided the ability to give input where needed, and are alerted to any important changes during the production process.</p>
+            <p className="text-gray-300 mb-12">We follow a clear process to execute your project to exact standards: we assess requirements and suggest additions if needed, provide milestones for each step, and communicate regularly to update you, gather input, and alert on changes. Dive into the details below!</p>
             <ProcessCards processes={processes} />
           </section>
         </div>
