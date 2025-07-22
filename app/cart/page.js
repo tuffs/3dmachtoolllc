@@ -8,7 +8,6 @@ import { FaShoppingBasket } from 'react-icons/fa';
 import EmptyShoppingCart from '@/components/EmptyShoppingCart';
 
 export default async function ShoppingCartPage() {
-
   const cookieStore = cookies();
   const cartCookie = cookieStore.get('3dmandt_cart')?.value;
   const cart = cartCookie ? getCart(cartCookie) : {};
@@ -31,9 +30,7 @@ export default async function ShoppingCartPage() {
 
   // Show empty cart message when no products exist
   if (validProducts.length <= 0) {
-    return (
-      <EmptyShoppingCart />
-    )
+    return <EmptyShoppingCart />;
   }
 
   return (
@@ -41,10 +38,12 @@ export default async function ShoppingCartPage() {
       <Hero />
       <div className="mt-24 text-white pt-0 p-8">
         <section className="mb-3">
-          <h1 className="text-4xl font-bold text-center flex items-center justify-center"><FaShoppingBasket className="inline-block mr-4" /> Shopping Cart</h1>
+          <h1 className="text-4xl font-bold text-center flex items-center justify-center">
+            <FaShoppingBasket className="inline-block mr-4" /> Shopping Cart
+          </h1>
         </section>
       </div>
-      <CartCheckoutClient pre_tax_subtotal={pre_tax_subtotal}>
+      <CartCheckoutClient pre_tax_subtotal={pre_tax_subtotal} initialCart={cart} initialProducts={products}>
         <CartTable products={products} cart={cart} pre_tax_subtotal={pre_tax_subtotal} />
       </CartCheckoutClient>
     </div>

@@ -1,6 +1,7 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
+import { useRouter } from 'next/navigation';
 import { getCart } from '@/lib/cartUtils';
 import { getProductDetails } from '@/actions/getProductDetails';
 import CheckoutForm from '@/components/CheckoutForm';
@@ -8,31 +9,50 @@ import CheckoutButton from '@/components/ui/CheckoutButton';
 import AnimatedButton from './ui/AnimatedButton';
 import CompletePurchaseForm from '@/components/CompletePurchaseForm';
 import { createOrderAndCustomer } from '@/actions/createOrderAndCustomer';
+import EmptyShoppingCart from '@/components/EmptyShoppingCart';
 
-export default function CartCheckoutClient({ pre_tax_subtotal, children }) {
+export default function CartCheckoutClient({ pre_tax_subtotal, initialCart, initialProducts, children }) {
+  const router = useRouter();
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [showCheckout, setShowCheckout] = useState(false);
   const [showPayment, setShowPayment] = useState(false);
   const [orderData, setOrderData] = useState(null);
-  const [cartData, setCartData] = useState({});
-  const [productsData, setProductsData] = useState([]);
-  const [subtotal, setSubtotal] = useState(pre_tax_subtotal);
-  const [isLoadingProducts, setIsLoadingProducts] = useState(true);
-  const [errorMessage, setErrorMessage] = useState(''); // Add state for errors
+  const [cartData, setCartData] = useState(initialCart || {});
+  const [productsData, setProductsData] = useState(initialProducts || []);
+  const [subtotal, setSubtotal] = useState(pre_tax_subtotal || 0);
+  const [isLoadingProducts, setIsLoadingProducts] = useState(!initialProducts || initialProducts.length === 0);
+  const [errorMessage, setErrorMessage] = useState('');
 
   useEffect(() => {
+    console.log('Initial state:', { cartData, productsData, initialCart, initialProducts, isLoadingProducts });
     const cart = getCart();
-    setCartData(cart);
-    fetchProducts(cart);
+    console.log('Client cart from cookie:', cart);
+    const validProductIds = Object.entries(cart)
+      .filter(([id, quantity]) => quantity > 0)
+      .map(([id]) => Number(id));
+    const initialProductIds = initialProducts ? initialProducts.map(p => p.id) : [];
+
+    if (validProductIds.length > 0 && JSON.stringify(validProductIds.sort()) !== JSON.stringify(initialProductIds.sort())) {
+      fetchProducts(cart);
+    } else {
+      setCartData(cart);
+      setIsLoadingProducts(false);
+    }
   }, []);
 
   const fetchProducts = async (cart) => {
     setIsLoadingProducts(true);
-    setErrorMessage(''); // Clear previous errors
-    const productIds = Object.keys(cart).map(id => Number(id));
+    setErrorMessage('');
+    const productIds = Object.entries(cart)
+      .filter(([id, quantity]) => quantity > 0)
+      .map(([id]) => Number(id));
+
+    console.log('Fetching products for IDs:', productIds);
+
     if (productIds.length > 0) {
       try {
         const products = await getProductDetails(productIds);
+        console.log('Fetched products:', products);
         setProductsData(products);
         const newSubtotal = products.reduce((sum, product) => {
           const qty = cart[product.id] || 0;
@@ -42,23 +62,34 @@ export default function CartCheckoutClient({ pre_tax_subtotal, children }) {
       } catch (error) {
         setErrorMessage('Failed to load cart items. Please try again.');
         console.error('Error fetching products:', error);
+        setProductsData([]);
+        setSubtotal(0);
       }
     } else {
       setProductsData([]);
       setSubtotal(0);
     }
     setIsLoadingProducts(false);
+    console.log('Post-fetch state:', { cartData: cart, productsData, subtotal, isLoadingProducts });
   };
 
   const handleCartUpdate = () => {
     const updatedCart = getCart();
+    console.log('Updated cart:', updatedCart);
     setCartData(updatedCart);
     fetchProducts(updatedCart);
+
+    // Check if cart is empty after update
+    const validCartItems = Object.entries(updatedCart).filter(([id, quantity]) => quantity > 0);
+    if (validCartItems.length === 0) {
+      console.log('Cart is empty, triggering page refresh');
+      router.refresh(); // Refresh the page to let server-side handle EmptyShoppingCart
+    }
   };
 
   const handleCheckoutSubmit = async (submissionData) => {
     setIsSubmitted(true);
-    setErrorMessage(''); // Clear previous errors
+    setErrorMessage('');
 
     try {
       const orderNumber = `3DMANDT-${Date.now()}`;
@@ -68,7 +99,7 @@ export default function CartCheckoutClient({ pre_tax_subtotal, children }) {
         setOrderData({
           order: result.order,
           customer: result.customer,
-          submissionData: submissionData
+          submissionData: submissionData,
         });
         setShowCheckout(false);
         setShowPayment(true);
@@ -79,15 +110,18 @@ export default function CartCheckoutClient({ pre_tax_subtotal, children }) {
       }
     } catch (error) {
       setErrorMessage('An unexpected error occurred. Please try again later.');
-      console.error('Submission error: ', error);
+      console.error('Submission error:', error);
       setIsSubmitted(false);
     }
   };
 
   const handlePaymentComplete = () => {
     console.log('Payment completed successfully');
-    // Now we can clear the cart...
-    // Move to an order confirmation view or similar
+    alert('Payment completed successfully...');
+    setCartData({});
+    setProductsData([]);
+    setSubtotal(0);
+    router.refresh(); // Refresh to show EmptyShoppingCart after payment
   };
 
   const handlePaymentError = () => {
@@ -95,6 +129,17 @@ export default function CartCheckoutClient({ pre_tax_subtotal, children }) {
     setShowPayment(false);
     setShowCheckout(true);
   };
+
+  // Check if cart is empty
+  const validCartItems = Object.entries(cartData).filter(([id, quantity]) => quantity > 0);
+  const isCartEmpty = !isLoadingProducts && validCartItems.length === 0;
+
+  console.log('Render state:', { isCartEmpty, isLoadingProducts, cartData, productsData, validCartItems });
+
+  if (isCartEmpty) {
+    console.log('Rendering EmptyShoppingCart');
+    return <EmptyShoppingCart />;
+  }
 
   if (showPayment && orderData) {
     return (
@@ -122,7 +167,7 @@ export default function CartCheckoutClient({ pre_tax_subtotal, children }) {
               cart: cartData,
               pre_tax_subtotal: subtotal,
               onCartUpdate: handleCartUpdate,
-              isLoadingProducts: isLoadingProducts
+              isLoadingProducts: isLoadingProducts,
             })}
           </CheckoutForm>
           <div className="w-full flex justify-center">
@@ -143,7 +188,7 @@ export default function CartCheckoutClient({ pre_tax_subtotal, children }) {
             cart: cartData,
             pre_tax_subtotal: subtotal,
             onCartUpdate: handleCartUpdate,
-            isLoadingProducts: isLoadingProducts
+            isLoadingProducts: isLoadingProducts,
           })}
           <div className="flex justify-center mt-8">
             <CheckoutButton onClick={() => setShowCheckout(true)} />

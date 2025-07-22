@@ -2,7 +2,6 @@
 
 import Link from 'next/link';
 import { updateCartItem, removeFromCart } from '@/lib/cartUtils';
-import { FaTimesCircle } from 'react-icons/fa';
 
 export default function CartTable({ products, cart, pre_tax_subtotal, onCartUpdate, isLoadingProducts = true }) {
 
@@ -15,19 +14,20 @@ export default function CartTable({ products, cart, pre_tax_subtotal, onCartUpda
 
   const handleUpdateQuantity = (productId, quantity) => {
     updateCartItem(productId, quantity);
-    // Trigger parent component to re-fetch cart data
     if (onCartUpdate) {
       onCartUpdate();
     }
   }
 
   const handleDecrementItem = (productId) => {
-    const quantity = cart[productId];
-    handleUpdateQuantity(productId, quantity - 1);
+    const quantity = cart[productId] || 0;
+    if (quantity > 0) {
+      handleUpdateQuantity(productId, quantity - 1);
+    }
   }
 
   const handleIncrementItem = (productId) => {
-    const quantity = cart[productId];
+    const quantity = cart[productId] || 0;
     handleUpdateQuantity(productId, quantity + 1);
   }
 
@@ -56,12 +56,6 @@ export default function CartTable({ products, cart, pre_tax_subtotal, onCartUpda
                     </div>
                   </td>
                 </tr>
-              ) : products.length === 0 ? (
-                <tr>
-                  <td colSpan={3} className="p-8 text-center text-gray-400">
-                    Your cart is empty.
-                  </td>
-                </tr>
               ) : (
                 products.map((product) => (
                   <tr key={product.id} className="hover:bg-[#101010] transition-colors">
@@ -77,21 +71,16 @@ export default function CartTable({ products, cart, pre_tax_subtotal, onCartUpda
                         </div>
                       </div>
                       <div className="item_removal mt-3">
-                        <a
-                          href="#!"
-                          id={`remove_item__${product.id}`}
+                        <button
+                          className="flex items-center justify-center hover:underline"
+                          onClick={() => handleRemoveItem(product.id)}
                         >
-                          <button
-                            className="flex items-center justify-center hover:underline"
-                            onClick={() => handleRemoveItem(product.id)}
-                          >
-                            <div className="text-white text-xs">
-                              <div className="flex-col">
-                                <small>remove</small>
-                              </div>
+                          <div className="text-white text-xs">
+                            <div className="flex-col">
+                              <small>remove</small>
                             </div>
-                          </button>
-                        </a>
+                          </div>
+                        </button>
                       </div>
                     </td>
                     <td className="p-5 text-right border-b border-gray-800 align-top">

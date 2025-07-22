@@ -2,11 +2,10 @@
 
 import prisma from '@/prisma/database';
 
-export async function getProductDetails(ids) {
-  if (!ids || ids.length === 0) return [];
-
+export async function getProductDetails(productIds) {
+  if (!productIds || productIds.length === 0) return [];
   return await prisma.product.findMany({
-    where: { id: { in: ids } },
+    where: { id: { in: productIds } },
     select: {
       id: true,
       name: true,
