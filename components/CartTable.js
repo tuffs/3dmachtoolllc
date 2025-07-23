@@ -4,32 +4,35 @@ import Link from 'next/link';
 import { updateCartItem, removeFromCart } from '@/lib/cartUtils';
 
 export default function CartTable({ products, cart, pre_tax_subtotal, onCartUpdate, isLoadingProducts = true }) {
-
   const handleRemoveItem = (productId) => {
     removeFromCart(productId);
     if (onCartUpdate) {
-      onCartUpdate();
+      onCartUpdate('remove'); // Pass updateType
     }
-  }
+  };
 
   const handleUpdateQuantity = (productId, quantity) => {
-    updateCartItem(productId, quantity);
-    if (onCartUpdate) {
-      onCartUpdate();
+    if (quantity <= 0) {
+      removeFromCart(productId);
+    } else {
+      updateCartItem(productId, quantity);
     }
-  }
+    if (onCartUpdate) {
+      onCartUpdate('quantity'); // Pass updateType
+    }
+  };
 
   const handleDecrementItem = (productId) => {
     const quantity = cart[productId] || 0;
     if (quantity > 0) {
       handleUpdateQuantity(productId, quantity - 1);
     }
-  }
+  };
 
   const handleIncrementItem = (productId) => {
     const quantity = cart[productId] || 0;
     handleUpdateQuantity(productId, quantity + 1);
-  }
+  };
 
   return (
     <div className="w-full bg-inherit">
@@ -40,7 +43,7 @@ export default function CartTable({ products, cart, pre_tax_subtotal, onCartUpda
               <tr className="bg-inherit text-white">
                 <th className="p-1 text-md text-left font-semibold tracking-wide border-b border-gray-700">ITEM</th>
                 <th className="p-1 text-md text-center font-semibold tracking-wide border-b border-gray-700">QTY</th>
-                <th className="p-1 text-md text-right font-semibold tracking-wide border-b border-gray-700">PRICE&nbsp;&nbsp;&nbsp;</th>
+                <th className="p-1 text-md text-right font-semibold tracking-wide border-b border-gray-700">PRICE  </th>
               </tr>
             </thead>
             <tbody>
@@ -72,14 +75,10 @@ export default function CartTable({ products, cart, pre_tax_subtotal, onCartUpda
                       </div>
                       <div className="item_removal mt-3">
                         <button
-                          className="flex items-center justify-center hover:underline"
+                          className="flex items-center justify-center hover:underline text-white text-xs"
                           onClick={() => handleRemoveItem(product.id)}
                         >
-                          <div className="text-white text-xs">
-                            <div className="flex-col">
-                              <small>remove</small>
-                            </div>
-                          </div>
+                          <small>remove</small>
                         </button>
                       </div>
                     </td>
@@ -89,7 +88,7 @@ export default function CartTable({ products, cart, pre_tax_subtotal, onCartUpda
                           <button
                             type="button"
                             className="px-2 py-1 bg-gray-700 hover:bg-gray-600 text-white rounded-l border border-gray-600 transition-colors"
-                            onClick={() => handleDecrementItem(product.id, cart[product.id])}
+                            onClick={() => handleDecrementItem(product.id)}
                           >
                             -
                           </button>
@@ -99,13 +98,13 @@ export default function CartTable({ products, cart, pre_tax_subtotal, onCartUpda
                             type="number"
                             className="text-center bg-gray-800 text-sm text-white border-t border-b border-gray-600 focus:outline-none"
                             style={{ width: '45px', paddingLeft: '10px' }}
-                            value={cart[product.id]}
+                            value={cart[product.id] || 0}
                             readOnly
                           />
                           <button
                             type="button"
                             className="px-2 py-1 bg-gray-700 hover:bg-gray-600 text-white rounded-r border border-gray-600 transition-colors"
-                            onClick={() => handleIncrementItem(product.id, cart[product.id])}
+                            onClick={() => handleIncrementItem(product.id)}
                           >
                             +
                           </button>
@@ -128,9 +127,7 @@ export default function CartTable({ products, cart, pre_tax_subtotal, onCartUpda
             </tbody>
           </table>
           <p className="text-md my-3 mx-auto text-center text-white">
-            <i>
-              Tax Exemption Certificates in PDF format are honored. This must be provided at the time of sale.
-            </i>
+            <i>Tax Exemption Certificates in PDF format are honored. This must be provided at the time of sale.</i>
           </p>
         </div>
       </div>

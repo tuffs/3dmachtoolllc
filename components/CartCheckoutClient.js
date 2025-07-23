@@ -33,57 +33,77 @@ export default function CartCheckoutClient({ pre_tax_subtotal, initialCart, init
     const initialProductIds = initialProducts ? initialProducts.map(p => p.id) : [];
 
     if (validProductIds.length > 0 && JSON.stringify(validProductIds.sort()) !== JSON.stringify(initialProductIds.sort())) {
-      fetchProducts(cart);
+      fetchProducts(cart, 'initial');
     } else {
       setCartData(cart);
       setIsLoadingProducts(false);
     }
   }, []);
 
-  const fetchProducts = async (cart) => {
-    setIsLoadingProducts(true);
+  const fetchProducts = async (cart, updateType) => {
+    // Skip loading state for quantity updates
+    if (updateType !== 'quantity') {
+      setIsLoadingProducts(true);
+    }
     setErrorMessage('');
     const productIds = Object.entries(cart)
       .filter(([id, quantity]) => quantity > 0)
       .map(([id]) => Number(id));
 
-    console.log('Fetching products for IDs:', productIds);
+    console.log('Fetching products for IDs:', productIds, 'Update type:', updateType);
 
-    if (productIds.length > 0) {
+    // Only fetch if new product IDs are present
+    const currentProductIds = productsData.map(p => p.id);
+    const newProductIds = productIds.filter(id => !currentProductIds.includes(id));
+
+    if (newProductIds.length > 0) {
       try {
-        const products = await getProductDetails(productIds);
-        console.log('Fetched products:', products);
-        setProductsData(products);
-        const newSubtotal = products.reduce((sum, product) => {
-          const qty = cart[product.id] || 0;
-          return sum + product.price * qty;
-        }, 0);
-        setSubtotal(newSubtotal);
+        const newProducts = await getProductDetails(newProductIds);
+        console.log('Fetched new products:', newProducts);
+        setProductsData([...productsData, ...newProducts]);
       } catch (error) {
         setErrorMessage('Failed to load cart items. Please try again.');
         console.error('Error fetching products:', error);
         setProductsData([]);
         setSubtotal(0);
       }
-    } else {
-      setProductsData([]);
-      setSubtotal(0);
     }
-    setIsLoadingProducts(false);
+
+    // Update subtotal using existing products
+    const newSubtotal = productsData.reduce((sum, product) => {
+      const qty = cart[product.id] || 0;
+      return sum + product.price * qty;
+    }, 0);
+    setSubtotal(newSubtotal);
+
+    if (updateType !== 'quantity') {
+      setIsLoadingProducts(false);
+    }
     console.log('Post-fetch state:', { cartData: cart, productsData, subtotal, isLoadingProducts });
   };
 
-  const handleCartUpdate = () => {
+  const handleCartUpdate = (updateType = 'default') => {
     const updatedCart = getCart();
-    console.log('Updated cart:', updatedCart);
+    console.log('Updated cart:', updatedCart, 'Update type:', updateType);
     setCartData(updatedCart);
-    fetchProducts(updatedCart);
 
-    // Check if cart is empty after update
+    // Calculate subtotal locally for quantity updates
+    if (updateType === 'quantity' && productsData.length > 0) {
+      const newSubtotal = productsData.reduce((sum, product) => {
+        const qty = updatedCart[product.id] || 0;
+        return sum + product.price * qty;
+      }, 0);
+      setSubtotal(newSubtotal);
+      setCartData(updatedCart);
+    } else {
+      fetchProducts(updatedCart, updateType);
+    }
+
+    // Check if cart is empty
     const validCartItems = Object.entries(updatedCart).filter(([id, quantity]) => quantity > 0);
     if (validCartItems.length === 0) {
       console.log('Cart is empty, triggering page refresh');
-      router.refresh(); // Refresh the page to let server-side handle EmptyShoppingCart
+      router.refresh();
     }
   };
 
@@ -121,7 +141,7 @@ export default function CartCheckoutClient({ pre_tax_subtotal, initialCart, init
     setCartData({});
     setProductsData([]);
     setSubtotal(0);
-    router.refresh(); // Refresh to show EmptyShoppingCart after payment
+    router.refresh();
   };
 
   const handlePaymentError = () => {
