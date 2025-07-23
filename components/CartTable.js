@@ -7,7 +7,7 @@ export default function CartTable({ products, cart, pre_tax_subtotal, onCartUpda
   const handleRemoveItem = (productId) => {
     removeFromCart(productId);
     if (onCartUpdate) {
-      onCartUpdate('remove'); // Pass updateType
+      onCartUpdate('remove');
     }
   };
 
@@ -18,7 +18,7 @@ export default function CartTable({ products, cart, pre_tax_subtotal, onCartUpda
       updateCartItem(productId, quantity);
     }
     if (onCartUpdate) {
-      onCartUpdate('quantity'); // Pass updateType
+      onCartUpdate('quantity');
     }
   };
 
@@ -33,6 +33,9 @@ export default function CartTable({ products, cart, pre_tax_subtotal, onCartUpda
     const quantity = cart[productId] || 0;
     handleUpdateQuantity(productId, quantity + 1);
   };
+
+  // Filter products to only display items with positive quantity
+  const visibleProducts = products.filter(product => (cart[product.id] || 0) > 0);
 
   return (
     <div className="w-full bg-inherit">
@@ -57,6 +60,12 @@ export default function CartTable({ products, cart, pre_tax_subtotal, onCartUpda
                       <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-gray-400"></div>
                       <span>Loading cart items...</span>
                     </div>
+                  </td>
+                </tr>
+              ) : visibleProducts.length === 0 ? (
+                <tr>
+                  <td colSpan={3} className="p-8 text-center text-gray-400">
+                    No items to display.
                   </td>
                 </tr>
               ) : (
