@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { useRouter } from 'next/navigation';
 import { getCart } from '@/lib/cartUtils';
 import { getProductDetails } from '@/actions/getProductDetails';
@@ -10,6 +10,7 @@ import AnimatedButton from './ui/AnimatedButton';
 import CompletePurchaseForm from '@/components/CompletePurchaseForm';
 import { createOrderAndCustomer } from '@/actions/createOrderAndCustomer';
 import EmptyShoppingCart from '@/components/EmptyShoppingCart';
+import debounce from 'lodash/debounce';
 
 export default function CartCheckoutClient({ pre_tax_subtotal, initialCart, initialProducts, children }) {
   const router = useRouter();
@@ -82,30 +83,37 @@ export default function CartCheckoutClient({ pre_tax_subtotal, initialCart, init
     console.log('Post-fetch state:', { cartData: cart, productsData, subtotal, isLoadingProducts });
   };
 
-  const handleCartUpdate = (updateType = 'default') => {
-    const updatedCart = getCart();
-    console.log('Updated cart:', updatedCart, 'Update type:', updateType);
-    setCartData(updatedCart);
-
-    // Calculate subtotal locally for quantity updates
-    if (updateType === 'quantity' && productsData.length > 0) {
-      const newSubtotal = productsData.reduce((sum, product) => {
-        const qty = updatedCart[product.id] || 0;
-        return sum + product.price * qty;
-      }, 0);
-      setSubtotal(newSubtotal);
+  const handleCartUpdate = useCallback(
+    debounce((updateType = 'default') => {
+      const updatedCart = getCart();
+      console.log('Updated cart:', updatedCart, 'Update type:', updateType);
       setCartData(updatedCart);
-    } else {
-      fetchProducts(updatedCart, updateType);
-    }
 
-    // Check if cart is empty
-    const validCartItems = Object.entries(updatedCart).filter(([id, quantity]) => quantity > 0);
-    if (validCartItems.length === 0) {
-      console.log('Cart is empty, triggering page refresh');
-      router.refresh();
-    }
-  };
+      if (updateType === 'quantity' && productsData.length > 0) {
+        // Filter out products with zero quantities
+        const validProducts = Object.entries(updatedCart)
+          .filter(([id, quantity]) => quantity > 0)
+          .map(([id]) => Number(id));
+        setProductsData(productsData.filter(p => validProducts.includes(p.id)));
+
+        // Calculate subtotal locally
+        const newSubtotal = productsData.reduce((sum, product) => {
+          const qty = updatedCart[product.id] || 0;
+          return sum + product.price * qty;
+        }, 0);
+        setSubtotal(newSubtotal);
+      } else {
+        fetchProducts(updatedCart, updateType);
+      }
+
+      const validCartItems = Object.entries(updatedCart).filter(([id, quantity]) => quantity => 0);
+      if (validCartItems.length === 0) {
+        console.log('Cart is empty, triggering page refresh!');
+        router.refresh();
+      }
+    }, 300),
+    [productsData, router]
+  );
 
   const handleCheckoutSubmit = async (submissionData) => {
     setIsSubmitted(true);
