@@ -1,7 +1,7 @@
 'use server'
 
 import { SendEmailCommand } from "@aws-sdk/client-ses";
-import { sesClient } from "../aws-config";
+import { sesClient } from "@/aws-config";
 
 export async function sendEmail(to, subject, body, from) {
   const params = {
@@ -27,9 +27,8 @@ export async function sendEmail(to, subject, body, from) {
   try {
     const command = new SendEmailCommand(params);
     const response = await sesClient.send(command);
-    return true;
+    return { success: true, response };
   } catch (error) {
-    console.error("Error sending email:", error);
-    return false;
+    return { success: false, error };
   }
 }

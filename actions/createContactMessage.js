@@ -1,56 +1,73 @@
-'use server'
+'use server';
 
-import prisma from '@/prisma/database'
-import { sendEmail } from '@/actions/sendEmail'
+import prisma from '@/prisma/database';
+import { sendEmail } from '@/actions/sendEmail';
 
 export async function createContactMessage(formData) {
-  console.log('Received formData:', formData);
-  console.log('Is FormData:', formData instanceof FormData);
+  try {
+    const name = formData.get('name');
+    const email = formData.get('email');
+    const phone = formData.get('phone');
+    const message = formData.get('message');
 
-  let name, email, phone, message;
-  if (formData instanceof FormData) {
-    name = formData.get('name');
-    email = formData.get('email');
-    phone = formData.get('phone');
-    message = formData.get('message');
-  } else {
-    console.warn('Received non-FormData object:', formData);
-    name = formData.name || '';
-    email = formData.email || '';
-    phone = formData.phone || '';
-    message = formData.message || '';
-  }
+    // Validate required fields
+    if (!name || !email || !message) {
+      return {
+        success: false,
+        message: 'Please fill in all required fields.'
+      };
+    }
 
-  const spamScore = 10;
+    // Create contact message in database
+    const contactMessage = await prisma.contact.create({
+      data: {
+        name: name.trim(),
+        email: email.trim().toLowerCase(),
+        phone: phone?.trim() || null,
+        message: message.trim(),
+        spamScore: 10, // Manual spam score as requested
+        createdAt: new Date()
+      }
+    });
 
-  const contactMessage = await prisma.contact.create({
-    data: {
-      name,
+    // Send email notification
+    const emailSubject = `New Contact Message from ${name}`;
+    const emailBody = `
+      New contact message received:
+      
+      Name: ${name}
+      Email: ${email}
+      Phone: ${phone || 'Not provided'}
+      
+      Message:
+      ${message}
+      
+      --
+      This message was sent via the contact form on 3dmachtool.com
+    `;
+
+    const emailResult = await sendEmail(
+      'devon@3dmandt.com',
+      emailSubject,
+      emailBody,
       email,
-      phone,
-      message,
-      spamScore
-    },
-  });
+    );
 
-  console.log('Saved Database Entry for Message: ', contactMessage);
+    if (!emailResult.success) {
+      console.error('Failed to send email notification:', emailResult.error);
+      // Don't fail the entire operation if email fails
+    }
 
-  const emailSubject = "CONTACT REQUEST FROM 3D MACHINE + TOOL WEBSITE";
-  const emailBody = `
-        New contact form submission:
-        Name: ${name}
-        Email: ${email}
-        Phone: ${phone}
-        Message: ${message}
-        Spam Score: ${spamScore}
-      `;
+    return {
+      success: true,
+      message: 'Your message has been sent successfully!'
+    };
 
-  const emailSent = await sendEmail("devon@3dmandt.com", emailSubject, emailBody, email);
-
-  if (emailSent) {
-    return { success: true, message: 'Your message has been sent successfully!' }
-  } else {
-    console.error('There was an error in saving or sendingg your email message.');
-    return { success: false, message: 'There was an error sending your message. Please try again.' }
+  } catch (error) {
+    console.error('Error creating contact message:', error);
+    return {
+      success: false,
+      message: 'Failed to send message. Please try again later.'
+    };
   }
 }

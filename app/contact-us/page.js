@@ -1,9 +1,8 @@
 'use client';
 
 import { useRef, useEffect, useState } from 'react';
-import { useFormState } from 'react-dom';
 import Hero from '@/components/Hero';
-import { createContactMessage } from '@/actions/createContactMessage';
+import ContactForm from '@/components/ContactForm';
 
 const ContactFormIntroMessage = ({ isVisible, isHidden }) => {
   return (
@@ -15,11 +14,11 @@ const ContactFormIntroMessage = ({ isVisible, isHidden }) => {
       <p className="text-gray-300">
         Thank you for choosing to contact us, we value your important feedback and requests for quotation on custom machined parts and tooling. We have an in-house Mechanical Engineer to aide with custom part design. Please write a detailed description of your request and we will make sure to get back in touch with you as soon as possible.
 
-        <br /><br />
+        {/* <br /><br />
 
         <small className="text-gray-500 text-sm">
           Attempts to sell products or services are prohibited, all sales messages will be filtered out by active AI systems.
-        </small>
+        </small> */}
       </p>
     </div>
   );
@@ -38,60 +37,59 @@ const SuccessMessage = ({ isVisible, isHidden }) => {
   );
 }
 
+const ErrorMessage = ({ message, isVisible }) => {
+  if (!isVisible || !message) return null;
+
+  return (
+    <div className="mb-4 p-4 bg-red-500 text-white rounded transition-opacity duration-300">
+      {message}
+    </div>
+  );
+}
+
 export default function ContactUsPage() {
   const nameRef = useRef(null);
-  const [formData, setFormData] = useState({
-    name: '',
-    email: '',
-    phone: '',
-    message: ''
-  });
-
-  const initialState = { success: false, message: '' };
-  const [state, formAction] = useFormState(createContactMessage, initialState);
   const [showIntro, setShowIntro] = useState(true);
   const [hideIntro, setHideIntro] = useState(false);
   const [showSuccess, setShowSuccess] = useState(false);
   const [hideSuccess, setHideSuccess] = useState(true);
+  const [showForm, setShowForm] = useState(true);
+  const [errorMessage, setErrorMessage] = useState('');
 
   useEffect(() => {
-    if (nameRef.current) {
-      nameRef.current.focus();
-      nameRef.current.scrollIntoView({
-        behavior: 'smooth',
-        block: 'start'
-      });
-    }
+    // Focus management can be handled by the ContactForm component
   }, []);
 
-  const handleChange = (e) => {
-    const { id, value } = e.target;
-    setFormData(prevData => ({
-      ...prevData,
-      [id]: value
-    }));
+  const handleSuccess = () => {
+    setErrorMessage('');
+    setShowForm(false);
+
+    // Start the animation sequence
+    setShowIntro(false);
+    setTimeout(() => {
+      setHideIntro(true);
+      setHideSuccess(false);
+      setTimeout(() => {
+        setShowSuccess(true);
+      }, 50); // Small delay to ensure the element is rendered before fading in
+    }, 1000); // Wait for intro to fade out before showing success
   };
 
-  useEffect(() => {
-    if (state.success) {
-      setFormData({
-        name: '',
-        email: '',
-        phone: '',
-        message: '',
-      });
+  const handleError = (message) => {
+    setErrorMessage(message);
+    setTimeout(() => {
+      setErrorMessage('');
+    }, 5000); // Clear error after 5 seconds
+  };
 
-      // Start the animation sequence
-      setShowIntro(false);
-      setTimeout(() => {
-        setHideIntro(true);
-        setHideSuccess(false);
-        setTimeout(() => {
-          setShowSuccess(true);
-        }, 50); // Small delay to ensure the element is rendered before fading in
-      }, 1000); // Wait for intro to fade out before showing success
-    }
-  }, [state]);
+  const resetForm = () => {
+    setShowSuccess(false);
+    setHideSuccess(true);
+    setShowIntro(true);
+    setHideIntro(false);
+    setShowForm(true);
+    setErrorMessage('');
+  };
 
   return (
     <>
@@ -108,84 +106,22 @@ export default function ContactUsPage() {
             <ContactFormIntroMessage isVisible={showIntro} isHidden={hideIntro} />
             <SuccessMessage isVisible={showSuccess} isHidden={hideSuccess} />
 
-            {!state.success && (
-              <form className="mt-8" action={formAction}>
-                {state.message && (
-                  <div className="mb-4 p-4 bg-red-500 text-white rounded">
-                    {state.message}
-                  </div>
-                )}
-                <div className="mb-4">
-                  <label className="block text-gray-300 text-sm font-medium mb-2" htmlFor="name">
-                    Your Name
-                  </label>
-                  <input
-                    className="w-full p-4 text-gray-300 tertiary_bg_color rounded mb-4"
-                    id="name"
-                    name="name"
-                    ref={nameRef}
-                    type="text"
-                    placeholder="Name"
-                    value={formData.name}
-                    onChange={handleChange}
-                    required
-                  />
-                </div>
+            {showForm && (
+              <>
+                <ErrorMessage message={errorMessage} isVisible={!!errorMessage} />
+                <ContactForm onSuccess={handleSuccess} onError={handleError} />
+              </>
+            )}
 
-                <div className="mb-4">
-                  <label className="block text-gray-300 text-sm font-medium mb-2" htmlFor="phone">
-                    Your Phone Number
-                  </label>
-                  <input
-                    className="w-full p-4 text-gray-300 tertiary_bg_color rounded mb-4"
-                    id="phone"
-                    name="phone"
-                    type="tel"
-                    placeholder="Phone Number"
-                    value={formData.phone}
-                    onChange={handleChange}
-                    required
-                  />
-                </div>
-
-                <div className="mb-4">
-                  <label className="block text-gray-300 text-sm font-medium mb-2" htmlFor="email">
-                    Your Email Address
-                  </label>
-                  <input
-                    className="w-full p-4 text-gray-300 tertiary_bg_color rounded mb-4"
-                    id="email"
-                    name="email"
-                    type="email"
-                    placeholder="Email Address"
-                    value={formData.email}
-                    onChange={handleChange}
-                    required
-                  />
-                </div>
-
-                <div className="mb-4">
-                  <label className="block text-gray-300 text-sm font-medium mb-2" htmlFor="message">
-                    Your Message <small className="text-gray-400 ml-2">Do not enter sales pitches, they will not reach our desk</small>
-                  </label>
-                  <textarea
-                    className="w-full p-4 text-gray-300 tertiary_bg_color rounded mb-4 min-h-[175px]"
-                    id="message"
-                    name="message"
-                    placeholder="Enter your message here, please be as specific as possible."
-                    value={formData.message}
-                    onChange={handleChange}
-                    required
-                  ></textarea>
-                </div>
-
+            {showSuccess && (
+              <div className="text-center mt-8">
                 <button
-                  className="w-full mt-2 md:mt-3 p-4 bg-gray-800 text-white rounded hover:bg-gray-700 transition-colors duration-1000"
-                  type="submit"
+                  onClick={resetForm}
+                  className="px-6 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 transition-colors duration-300"
                 >
-                  Send Message
+                  Send Another Message
                 </button>
-              </form>
+              </div>
             )}
           </section>
         </div>
