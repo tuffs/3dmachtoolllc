@@ -34,7 +34,7 @@ export default function CartTable({ products, cart, pre_tax_subtotal, onCartUpda
     handleUpdateQuantity(productId, quantity + 1);
   };
 
-  // Filter products to only display items with positive quantity
+  // Filter product visibility for non-zero quantities only
   const visibleProducts = products.filter(product => (cart[product.id] || 0) > 0);
 
   return (
