@@ -128,6 +128,7 @@ export default function CartCheckoutClient({ pre_tax_subtotal, initialCart, init
           order: result.order,
           customer: result.customer,
           submissionData: submissionData,
+          orderNumber
         });
         setShowCheckout(false);
         setShowPayment(true);
