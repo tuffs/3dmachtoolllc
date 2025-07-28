@@ -34,7 +34,8 @@ export default async function FinalPurchaseSummary({ purchaseId }) {
     error = 'Could not find the order referenced. Check the Unique Orer ID';
     console.error('Exception in getOrderDetails:', err);
   }
-
+  let cumulativeQuantity = Number(0.00);
+  let cumulativePrice = Number(0.00);
   return (
     <>
       <div className="w-full">
@@ -57,6 +58,7 @@ export default async function FinalPurchaseSummary({ purchaseId }) {
           </div>
         )}
 
+
         {purchaseDetails ? (
           <>
             <h3 className="text-sm text-gray-200 mb-0 pb-0">Order No. {purchaseDetails.orderNumber}</h3>
@@ -64,14 +66,14 @@ export default async function FinalPurchaseSummary({ purchaseId }) {
             <h3 className="text-md text-gray-200 underline cursor-pointer mb-0 pb-0"><a href="tel:{purchaseDetails.customer.phone}">{purchaseDetails.customer.phone}</a></h3>
             <h3 className="text-md text-gray-200 underline cusor-pointer mb-4 pb-0"><a href="{purchaseDetails.customer.email}">{purchaseDetails.customer.email}</a></h3>
             <div className="mt-3">
-              <div className="font-semibold">Shipping Address</div><br />
+              <div className="font-semibold">Shipping Address</div>
               {purchaseDetails.shippingAddress.addressOne}<br />
               {purchaseDetails.shippingAddress.addressTwo != null ? (<>${purchaseDetails.shippingAddress.addressTwo} <br /></>) : ``}
               {purchaseDetails.shippingAddress.city},&nbsp;
               {purchaseDetails.shippingAddress.state} <br />
             </div>
             <div className="mt-3">
-              <div className="font-semibold">Billing Address</div><br />
+              <div className="font-semibold">Billing Address</div>
               {purchaseDetails.billingAddress.addressOne != null ? (
                 <>
                   ${purchaseDetails.billingAddress.addressOne}<br />
@@ -81,13 +83,35 @@ export default async function FinalPurchaseSummary({ purchaseId }) {
               ) : (<>Same as shipping address.</>)}
             </div>
             <div className="mt-6">
-              <h3 className="font-semibold">Items</h3>
+              <h3 className="font-semibold">Items Purchased</h3>
               <ul>
                 {purchaseDetails.items.map((item) => {
                   return (
                     <li>- {item.productName} - Qty: {item.quantity} - Price: {item.formattedPrice} per unit.</li>
                   )
                 })}
+              </ul>
+            </div>
+            <div className="mt-3">
+              <h3 className="font-semibold">Cost Breakdown</h3>
+              <ul>
+                {purchaseDetails.items.map((purchases) => {
+                  const itemPurchasedQuantity = Number(purchases.quantity.toFixed(2));
+                  const itemPurchasedUnitPrice = Number(purchases.price.toFixed(2));
+                  const itemPurchasedExtPrice = (itemPurchasedQuantity * itemPurchasedUnitPrice)
+                  cumulativeQuantity += itemPurchasedQuantity;
+                  cumulativePrice += itemPurchasedExtPrice;
+                  return (
+                    <li>{purchases.productName} - Qty: {itemPurchasedQuantity} - Price: {itemPurchasedUnitPrice} - Ext: {itemPurchasedExtPrice}</li>
+                  )
+                })}
+                <li>Item Count: {cumulativeQuantity}</li>
+                <li>Subtotal: ${cumulativePrice}</li>
+                <li>State Tax: ${purchaseDetails.financials.stateTax.toFixed(2)}</li>
+                <li>State Tax: ${purchaseDetails.financials.surtax.toFixed(2)}</li>
+                <li>Total Tax: ${purchaseDetails.financials.totalTax.toFixed(2)}</li>
+                <li>Tax Rate: {(purchaseDetails.financials.taxRate * 100).toFixed(2)}%</li>
+                <li>Total: ${purchaseDetails.financials.total.toFixed(2)}</li>
               </ul>
             </div>
             <div className="bg-gray-800 p-4 rounded-lg">
