@@ -64,14 +64,14 @@ export default async function FinalPurchaseSummary({ purchaseId }) {
             <h3 className="text-md text-gray-200 underline cursor-pointer mb-0 pb-0"><a href="tel:{purchaseDetails.customer.phone}">{purchaseDetails.customer.phone}</a></h3>
             <h3 className="text-md text-gray-200 underline cusor-pointer mb-4 pb-0"><a href="{purchaseDetails.customer.email}">{purchaseDetails.customer.email}</a></h3>
             <div className="mt-3">
-              <strong>Shipping Address</strong><br />
+              <div className="font-semibold">Shipping Address</div><br />
               {purchaseDetails.shippingAddress.addressOne}<br />
               {purchaseDetails.shippingAddress.addressTwo != null ? (<>${purchaseDetails.shippingAddress.addressTwo} <br /></>) : ``}
               {purchaseDetails.shippingAddress.city},&nbsp;
               {purchaseDetails.shippingAddress.state} <br />
             </div>
             <div className="mt-3">
-              <strong>Billing Address</strong><br />
+              <div className="font-semibold">Billing Address</div><br />
               {purchaseDetails.billingAddress.addressOne != null ? (
                 <>
                   ${purchaseDetails.billingAddress.addressOne}<br />
@@ -79,6 +79,16 @@ export default async function FinalPurchaseSummary({ purchaseId }) {
                   ${purchaseDetails.billingAddress.city}, ${purchaseDetails.billingAddress.state}<br />
                 </>
               ) : (<>Same as shipping address.</>)}
+            </div>
+            <div className="mt-6">
+              <h3 className="font-semibold">Items</h3>
+              <ul>
+                {purchaseDetails.items.map((item) => {
+                  return (
+                    <li>- {item.productName} - Qty: {item.quantity} - Price: {item.formattedPrice} per unit.</li>
+                  )
+                })}
+              </ul>
             </div>
             <div className="bg-gray-800 p-4 rounded-lg">
               <pre className="text-sm text-gray-300 whitespace-pre-wrap overflow-auto max-h-96">
