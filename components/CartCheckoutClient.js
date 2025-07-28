@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect, useCallback } from 'react';
 import { useRouter } from 'next/navigation';
-import { getCart } from '@/lib/cartUtils';
+import { getCart, destroyShoppingCart } from '@/lib/cartUtils';
 import { getProductDetails } from '@/actions/getProductDetails';
 import CheckoutForm from '@/components/CheckoutForm';
 import CheckoutButton from '@/components/ui/CheckoutButton';
@@ -144,13 +144,41 @@ export default function CartCheckoutClient({ pre_tax_subtotal, initialCart, init
     }
   };
 
-  const handlePaymentComplete = () => {
-    console.log('Payment completed successfully');
-    alert('Payment completed successfully...');
-    setCartData({});
-    setProductsData([]);
-    setSubtotal(0);
-    router.refresh();
+  const handlePaymentComplete = async () => {
+
+    try {
+      const orderNumber = orderData?.order?.orderNumber || orderData?.orderNumber;
+
+      if (!orderNumber) {
+        throw new Error('Order number not found!');
+      }
+
+      // Clear cart and navigate immediately - no waiting
+      destroyShoppingCart();
+
+      // Use replace to prevent back button issues
+      router.replace(`/purchases/${orderNumber}`);
+
+      // Optional: Send email confirmation in background
+      // Don't await this - let it happen asynchronously
+      // if (typeof sendOrderConfirmationEmail === function) {
+      //    sendOrderConfirmation(orderData, orderNumber).catch(console.error);
+      //  }
+
+    } catch (error) {
+      console.error('Payment completion error:', error);
+      setErrorMessage('Your order has been completed but there was an error sending your receipt and displaying it. Please contact support at: 448-256-6963 or devon@3dmandt.com for a copy of your receipt!');
+    }
+
+    // // Get the Order's Number...
+    // const orderNumber = orderData.orderNumber;
+    // // Clear Out Old Sale Data...
+    // setOrderData(null);
+    // destroyShoppingCart();
+    // setProductsData([]);
+    // setSubtotal(0);
+    // // Take customer to the receipt...
+    // router.push(`/purchases/${orderNumber}`);
   };
 
   const handlePaymentError = () => {
