@@ -2,7 +2,7 @@
 
 import { useState } from 'react';
 import html2pdf from 'html2pdf.js';
-import { sendReceiptEmail } from '@/actions/sendReceiptEmail';
+import { sendEmailReceipt } from '@/actions/sendEmailReceipt';
 
 export default function ReceiptActions({ purchaseDetails }) {
   const [isGeneratingPDF, setIsGeneratingPDF] = useState(false);
@@ -41,12 +41,12 @@ export default function ReceiptActions({ purchaseDetails }) {
     }
   };
 
-  const handleSubmit = async () => {
+  const handleSendEmail = async () => {
     if (!purchaseDetails || isSendingEmail) return;
 
     setIsSendinggEmail(true);
     try {
-      const result = await sendReceiptEmail(purchaseDetails, purchaseDetails.customer.email);
+      const result = await sendEmailReceipt(purchaseDetails, purchaseDetails.customer.email);
 
       if (result.success) {
         setEmailSent(true);
@@ -73,7 +73,9 @@ export default function ReceiptActions({ purchaseDetails }) {
       </button>
 
       <button
-
+        onClick={handleSendEmail}
+        disabled={isSendingEmail}
+        className="px-6 py-3 bg-green-600 text-white rounded-lg hover:bg-green-700 disabled:opacity-50 disabled:cursor-not-allowed"
       >
         {isSendingEmail ? 'Sending...' : emailSent ? 'Email Sent ✓' : 'Email Receipt'}
       </button>

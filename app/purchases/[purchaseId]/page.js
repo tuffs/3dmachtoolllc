@@ -1,6 +1,6 @@
 import Hero from '@/components/Hero';
 import FinalPurchaseSummary from '@/components/FinalPurchaseSummary';
-import { sendReceiptEmail } from '@/actions/sendReceiptEmail';
+import { sendEmailReceipt } from '@/actions/sendEmailReceipt';
 import { getOrderDetails } from '@/actions/getOrderDetails';
 
 export default async function PurchasesPage({ params, searchParams }) {

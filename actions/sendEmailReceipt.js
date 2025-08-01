@@ -2,7 +2,7 @@
 
 import { sendEmail } from '@/actions/sendEmail';
 
-export async function sendReceiptEmail(orderData, customerEmail) {
+export async function sendEmailReceipt(orderData, customerEmail) {
   try {
     const subject = `RECEIPT FOR ORDER #${orderData.orderNumber} - 3D MACHINE AND TOOL`;
 
