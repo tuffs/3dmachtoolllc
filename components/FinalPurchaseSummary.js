@@ -2,18 +2,15 @@ import getOrderDetails from '@/actions/getOrderDetails';
 import ReceiptActions from '@/components/ReceiptActions';
 
 export default async function FinalPurchaseSummary({ purchaseId }) {
-  console.log(`Final purchase summary - received purchaseId: ${purchaseId}`);
-
   let purchaseDetails = null;
   let error = null;
 
   if (!purchaseId) {
-    console.log('No purchaseId provided.');
     return (
       <div className="w-full max-w-3xl mx-auto p-6 bg-gray-900 rounded-lg shadow-lg">
         <h1 className="text-4xl font-bold text-gray-200 text-center">Order Receipt</h1>
         <div className="text-red-400 mt-4 text-center">
-          No purchase ID provided in the URL.
+          No purchase ID was provided, please check your validity of the data you are referencing.
         </div>
       </div>
     );
@@ -29,7 +26,6 @@ export default async function FinalPurchaseSummary({ purchaseId }) {
     }
   } catch (err) {
     error = 'Could not find the order referenced. Check the Unique Order ID';
-    console.error('Exception in getOrderDetails:', err);
   }
 
   let cumulativeQuantity = 0;

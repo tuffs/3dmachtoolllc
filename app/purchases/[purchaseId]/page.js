@@ -12,7 +12,7 @@ export default async function PurchasesPage({ params, searchParams }) {
     try {
       const result = await getOrderDetails(purchaseId);
       if (result.success) {
-        await sendReceiptEmail(result.data, result.data.customer.email);
+        await sendEmailReceipt(result.data, result.data.customer.email);
       }
     } catch (error) {
       console.error('Error sending automatic receipt email:', error);

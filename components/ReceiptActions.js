@@ -11,7 +11,7 @@ export default function ReceiptActions({ purchaseDetails }) {
 
   const handlePrintPDF = async () => {
     const receiptElement = document.getElementById('receipt-content');
-    if (!receiptElment || !purchaseDetails) return;
+    if (!receiptElement || !purchaseDetails) return;
 
     setIsGeneratingPDF(true);
 
