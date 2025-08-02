@@ -19,7 +19,7 @@ Customer: ${orderData.customer.name}
 Items Purchased:
 ----------------------------------------
 ${orderData.items.map(item =>
-      `- ${item.productName} (Qty: ${item.quantity}) - $${item.totalPrice.toFixed(2)}`
+      `- ${item.productName} (Qty: ${item.quantity}) - $${item.totalPrice}`
     ).join('\n')}
 
 Shipping Address:
