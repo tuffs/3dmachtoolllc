@@ -20,6 +20,8 @@ Prisma will then be used as the ORM to interface between our app and SaaS soluti
     - [ ] Emailed Receipts
     - [ ] Notification of Sale to Admin
 
+- [ ] Add re-order to Receipts on the `/purchase/[purchaseId]` view
+
 ## RECEIVE RFQ's, PROVIDE QUOTES, REMOVE DATA FROM SERVERS (contact request and design docs in the cloud.)
 ---
   - [ ] Once quoted, must remove the files and the quotation from the server.

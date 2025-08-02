@@ -25,7 +25,7 @@ export default function ProductDetails({ product }) {
       <div className="mt-24 p-8">
         <div className="w-[85%] mx-auto">
           <div
-            className="mb-4" ref={titleRef} id="product-details" data-testid="main_product_details__container"
+            className="pt-6 mb-4" ref={titleRef} id="product-details" data-testid="main_product_details__container"
           >
             <h1 className="text-4xl font-bold" data-testid="product__name">
               {product.name}

@@ -2,6 +2,7 @@
 
 import { useState } from 'react';
 import { addToCart, getCart } from '@/lib/cartUtils';
+import { FaCheckCircle } from 'react-icons/fa';
 
 export default function AddToCartButton({ product }) {
   const [message, setMessage] = useState(null);
@@ -38,7 +39,11 @@ export default function AddToCartButton({ product }) {
       >
         Add to Cart
       </button>
-      {message && <p className="text-xs my-4 text-green-500">{message}</p>}
+      {message && (
+        <p className="text-lg my-4 p-4 bg-green-600 text-white">
+          <FaCheckCircle className='color-white inline-block mr-2 pb-1' /> {message}
+        </p>
+      )}
       {cartLoaded && (
         <div className="mt-4">
           <a href="/cart" className="underline text-gray-300">Proceed to Checkout</a>
