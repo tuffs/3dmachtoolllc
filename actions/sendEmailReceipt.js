@@ -2,9 +2,9 @@
 
 import { sendEmail } from '@/actions/sendEmail';
 
-export async function sendEmailReceipt(orderData, customerEmail) {
+export async function sendEmailReceipt(purchaseDetails, customerEmail) {
   try {
-    const subject = `RECEIPT FOR ORDER #${orderData.orderNumber} - 3D MACHINE AND TOOL`;
+    const subject = `RECEIPT FOR ORDER #${purchaseDetails.orderNumber} - 3D MACHINE AND TOOL`;
 
     const emailBody = `
 Thank you for your purchase!
@@ -12,38 +12,38 @@ Thank you for your purchase!
 Order Details:
 ----------------------------------------
 
-Order Number: ${orderData.orderNumber}
-Order Data: ${new Date(orderData.orderDate).toLocaleDateString()}
-Customer: ${orderData.customer.name}
+Order Number: ${purchaseDetails.orderNumber}
+Order Data: ${new Date(purchaseDetails.orderDate).toLocaleDateString()}
+Customer: ${purchaseDetails.customer.name}
 
 Items Purchased:
 ----------------------------------------
-${orderData.items.map(item =>
-      `- ${item.productName} (Qty: ${item.quantity}) - $${item.totalPrice}`
+${purchaseDetails.items.map(item =>
+      `- ${item.productName} (Qty: ${item.quantity}) - ${item.formattedPrice}`
     ).join('\n')}
 
 Shipping Address:
 ----------------------------------------
-${orderData.shippingAddress.addressOne}
-${orderData.shippingAddress.addressTwo || ''}
-${orderData.shippingAddress.city}, ${orderData.shippingAddress.state}  ${orderData.shippingAddress.zipCode}
+${purchaseDetails.shippingAddress.addressOne}
+${purchaseDetails.shippingAddress.addressTwo || ''}
+${purchaseDetails.shippingAddress.city}, ${purchaseDetails.shippingAddress.state}  ${purchaseDetails.shippingAddress.zipCode}
 
-${orderData.billingAdress.addressOne ? (`
+${purchaseDetails.billingAddress.addressOne ? (`
 Billing Address:
 ----------------------------------------
-${orderData.billingAddress.addressOne}
-${orderData.billingAddress.addressTwo || ''}
-${orderData.billingAddress.city}, ${orderData.billingAddress.state}  ${orderData.billingAddress.zipCode}
+${purchaseDetails.billingAddress.addressOne}
+${purchaseDetails.billingAddress.addressTwo || ''}
+${purchaseDetails.billingAddress.city}, ${purchaseDetails.billingAddress.state}  ${purchaseDetails.billingAddress.zipCode}
 `) : ''}
 
 Order Summary:
 ----------------------------------------
-Subtotal: $${orderData.financials.subtotal.toFixed(2)}
-Tax: $${orderData.financials.totalTax.toFixed(2)}
-Total: $${orderData.financials.total.toFixed(2)}
+Subtotal: $${purchaseDetails.financials.subtotal.toFixed(2)}
+Tax: $${purchaseDetails.financials.totalTax.toFixed(2)}
+Total: $${purchaseDetails.financials.total.toFixed(2)}
 
 You can view your full receipt online at:
-https://3dmandt.com/purchaes/${orderData.orderNumber}
+https://3dmandt.com/purchaes/${purchaseDetails.orderNumber}
 
 Thank you for choosing 3D MACHINE AND TOOL!
 

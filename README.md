@@ -4,6 +4,12 @@ The official website will now be developed using NextJS and TailwindCSS for the 
 We will continue to use an ORM to interface with a PostgreSQL database. But, for free with Neon.tech.
 Prisma will then be used as the ORM to interface between our app and SaaS solution for database activity.
 
+## MOBILE NAVIGATION
+  - [ ] On pressing Esc key when the Mobile Menu is present, hide the menu and reset for an additional opening of the menu and so forth.
+
+## ORDER NUMBER UUID
+  - [ ] Drop in a updated UUID with a short length akin to FEDEX tracking #s.
+
 ## CHECKOUT PROCESS
 
 - [ ] Admin notification of sale event
@@ -32,7 +38,7 @@ Prisma will then be used as the ORM to interface between our app and SaaS soluti
 
 ## CREATE ORDERS, GET STE CERTS, AND PROCESS PAYMENTS
 ---
-  - [ ] Send Receipts to Customer and Administration 
+  - [ ] Send Receipts to Customer and Administration
 
 # FILES TO CHECK - NOT VALID AND WORKING PROPERLY:
 ---

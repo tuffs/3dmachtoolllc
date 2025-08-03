@@ -5,8 +5,10 @@ import html2pdf from 'html2pdf.js';
 import { sendEmailReceipt } from '@/actions/sendEmailReceipt';
 
 export default function ReceiptActions({ purchaseDetails }) {
+  console.log('purchaseDetails:', purchaseDetails);
+
   const [isGeneratingPDF, setIsGeneratingPDF] = useState(false);
-  const [isSendingEmail, setIsSendinggEmail] = useState(false);
+  const [isSendingEmail, setIsSendingEmail] = useState(false);
   const [emailSent, setEmailSent] = useState(false);
 
   const handlePrintPDF = async () => {
@@ -23,12 +25,12 @@ export default function ReceiptActions({ purchaseDetails }) {
         html2canvas: {
           scale: 2,
           useCORS: true,
-          allowTaint: true
+          allowTaint: true,
         },
         jsPDF: {
           unit: 'in',
           format: 'letter',
-          oreintation: 'portrait',
+          orientation: 'portrait',
         },
       };
 
@@ -42,15 +44,19 @@ export default function ReceiptActions({ purchaseDetails }) {
   };
 
   const handleSendEmail = async () => {
-    if (!purchaseDetails || isSendingEmail) return;
+    if (!purchaseDetails || !purchaseDetails.customer || !purchaseDetails.customer.email || isSendingEmail) {
+      console.error('Invalid purchaseDetails or email:', purchaseDetails);
+      alert('Cannot send email: Missing purchase details or email address.');
+      return;
+    }
 
-    setIsSendinggEmail(true);
+    setIsSendingEmail(true);
     try {
       const result = await sendEmailReceipt(purchaseDetails, purchaseDetails.customer.email);
 
       if (result.success) {
         setEmailSent(true);
-        alert('Rceipt sent to your email successfully!');
+        alert('Receipt sent to your email successfully!');
       } else {
         throw new Error(result.error || 'Failed to send email');
       }
@@ -58,7 +64,7 @@ export default function ReceiptActions({ purchaseDetails }) {
       console.error('Error sending email:', error);
       alert('Failed to send receipt email. Please try again.');
     } finally {
-      setIsSendinggEmail(false);
+      setIsSendingEmail(false);
     }
   };
 
