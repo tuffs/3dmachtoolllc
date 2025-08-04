@@ -13,7 +13,7 @@ Order Details:
 ----------------------------------------
 
 Order Number: ${purchaseDetails.orderNumber}
-Order Data: ${new Date(purchaseDetails.orderDate).toLocaleDateString()}
+Order Date: ${new Date(purchaseDetails.orderDate).toLocaleDateString()}
 Customer: ${purchaseDetails.customer.name}
 
 Items Purchased:
