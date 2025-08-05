@@ -5,6 +5,7 @@ import { FaCheckCircle, FaUpload, FaTimes } from 'react-icons/fa';
 import PurchaseSummary from '@/components/PurchaseSummary';
 import { getTaxesAndTotal } from '@/actions/getTaxesAndTotal';
 import { uploadTaxExemptionCertificate } from '@/actions/uploadTaxExemptionCertificate';
+import Cookies from 'js-cookie';
 
 export default function CheckoutForm({ pre_tax_subtotal, children, onSubmit }) {
   const [isDifferentBilling, setIsDifferentBilling] = useState(false);
@@ -30,6 +31,36 @@ export default function CheckoutForm({ pre_tax_subtotal, children, onSubmit }) {
     billingState: '',
     billingZipCode: '',
   });
+
+  useEffect(() => {
+    const reorderCustomerData = Cookies.get('3dmandt_reorder_customer');
+    if (reorderCustomerData) {
+      try {
+        const customerData = JSON.parse(reorderCustomerData);
+        setFormData(prev => ({
+          ...prev,
+          name: customerData.name || '',
+          email: customerData.email || '',
+          phone: customerData.phone || '',
+          shippingAddressOne: customerData.shippingAddress?.addressOne || '',
+          shippingAddressTwo: customerData.shippingAddress?.addressTwo || '',
+          shippingCity: customerData.shippingAddress?.city || '',
+          shippingState: customerData.shippingAddress?.state || '',
+          shippingZipCode: customerData.shippingAddress?.zipCode || '',
+          billingAddressOne: customerData.billingAddress?.addressOne || '',
+          billingAddressTwo: customerData.billingAddress?.addressTwo || '',
+          billingCity: customerData.billingAddress?.city || '',
+          billingState: customerData.billingAddress?.state || '',
+          billingZipCode: customerData.billingAddress?.zipCode || '',
+        }));
+
+        // Clear the reorder cookie after use
+        Cookies.remove('3dmandt_reorder_customer');
+      } catch (error) {
+        console.error('Error parsing reorder customer data:', error);
+      }
+    }
+  }, []);
 
   const handleBillingAddressDiffers = () => {
     if (!isDifferentBilling) {

@@ -61,6 +61,7 @@ export default async function getOrderDetails(orderNumber) {
         id: item.id,
         productId: item.productId,
         productName: item.product.name,
+        modelNumber: item.product.modelNumber,
         productDescription: item.product.description,
         quantity: item.quantity,
         price: Number(parseFloat(item.price)),

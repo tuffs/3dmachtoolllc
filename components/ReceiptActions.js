@@ -1,12 +1,16 @@
 'use client';
 
 import { useState } from 'react';
+import { useRouter } from 'next/navigation';
 import html2pdf from 'html2pdf.js';
 import { sendEmailReceipt } from '@/actions/sendEmailReceipt';
+import { reorderPurchase } from '@/actions/reorderPurchase';
 
 export default function ReceiptActions({ purchaseDetails }) {
+  const router = useRouter();
   const [isGeneratingPDF, setIsGeneratingPDF] = useState(false);
   const [isSendingEmail, setIsSendingEmail] = useState(false);
+  const [isReordering, setIsReordering] = useState(false);
   const [emailSent, setEmailSent] = useState(false);
   const [emailError, setEmailError] = useState(null);
   const [showNotice, setShowNotice] = useState(false);
@@ -75,9 +79,36 @@ export default function ReceiptActions({ purchaseDetails }) {
     }
   };
 
+  const handleReorder = async () => {
+    if (!purchaseDetails || isReordering) return;
+
+    setIsReordering(true);
+
+    try {
+      const result = await reorderPurchase(purchaseDetails);
+
+      if (result.success) {
+        // Trigger cart update event for other components
+        if (typeof window !== "undefined") {
+          window.dispatchEvent(new Event('cartUpdated'));
+        }
+
+        // Navigate to cart/checkout page
+        router.push('/cart');
+      } else {
+        throw new Error(result.error || 'Failed to reorder items');
+      }
+    } catch (error) {
+      console.error('Error reordering:', error);
+      alert('Failed to add items to cart. Please try again.');
+    } finally {
+      setIsReordering(false);
+    }
+  };
+
   return (
     <>
-      {/* Notice Area - Above buttons */}
+      {/* Notice Area */}
       <EmailNoticesArea
         emailSent={emailSent}
         emailError={emailError}
@@ -87,6 +118,7 @@ export default function ReceiptActions({ purchaseDetails }) {
 
       {/* Action Buttons */}
       <div className="flex justify-center gap-4 mt-8">
+        {/* Print Receipt Button */}
         <button
           onClick={handlePrintPDF}
           disabled={isGeneratingPDF}
@@ -95,10 +127,20 @@ export default function ReceiptActions({ purchaseDetails }) {
           {isGeneratingPDF ? 'Generating PDF...' : 'Print Receipt'}
         </button>
 
+        {/* Reorder Button */}
+        <button
+          onClick={handleReorder}
+          disabled={isReordering}
+          className="px-6 py-3 bg-inherit border-2 border-orange-500 text-orange-500 rounded-lg hover:bg-orange-500 hover:text-white disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-200"
+        >
+          {isReordering ? 'Adding to Cart...' : 'Reorder Items'}
+        </button>
+
+        {/* Email Receipt Button */}
         <button
           onClick={handleSendEmail}
           disabled={isSendingEmail}
-          className="px-6 py-3 bg-green-600 text-white rounded-lg hover:bg-green-700 disabled:opacity-50 disabled:cursor-not-allowed"
+          className="px-6 py-3 bg-green-600 text-white rounded-lg hover:bg-green-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors duration-200"
         >
           {isSendingEmail ? 'Sending...' : emailSent ? 'Email Sent ✓' : 'Email Receipt'}
         </button>
@@ -107,6 +149,7 @@ export default function ReceiptActions({ purchaseDetails }) {
   );
 }
 
+// Email notices component (unchanged)
 function EmailNoticesArea({ emailSent, emailError, showNotice, onClose }) {
   if (!showNotice) return null;
 
