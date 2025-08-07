@@ -14,11 +14,11 @@ const ContactFormIntroMessage = ({ isVisible, isHidden }) => {
       <p className="text-gray-300">
         Thank you for choosing to contact us, we value your important feedback and requests for quotation on custom machined parts and tooling. We have an in-house Mechanical Engineer to aide with custom part design. Please write a detailed description of your request and we will make sure to get back in touch with you as soon as possible.
 
-        {/* <br /><br />
+        <br /><br />
 
         <small className="text-gray-500 text-sm">
-          Attempts to sell products or services are prohibited, all sales messages will be filtered out by active AI systems.
-        </small> */}
+          Attempts to sell products or services are prohibited, all sales messages will filtered and range-ban your IP address from future access.
+        </small>
       </p>
     </div>
   );
