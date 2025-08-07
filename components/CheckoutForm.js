@@ -54,6 +54,11 @@ export default function CheckoutForm({ pre_tax_subtotal, children, onSubmit }) {
           billingZipCode: customerData.billingAddress?.zipCode || '',
         }));
 
+
+        if (customerData.billingAddress?.addressOne) {
+          setIsDifferentBilling(true);
+        }
+
         // Clear the reorder cookie after use
         Cookies.remove('3dmandt_reorder_customer');
       } catch (error) {
