@@ -16,6 +16,8 @@ Prisma will then be used as the ORM to interface between our app and SaaS soluti
         - [ ] Requests for Quote
         - [ ] Contact Messages
 
+## TEST SUITES
+---
 - [ ] Test suites:
     - [ ] Completed Purchases
     - [ ] Order Status System
