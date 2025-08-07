@@ -7,9 +7,6 @@ Prisma will then be used as the ORM to interface between our app and SaaS soluti
 ## MOBILE NAVIGATION
   - [ ] On pressing Esc key when the Mobile Menu is present, hide the menu and reset for an additional opening of the menu and so forth.
 
-## ORDER NUMBER UUID
-  - [ ] Drop in a updated UUID with a short length akin to FEDEX tracking #s.
-
 ## CHECKOUT PROCESS
 
 - [ ] Admin notification of sale event
@@ -26,8 +23,6 @@ Prisma will then be used as the ORM to interface between our app and SaaS soluti
     - [ ] Emailed Receipts
     - [ ] Notification of Sale to Admin
 
-- [ ] Add re-order to Receipts on the `/purchase/[purchaseId]` view
-
 ## RECEIVE RFQ's, PROVIDE QUOTES, REMOVE DATA FROM SERVERS (contact request and design docs in the cloud.)
 ---
   - [ ] Once quoted, must remove the files and the quotation from the server.
@@ -42,4 +37,4 @@ Prisma will then be used as the ORM to interface between our app and SaaS soluti
 
 # FILES TO CHECK - NOT VALID AND WORKING PROPERLY:
 ---
-  - [ ] Emailed Receipts
+  - [x] Emailed Receipts
