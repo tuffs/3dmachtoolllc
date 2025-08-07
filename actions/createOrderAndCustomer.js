@@ -2,9 +2,14 @@
 
 import prisma from '@/prisma/database';
 import { getProductDetails } from './getProductDetails';
+import { generateUniqueOrderNumber } from './generateUniqueOrderNumber';
 
-export async function createOrderAndCustomer(submissionData, cartData, orderNumber) {
+export async function createOrderAndCustomer(submissionData, cartData) {
   try {
+    // Generate unique order number first
+    const orderNumber = await generateUniqueOrderNumber();
+    console.log('Generated unique order number:', orderNumber);
+
     let customer = await prisma.customer.findUnique({
       where: { email: submissionData.formData.email }
     });
@@ -85,9 +90,7 @@ export async function createOrderAndCustomer(submissionData, cartData, orderNumb
 
     return { success: true, customer, order };
   } catch (error) {
-    console.error('Error creating order and customer:', error.message);
-    return { success: false, error: error.message };
-  } finally {
-    await prisma.$disconnect();
+    console.error('Error creating order and customer:', error);
+    return { success: false, error: error.message || 'Failed to create order' };
   }
 }

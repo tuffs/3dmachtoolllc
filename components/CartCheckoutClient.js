@@ -120,15 +120,14 @@ export default function CartCheckoutClient({ pre_tax_subtotal, initialCart, init
     setErrorMessage('');
 
     try {
-      const orderNumber = `3DMANDT-${Date.now()}`;
-      const result = await createOrderAndCustomer(submissionData, cartData, orderNumber);
+      const result = await createOrderAndCustomer(submissionData, cartData);
 
       if (result.success) {
         setOrderData({
           order: result.order,
           customer: result.customer,
           submissionData: submissionData,
-          orderNumber
+          orderNumber: result.order.orderNumber
         });
         setShowCheckout(false);
         setShowPayment(true);

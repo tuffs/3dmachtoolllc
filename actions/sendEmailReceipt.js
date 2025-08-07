@@ -43,7 +43,7 @@ Tax: $${purchaseDetails.financials.totalTax.toFixed(2)}
 Total: $${purchaseDetails.financials.total.toFixed(2)}
 
 You can view your full receipt online at:
-https://3dmandt.com/purchaes/${purchaseDetails.orderNumber}
+https://3dmandt.com/purchases/${purchaseDetails.orderNumber}
 
 Thank you for choosing 3D MACHINE AND TOOL!
 
