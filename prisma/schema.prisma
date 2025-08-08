@@ -113,6 +113,7 @@ model Order {
   createdAt                    DateTime    @default(now())
   updatedAt                    DateTime    @updatedAt
   orderItems                   OrderItem[] // Add relation to OrderItem
+  adminNotified                Boolean     @default(false)
 }
 
 model OrderItem {

@@ -34,6 +34,7 @@ export default async function getOrderDetails(orderNumber) {
       orderId: order.id,
       orderDate: order.createdAt,
       orderStatus: order.status,
+      adminNotified: order.adminNotifed,
 
       customer: {
         name: order.customer.name,
@@ -77,7 +78,7 @@ export default async function getOrderDetails(orderNumber) {
         taxRate: parseFloat(order.taxRate || 0),
         total: parseFloat(order.total),
         isTaxExempt: order.isTaxExempt || false
-      }
+      },
     };
 
     console.log(`Returning receipt data with ${receiptData.items.length} items.`);
