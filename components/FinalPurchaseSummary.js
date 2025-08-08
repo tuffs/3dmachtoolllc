@@ -25,7 +25,7 @@ export default async function FinalPurchaseSummary({ purchaseId }) {
       error = result.error;
     }
   } catch (err) {
-    error = 'Could not find the order referenced. Check the Unique Order ID';
+    error = 'Could not find the order referenced. Check the Unique Order ID. Specific Error details: ' + err;
   }
 
   let cumulativeQuantity = 0;
