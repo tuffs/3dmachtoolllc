@@ -194,7 +194,7 @@ export default async function FinalPurchaseSummary({ purchaseId }) {
 
       {/* Client component for PDF/Email actions */}
       {purchaseDetails && <ReceiptActions purchaseDetails={purchaseDetails} />}
-      <div className="mb-[200px]">
+      <div className="mb-[150px]">
         &nbsp;
       </div>
     </div>
