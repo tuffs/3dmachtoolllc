@@ -2,7 +2,7 @@
 
 import { sendEmail } from '@/actions/sendEmail';
 
-export async function sendEmailReceipt(purchaseDetails, customerEmail) {
+export async function sendEmailReceipt(purchaseDetails, recipientEmail) {
   try {
     const subject = `RECEIPT FOR ORDER #${purchaseDetails.orderNumber} - 3D MACHINE AND TOOL`;
 
@@ -53,7 +53,7 @@ Best regards,
   `;
 
     const result = await sendEmail(
-      customerEmail,
+      recipientEmail,
       subject,
       emailBody,
       'devon@3dmandt.com'

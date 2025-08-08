@@ -11,6 +11,8 @@ import CompletePurchaseForm from '@/components/CompletePurchaseForm';
 import { createOrderAndCustomer } from '@/actions/createOrderAndCustomer';
 import EmptyShoppingCart from '@/components/EmptyShoppingCart';
 import debounce from 'lodash/debounce';
+import { sendEmailReceipt } from '@/actions/sendEmailReceipt';
+import adminEmailAddresses from '@/lib/adminEmailAddresses';
 
 export default function CartCheckoutClient({ pre_tax_subtotal, initialCart, initialProducts, children }) {
   const router = useRouter();
@@ -154,6 +156,9 @@ export default function CartCheckoutClient({ pre_tax_subtotal, initialCart, init
 
       // Clear cart and navigate immediately - no waiting
       destroyShoppingCart();
+
+      // TODO: Send a Receipt to the Admins
+      // sendEmailReceipt(orderData, adminEmailAddresses());
 
       // Use replace to prevent back button issues
       router.replace(`/purchases/${orderNumber}`);

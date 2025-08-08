@@ -1,23 +1,8 @@
 import Hero from '@/components/Hero';
 import FinalPurchaseSummary from '@/components/FinalPurchaseSummary';
-import { sendEmailReceipt } from '@/actions/sendEmailReceipt';
-import { getOrderDetails } from '@/actions/getOrderDetails';
 
-export default async function PurchasesPage({ params, searchParams }) {
+export default async function PurchasesPage({ params }) {
   const purchaseId = params.purchaseId;
-  const shouldEmailReceipt = searchParams?.email === 'true';
-
-  // Handle automatic email sending on server side
-  if (shouldEmailReceipt && purchaseId) {
-    try {
-      const result = await getOrderDetails(purchaseId);
-      if (result.success) {
-        await sendEmailReceipt(result.data, result.data.customer.email);
-      }
-    } catch (error) {
-      console.error('Error sending automatic receipt email:', error);
-    }
-  }
 
   return (
     <>
@@ -25,11 +10,6 @@ export default async function PurchasesPage({ params, searchParams }) {
         <Hero />
       </div>
       <div className="container mx-auto p-8">
-        {shouldEmailReceipt && (
-          <div className="mb-4 p-4 bg-green-800 border border-green-600 text-green-200 rounded max-w-3xl mx-auto">
-            ✅ Receipt has been emailed to you!
-          </div>
-        )}
         <FinalPurchaseSummary purchaseId={purchaseId} />
       </div>
     </>

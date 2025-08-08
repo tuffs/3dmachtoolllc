@@ -4,10 +4,13 @@ import { SendEmailCommand } from "@aws-sdk/client-ses";
 import { sesClient } from "@/aws-config";
 
 export async function sendEmail(to, subject, body, from) {
+
+  const toAddresses = Array.isArray(to) ? to : [to];
+
   const params = {
     Source: "devon@3dmandt.com",
     Destination: {
-      ToAddresses: [to],
+      ToAddresses: toAddresses,
     },
     Message: {
       Subject: {
